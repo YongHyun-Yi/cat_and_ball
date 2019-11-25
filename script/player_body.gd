@@ -4,6 +4,7 @@ var velocity = Vector2()
 var speed = 300
 var gravity = 2000
 var jump = -700
+var d_jump = -550
 var double_jump = true
 
 # Called when the node enters the scene tree for the first time.
@@ -37,6 +38,14 @@ func get_input():
 			velocity.y = jump
 			print("jump!")
 		elif double_jump == true:
-			velocity.y = jump
+			velocity.y = d_jump
 			double_jump = false
 			print("double jump!")
+
+func touch_botton_action_press(a):
+	Input.action_press(a)
+	pass
+
+func touch_botton_action_release(a):
+	Input.action_release(a)
+	pass

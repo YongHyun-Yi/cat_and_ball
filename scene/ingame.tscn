@@ -1,24 +1,28 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://script/player_body.gd" type="Script" id=1]
-[ext_resource path="res://sprite/cat.png" type="Texture" id=2]
-[ext_resource path="res://script/ball_body.gd" type="Script" id=3]
-[ext_resource path="res://sprite/ball.png" type="Texture" id=4]
+[ext_resource path="res://script/ingame.gd" type="Script" id=1]
+[ext_resource path="res://sprite/ball_ghost.png" type="Texture" id=2]
+[ext_resource path="res://script/player_body.gd" type="Script" id=3]
+[ext_resource path="res://sprite/cat3.png" type="Texture" id=4]
+[ext_resource path="res://script/ball_body.gd" type="Script" id=5]
+[ext_resource path="res://sprite/ball2.png" type="Texture" id=6]
+[ext_resource path="res://sprite/icon.png" type="Texture" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 23.3458
-height = 38.6878
+radius = 13.517
+height = 20.966
 
 [sub_resource type="PhysicsMaterial" id=2]
 bounce = 0.7
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 15.0696
+radius = 11.5446
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 272.898, 33.1124 )
+extents = Vector2( 269.944, 30 )
 
 [node name="ingame" type="Node2D"]
+script = ExtResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 400.0
@@ -27,20 +31,50 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="ball_ghost" type="Node2D" parent="."]
+position = Vector2( 204.483, 34.7981 )
+
+[node name="ghost5" type="Sprite" parent="ball_ghost"]
+self_modulate = Color( 0, 0.227451, 1, 1 )
+position = Vector2( 0, 27.2019 )
+texture = ExtResource( 2 )
+
+[node name="ghost4" type="Sprite" parent="ball_ghost"]
+self_modulate = Color( 0, 0.415686, 1, 1 )
+position = Vector2( 0, 21.2019 )
+texture = ExtResource( 2 )
+
+[node name="ghost3" type="Sprite" parent="ball_ghost"]
+self_modulate = Color( 0, 0.576471, 1, 1 )
+position = Vector2( 0, 16.2019 )
+texture = ExtResource( 2 )
+
+[node name="ghost2" type="Sprite" parent="ball_ghost"]
+self_modulate = Color( 0, 0.741176, 1, 1 )
+position = Vector2( 0, 11 )
+texture = ExtResource( 2 )
+
+[node name="ghost1" type="Sprite" parent="ball_ghost"]
+self_modulate = Color( 0, 0.858824, 1, 1 )
+position = Vector2( 0, 5.2019 )
+texture = ExtResource( 2 )
+
 [node name="player" type="Node2D" parent="."]
+editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="player_body" type="KinematicBody2D" parent="player"]
-position = Vector2( 224.483, 490 )
-script = ExtResource( 1 )
+position = Vector2( 204.483, 512 )
+script = ExtResource( 3 )
 
 [node name="sprite" type="Sprite" parent="player/player_body"]
-position = Vector2( 6.97202, 4.73001 )
-texture = ExtResource( 2 )
+position = Vector2( 0, 1 )
+texture = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body"]
+position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
 [node name="ball" type="Node2D" parent="."]
@@ -50,15 +84,17 @@ position = Vector2( 204.483, 34.7981 )
 mass = 1.07245
 physics_material_override = SubResource( 2 )
 gravity_scale = 8.0
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="sprite" type="Sprite" parent="ball/ball_body"]
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
+visible = false
 shape = SubResource( 3 )
 
 [node name="walls" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="walls"]
 
@@ -79,4 +115,38 @@ shape = SubResource( 4 )
 [node name="wall4" type="CollisionShape2D" parent="walls/StaticBody2D"]
 position = Vector2( 196.056, 570 )
 shape = SubResource( 4 )
+
+[node name="left" type="TouchScreenButton" parent="."]
+self_modulate = Color( 1, 1, 1, 0.588235 )
+position = Vector2( 28, 468 )
+normal = ExtResource( 7 )
+
+[node name="right" type="TouchScreenButton" parent="."]
+self_modulate = Color( 1, 1, 1, 0.501961 )
+position = Vector2( 116, 468 )
+scale = Vector2( 1.03125, 1.03125 )
+normal = ExtResource( 7 )
+visibility_mode = 1
+
+[node name="jump" type="TouchScreenButton" parent="."]
+self_modulate = Color( 1, 1, 1, 0.513726 )
+position = Vector2( 276, 468 )
+normal = ExtResource( 7 )
+
+[node name="reset" type="TextureButton" parent="."]
+self_modulate = Color( 1, 1, 1, 0.490196 )
+margin_left = 38.0
+margin_top = 12.0
+margin_right = 102.0
+margin_bottom = 76.0
+rect_rotation = 44.9999
+rect_scale = Vector2( 0.5, 0.5 )
+texture_normal = ExtResource( 7 )
 [connection signal="body_entered" from="ball/ball_body" to="ball/ball_body" method="_on_ball_body_body_entered"]
+[connection signal="pressed" from="left" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_left" ]]
+[connection signal="released" from="left" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_left" ]]
+[connection signal="pressed" from="right" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_right" ]]
+[connection signal="released" from="right" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_right" ]]
+[connection signal="pressed" from="jump" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_jump" ]]
+[connection signal="released" from="jump" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_jump" ]]
+[connection signal="button_up" from="reset" to="." method="restart"]
