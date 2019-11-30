@@ -32,6 +32,7 @@ __meta__ = {
 }
 
 [node name="ball_ghost" type="Node2D" parent="."]
+editor/display_folded = true
 position = Vector2( 204.483, 34.7981 )
 
 [node name="ghost5" type="Sprite" parent="ball_ghost"]
@@ -60,7 +61,6 @@ position = Vector2( 0, 5.2019 )
 texture = ExtResource( 2 )
 
 [node name="player" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
@@ -79,11 +79,22 @@ shape = SubResource( 1 )
 
 [node name="ball" type="Node2D" parent="."]
 
+[node name="Label" type="Label" parent="ball"]
+self_modulate = Color( 1, 0, 0, 1 )
+margin_left = 76.0
+margin_top = 10.0
+margin_right = 151.0
+margin_bottom = 24.0
+text = "texttexttext"
+valign = 1
+
 [node name="ball_body" type="RigidBody2D" parent="ball"]
 position = Vector2( 204.483, 34.7981 )
 mass = 1.07245
 physics_material_override = SubResource( 2 )
 gravity_scale = 8.0
+contacts_reported = 1
+contact_monitor = true
 script = ExtResource( 5 )
 
 [node name="sprite" type="Sprite" parent="ball/ball_body"]
