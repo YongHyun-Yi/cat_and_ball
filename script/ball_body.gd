@@ -19,13 +19,20 @@ func _process(delta):
 
 
 func _on_ball_body_body_entered(body):
-	if body.name == "player_body":
+	"""if body.get_parent().name == "player":
 		#var cha = get_node("../../player/player_body")
-		#apply_impulse(Vector2(0, 0), Vector2(0, -500))#(global_position-cha.global_position)*800)
+		apply_impulse(Vector2(0, 0), Vector2(0, -200))#(global_position-cha.global_position)*800)
+		print("player")
 		var a = get_linear_velocity()
-		if a.y > 300:
-			set_axis_velocity ( Vector2(0, -300) )
-		pass # Replace with function body.
+		#if a.y > 300:
+		#	set_axis_velocity ( Vector2(0, -300) )"""
+	pass # Replace with function body.
+
+func hitted(a):
+	print("ball")
+	print("attack point : "+str(a))
+	#set_linear_velocity(a)
+	apply_impulse(Vector2(0, 0), a*35)
 
 func ghost_effects():
 	var a = 4
