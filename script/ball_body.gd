@@ -19,10 +19,11 @@ func _process(delta):
 
 
 func _on_ball_body_body_entered(body):
-	"""if body.get_parent().name == "player":
+	if body.get_parent().name == "player":
 		#var cha = get_node("../../player/player_body")
-		apply_impulse(Vector2(0, 0), Vector2(0, -200))#(global_position-cha.global_position)*800)
-		print("player")
+		set_linear_velocity(Vector2(get_linear_velocity().x, 0))
+		apply_impulse(Vector2(0, 0), Vector2(0, -400))#(global_position-cha.global_position)*800)
+		#print("player")
 		var a = get_linear_velocity()
 		#if a.y > 300:
 		#	set_axis_velocity ( Vector2(0, -300) )"""

@@ -34,12 +34,12 @@ func stick_clicked():
 	pass # Replace with function body.
 
 
-func stick_relaese():
+func stick_releaese():
 	print(str(move_point))
 	clicked = false
 	drag = false
 	start_point = Vector2()
 	move_point = Vector2()
 	rect_position = origin
-	print("relase stick")
+	print("release stick")
 	pass # Replace with function body.

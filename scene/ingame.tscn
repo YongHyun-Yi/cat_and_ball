@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://sprite/ball_ghost.png" type="Texture" id=2]
@@ -48,13 +48,16 @@ tracks/0/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="PhysicsMaterial" id=5]
+[sub_resource type="CircleShape2D" id=5]
+radius = 45.0018
+
+[sub_resource type="PhysicsMaterial" id=6]
 bounce = 0.7
 
-[sub_resource type="CircleShape2D" id=6]
+[sub_resource type="CircleShape2D" id=7]
 radius = 11.5446
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 285, 30 )
 
 [node name="ingame" type="Node2D"]
@@ -106,7 +109,6 @@ position = Vector2( 0, 5.2019 )
 texture = ExtResource( 2 )
 
 [node name="player" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
@@ -134,6 +136,7 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 1 )
 
 [node name="attack" type="Area2D" parent="player/player_body"]
+editor/display_folded = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/attack"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
@@ -146,6 +149,15 @@ disabled = true
 autoplay = "reset"
 anims/attack = SubResource( 3 )
 anims/reset = SubResource( 4 )
+
+[node name="wall_detect" type="Area2D" parent="player/player_body"]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/wall_detect"]
+position = Vector2( 0, -24.5929 )
+shape = SubResource( 5 )
+
+[node name="b_timer" type="Timer" parent="player/player_body"]
 
 [node name="ball" type="Node2D" parent="."]
 editor/display_folded = true
@@ -161,7 +173,7 @@ valign = 1
 
 [node name="ball_body" type="RigidBody2D" parent="ball"]
 position = Vector2( 235, 29 )
-physics_material_override = SubResource( 5 )
+physics_material_override = SubResource( 6 )
 gravity_scale = 8.0
 contacts_reported = 1
 contact_monitor = true
@@ -173,42 +185,57 @@ texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
 scale = Vector2( 2, 2 )
-shape = SubResource( 6 )
+shape = SubResource( 7 )
 
 [node name="walls" type="Node2D" parent="."]
+editor/display_folded = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="walls"]
+[node name="wall_left" type="StaticBody2D" parent="walls" groups=[
+"wall",
+]]
+editor/display_folded = true
 
-[node name="wall1" type="CollisionShape2D" parent="walls/StaticBody2D"]
+[node name="wall_left" type="CollisionShape2D" parent="walls/wall_left"]
 position = Vector2( -30, 285 )
 rotation = 1.57079
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
-[node name="wall2" type="CollisionShape2D" parent="walls/StaticBody2D"]
+[node name="ceiling" type="StaticBody2D" parent="walls"]
+editor/display_folded = true
+
+[node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
 position = Vector2( 225, -30 )
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
-[node name="wall3" type="CollisionShape2D" parent="walls/StaticBody2D"]
+[node name="wall_right" type="StaticBody2D" parent="walls" groups=[
+"wall",
+]]
+editor/display_folded = true
+
+[node name="wall_right" type="CollisionShape2D" parent="walls/wall_right"]
 position = Vector2( 480, 285 )
 rotation = -1.57079
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
-[node name="wall4" type="CollisionShape2D" parent="walls/StaticBody2D"]
+[node name="floor" type="StaticBody2D" parent="walls"]
+editor/display_folded = true
+
+[node name="floor" type="CollisionShape2D" parent="walls/floor"]
 position = Vector2( 225, 600 )
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
-[node name="left" type="TouchScreenButton" parent="."]
+[node name="ui_left" type="TouchScreenButton" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.588235 )
-position = Vector2( 10, 595 )
-scale = Vector2( 1.17188, 2.65625 )
+position = Vector2( 30, 600 )
+scale = Vector2( 2.73438, 2.65625 )
 normal = ExtResource( 7 )
 
-[node name="right" type="TouchScreenButton" parent="."]
+[node name="ui_right" type="TouchScreenButton" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.501961 )
-position = Vector2( 95, 595 )
-scale = Vector2( 1.25, 2.65625 )
+position = Vector2( 240, 600 )
+scale = Vector2( 2.73437, 2.65625 )
 normal = ExtResource( 7 )
 visibility_mode = 1
 
@@ -235,6 +262,8 @@ rect_scale = Vector2( 0.5, 0.5 )
 texture_normal = ExtResource( 7 )
 
 [node name="controller" type="Node2D" parent="."]
+editor/display_folded = true
+visible = false
 position = Vector2( 13.9668, -22.7878 )
 
 [node name="circle" type="Sprite" parent="controller"]
@@ -253,16 +282,25 @@ texture_normal = ExtResource( 2 )
 expand = true
 stretch_mode = 4
 script = ExtResource( 9 )
+
+[node name="move" type="TouchScreenButton" parent="."]
+self_modulate = Color( 1, 1, 1, 0.509804 )
+position = Vector2( 30, 600 )
+scale = Vector2( 2.65625, 2.65625 )
+normal = ExtResource( 8 )
 [connection signal="body_entered" from="player/player_body/attack" to="player/player_body" method="attack_hitted"]
+[connection signal="body_entered" from="player/player_body/wall_detect" to="player/player_body" method="wall_detect"]
 [connection signal="body_entered" from="ball/ball_body" to="ball/ball_body" method="_on_ball_body_body_entered"]
-[connection signal="pressed" from="left" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_left" ]]
-[connection signal="released" from="left" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_left" ]]
-[connection signal="pressed" from="right" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_right" ]]
-[connection signal="released" from="right" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_right" ]]
+[connection signal="pressed" from="ui_left" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_left" ]]
+[connection signal="released" from="ui_left" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_left" ]]
+[connection signal="pressed" from="ui_right" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_right" ]]
+[connection signal="released" from="ui_right" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_right" ]]
 [connection signal="pressed" from="ui_jump" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_jump" ]]
 [connection signal="released" from="ui_jump" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_jump" ]]
 [connection signal="pressed" from="ui_attack" to="player/player_body" method="touch_botton_action_press" binds= [ "ui_attack" ]]
 [connection signal="released" from="ui_attack" to="player/player_body" method="touch_botton_action_release" binds= [ "ui_attack" ]]
 [connection signal="button_up" from="reset" to="." method="restart"]
 [connection signal="button_down" from="controller/stick" to="controller/stick" method="stick_clicked"]
-[connection signal="button_up" from="controller/stick" to="controller/stick" method="stick_relaese"]
+[connection signal="button_up" from="controller/stick" to="controller/stick" method="stick_releaese"]
+[connection signal="pressed" from="move" to="player/player_body" method="move_button" binds= [ "press" ]]
+[connection signal="released" from="move" to="player/player_body" method="move_button" binds= [ "release" ]]
