@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -6,23 +6,58 @@
 [ext_resource path="res://icon.png" type="Texture" id=4]
 [ext_resource path="res://sprite/ball_ghost.png" type="Texture" id=5]
 [ext_resource path="res://script/player_body.gd" type="Script" id=6]
-[ext_resource path="res://sprite/cat3.png" type="Texture" id=7]
-[ext_resource path="res://script/ball_body.gd" type="Script" id=8]
-[ext_resource path="res://sprite/ball2.png" type="Texture" id=9]
-[ext_resource path="res://sprite/icon.png" type="Texture" id=10]
-[ext_resource path="res://sprite/control_pannel.png" type="Texture" id=11]
-[ext_resource path="res://sprite/button.png" type="Texture" id=12]
+[ext_resource path="res://sprite/idle.png" type="Texture" id=7]
+[ext_resource path="res://sprite/jump_ready.png" type="Texture" id=8]
+[ext_resource path="res://sprite/receive1.png" type="Texture" id=9]
+[ext_resource path="res://sprite/receive2.png" type="Texture" id=10]
+[ext_resource path="res://sprite/jump_attack.png" type="Texture" id=11]
+[ext_resource path="res://script/ball_body.gd" type="Script" id=12]
+[ext_resource path="res://sprite/ball.png" type="Texture" id=13]
+[ext_resource path="res://sprite/effect2.png" type="Texture" id=14]
+[ext_resource path="res://sprite/icon.png" type="Texture" id=15]
+[ext_resource path="res://sprite/control_pannel.png" type="Texture" id=16]
+[ext_resource path="res://sprite/button.png" type="Texture" id=17]
+[ext_resource path="res://sprite/arrow.png" type="Texture" id=18]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 70, 72 )
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 24.021
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 640, 30 )
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 40.078
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 360, 30 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "ready",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": false,
+"name": "receive",
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 11 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 35, 46 )
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 49.3584
+
+[sub_resource type="Animation" id=7]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
@@ -37,7 +72,7 @@ tracks/0/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=8]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
@@ -51,18 +86,24 @@ tracks/0/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "idle" ]
+}
 
-[sub_resource type="PhysicsMaterial" id=6]
+[sub_resource type="PhysicsMaterial" id=9]
 bounce = 0.7
 
-[sub_resource type="CircleShape2D" id=7]
-radius = 11.5446
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 640, 30 )
-
-[sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 360, 30 )
+[sub_resource type="CircleShape2D" id=10]
+radius = 28.5175
 
 [node name="ingame" type="Node2D"]
 script = ExtResource( 1 )
@@ -129,110 +170,8 @@ self_modulate = Color( 0, 0.858824, 1, 1 )
 position = Vector2( 0, 5.2019 )
 texture = ExtResource( 5 )
 
-[node name="player" type="Node2D" parent="."]
-editor/display_folded = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Label" type="Label" parent="player"]
-modulate = Color( 0, 0.345098, 1, 1 )
-margin_left = 450.0
-margin_top = 28.6343
-margin_right = 490.0
-margin_bottom = 42.6343
-rect_scale = Vector2( 5, 5 )
-text = "STATE"
-align = 1
-
-[node name="player_body" type="KinematicBody2D" parent="player"]
-position = Vector2( 360, 960 )
-collision_layer = 2
-collision_mask = 2
-script = ExtResource( 6 )
-
-[node name="sprite" type="Sprite" parent="player/player_body"]
-position = Vector2( 0, -1.7605 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 7 )
-
-[node name="jump_direction" type="Sprite" parent="player/player_body/sprite"]
-visible = false
-self_modulate = Color( 0, 0, 0, 1 )
-texture = ExtResource( 5 )
-offset = Vector2( 0, -50 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body"]
-scale = Vector2( 2, 2 )
-shape = SubResource( 2 )
-
-[node name="attack" type="Area2D" parent="player/player_body"]
-editor/display_folded = true
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/attack"]
-self_modulate = Color( 0, 1, 0.180392, 1 )
-scale = Vector2( 2, 2 )
-shape = SubResource( 3 )
-one_way_collision = true
-
-[node name="anim" type="AnimationPlayer" parent="player/player_body"]
-anims/attack = SubResource( 4 )
-anims/reset = SubResource( 5 )
-
-[node name="power_gauge" type="TextureProgress" parent="player/player_body"]
-margin_left = -30.0
-margin_top = -110.0
-margin_right = 34.0
-margin_bottom = -46.0
-min_value = 700.0
-max_value = 1600.0
-value = 700.0
-texture_progress = ExtResource( 4 )
-
-[node name="ball" type="Node2D" parent="."]
-editor/display_folded = true
-
-[node name="Label" type="Label" parent="ball"]
-self_modulate = Color( 1, 0, 0, 1 )
-margin_left = 76.0
-margin_top = 10.0
-margin_right = 151.0
-margin_bottom = 24.0
-text = "texttexttext"
-valign = 1
-
-[node name="ball_body" type="RigidBody2D" parent="ball"]
-position = Vector2( 360, 510 )
-collision_layer = 5
-collision_mask = 5
-physics_material_override = SubResource( 6 )
-gravity_scale = 8.0
-contacts_reported = 1
-contact_monitor = true
-script = ExtResource( 8 )
-
-[node name="sprite" type="Sprite" parent="ball/ball_body"]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 9 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
-scale = Vector2( 2, 2 )
-shape = SubResource( 7 )
-
-[node name="Sprite" type="Sprite" parent="ball/ball_body"]
-position = Vector2( 0, -18 )
-scale = Vector2( 0.15625, 0.75 )
-texture = ExtResource( 4 )
-
-[node name="Sprite2" type="Sprite" parent="ball/ball_body"]
-self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 18, 0 )
-scale = Vector2( 0.65625, 0.1875 )
-texture = ExtResource( 4 )
-
 [node name="walls" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="wall_left" type="StaticBody2D" parent="walls" groups=[
 "wall",
@@ -252,14 +191,14 @@ color = Color( 0, 0, 0, 1 )
 [node name="wall_left" type="CollisionShape2D" parent="walls/wall_left"]
 position = Vector2( 0, 240 )
 rotation = 1.57079
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
 position = Vector2( 360, 30 )
 
 [node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
-shape = SubResource( 9 )
+shape = SubResource( 3 )
 
 [node name="wall_right" type="StaticBody2D" parent="walls" groups=[
 "wall",
@@ -278,7 +217,7 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="wall_right" type="CollisionShape2D" parent="walls/wall_right"]
 rotation = 1.57079
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
@@ -294,7 +233,110 @@ margin_bottom = 30.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="floor" type="CollisionShape2D" parent="walls/floor"]
-shape = SubResource( 9 )
+shape = SubResource( 3 )
+
+[node name="player" type="Node2D" parent="."]
+editor/display_folded = true
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="player"]
+modulate = Color( 0, 0.345098, 1, 1 )
+margin_left = 450.0
+margin_top = 28.6343
+margin_right = 490.0
+margin_bottom = 42.6343
+rect_scale = Vector2( 5, 5 )
+text = "STATE"
+align = 1
+
+[node name="player_body" type="KinematicBody2D" parent="player"]
+position = Vector2( 363, 873 )
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 6 )
+
+[node name="sprite" type="AnimatedSprite" parent="player/player_body"]
+scale = Vector2( 2, 2 )
+frames = SubResource( 4 )
+animation = "idle"
+playing = true
+
+[node name="timer" type="Timer" parent="player/player_body/sprite"]
+wait_time = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body"]
+position = Vector2( 1, 44 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 5 )
+
+[node name="attack" type="Area2D" parent="player/player_body"]
+position = Vector2( 1, 44 )
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/attack"]
+self_modulate = Color( 0, 1, 0.180392, 1 )
+position = Vector2( -2, -17 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 6 )
+one_way_collision = true
+
+[node name="timer" type="Timer" parent="player/player_body/attack"]
+
+[node name="anim" type="AnimationPlayer" parent="player/player_body"]
+anims/attack = SubResource( 7 )
+anims/reset = SubResource( 8 )
+
+[node name="power_gauge" type="TextureProgress" parent="player/player_body"]
+margin_left = -30.0
+margin_top = -110.0
+margin_right = 34.0
+margin_bottom = -46.0
+min_value = 700.0
+max_value = 1600.0
+value = 700.0
+texture_progress = ExtResource( 4 )
+
+[node name="ball" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="ball"]
+self_modulate = Color( 1, 0, 0, 1 )
+margin_left = 76.0
+margin_top = 10.0
+margin_right = 151.0
+margin_bottom = 24.0
+text = "texttexttext"
+valign = 1
+
+[node name="ball_body" type="RigidBody2D" parent="ball"]
+position = Vector2( 360, 510 )
+collision_layer = 5
+collision_mask = 5
+physics_material_override = SubResource( 9 )
+gravity_scale = 8.0
+contacts_reported = 1
+contact_monitor = true
+angular_damp = 128.0
+script = ExtResource( 12 )
+
+[node name="sprite" type="Sprite" parent="ball/ball_body"]
+editor/display_folded = true
+scale = Vector2( 2, 2 )
+texture = ExtResource( 13 )
+
+[node name="timer" type="Timer" parent="ball/ball_body/sprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
+position = Vector2( -1, -1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 10 )
+
+[node name="effect2" type="Sprite" parent="ball/ball_body"]
+visible = false
+texture = ExtResource( 14 )
+offset = Vector2( -220, 25 )
 
 [node name="reset" type="TextureButton" parent="."]
 self_modulate = Color( 1, 1, 1, 0.490196 )
@@ -304,23 +346,47 @@ margin_right = 102.0
 margin_bottom = 76.0
 rect_rotation = 44.9999
 rect_scale = Vector2( 0.5, 0.5 )
-texture_normal = ExtResource( 10 )
+texture_normal = ExtResource( 15 )
 
 [node name="control_pannel" type="Sprite" parent="."]
-visible = false
 position = Vector2( 0, 1070 )
-texture = ExtResource( 11 )
+texture = ExtResource( 16 )
 centered = false
 
-[node name="left" type="TouchScreenButton" parent="."]
-visible = false
-position = Vector2( 17.4519, 1087 )
-normal = ExtResource( 12 )
+[node name="left" type="TextureButton" parent="."]
+editor/display_folded = true
+margin_left = 17.0
+margin_top = 1087.0
+margin_right = 348.0
+margin_bottom = 1264.0
+texture_normal = ExtResource( 17 )
 
-[node name="right" type="TouchScreenButton" parent="."]
-visible = false
-position = Vector2( 374, 1087 )
-normal = ExtResource( 12 )
+[node name="arrow" type="Sprite" parent="left"]
+position = Vector2( 107, 41 )
+texture = ExtResource( 18 )
+centered = false
+
+[node name="right" type="TextureButton" parent="."]
+editor/display_folded = true
+margin_left = 374.0
+margin_top = 1087.0
+margin_right = 705.0
+margin_bottom = 1264.0
+texture_normal = ExtResource( 17 )
+
+[node name="arrow" type="Sprite" parent="right"]
+position = Vector2( 229.2, 140 )
+rotation = 3.14159
+texture = ExtResource( 18 )
+centered = false
 [connection signal="body_entered" from="enemys/target" to="enemys/target" method="_on_target_body_entered"]
+[connection signal="animation_finished" from="player/player_body/sprite" to="player/player_body" method="_on_sprite_animation_finished"]
+[connection signal="timeout" from="player/player_body/sprite/timer" to="player/player_body" method="_on_timer_timeout"]
 [connection signal="body_entered" from="player/player_body/attack" to="player/player_body" method="attack_in"]
+[connection signal="timeout" from="player/player_body/attack/timer" to="player/player_body" method="hit_pause_timer"]
+[connection signal="timeout" from="ball/ball_body/sprite/timer" to="ball/ball_body" method="attack_pause_timer"]
 [connection signal="button_up" from="reset" to="." method="restart"]
+[connection signal="button_down" from="left" to="player/player_body" method="move_button_press" binds= [ "left" ]]
+[connection signal="button_up" from="left" to="player/player_body" method="move_button_release" binds= [ "left" ]]
+[connection signal="button_down" from="right" to="player/player_body" method="move_button_press" binds= [ "right" ]]
+[connection signal="button_up" from="right" to="player/player_body" method="move_button_release" binds= [ "right" ]]

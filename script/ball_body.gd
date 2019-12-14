@@ -29,6 +29,22 @@ func hitted(a):
 	set_linear_velocity(Vector2(0, 0))
 	apply_impulse(Vector2(0, 0), power.rotated(angle))
 	
+	$sprite.texture = load("res://sprite/ball_punch.png")
+	look_at(get_node("../../player/player_body").global_position)
+	
+	$effect2.position = (get_node("../../player/player_body").global_position-global_position)/2
+	$effect2.look_at(get_node("../../player/player_body").global_position)
+	$effect2.show()
+	
+	var effect_scene = load("res://scene/attack_effect.tscn")
+	var effect = effect_scene.instance()
+	effect.global_position = global_position
+	effect.look_at(get_node("../../player/player_body").global_position)
+	get_node("../..").add_child(effect)
+	
+	#$sprite/timer.wait_time = 2 * Engine.get_time_scale()
+	#$sprite/timer.start()
+	
 	#print("power is : "+str(power))
 
 func receive():
@@ -59,3 +75,8 @@ func ghost_red():
 	get_node("../../ball_ghost/ghost"+"3").self_modulate = "ff4e00"
 	get_node("../../ball_ghost/ghost"+"4").self_modulate = "ff3000"
 	get_node("../../ball_ghost/ghost"+"5").self_modulate = "ff0000"
+
+func attack_pause_timer():
+	$sprite/timer.stop()
+	$sprite.texture = load("res://sprite/ball.png")
+	pass # Replace with function body.
