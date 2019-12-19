@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+var hp = 3
 var velocity = Vector2()
 var speed = 350
 var gravity = 5000
@@ -16,8 +17,10 @@ var in_area_actioned = []
 var power = 0
 var pre_pressed = false
 var pre_pressed_way = ""
-var attack_pause = false
 onready var dir_sp = $sprite/jump_direction
+onready var manager = get_node("../..")
+onready var ball = get_node("../../ball/ball_body")
+var target = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,13 +28,27 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	get_node("../Label").text = state
+	get_node("../Label").text = "상태 : "+state+"\n 체력 : "+str(hp)
+	
+	if Input.is_action_just_pressed("ui_left"):
+		move_button_press("left")
+	elif Input.is_action_just_pressed("ui_right"):
+		move_button_press("right")
+	elif Input.is_action_just_pressed("target_prev"):
+		target_button_press("prev")
+	elif Input.is_action_just_pressed("target_next"):
+		target_button_press("next")
+	
+	if Input.is_action_just_released("ui_left"):
+		move_button_release("left")
+	elif Input.is_action_just_released("ui_right"):
+		move_button_release("right")
 	
 	if !is_on_floor():
 		if velocity.y < gravity:
 			velocity.y += gravity * delta
 		if velocity.x != 0:
-			velocity.x = lerp(velocity.x, 0, .1)
+			velocity.x = lerp(velocity.x, 0, Engine.get_time_scale()/10) # 기본값이 0.1이니 타임스케일이 1.0일떄 0.1이 나오도록 설정
 		#if state != "jump":
 		#	state = "jump"
 	else:
@@ -48,6 +65,29 @@ func _process(delta):
 				move_button_press(pre_pressed_way)
 				pre_pressed = false
 				pre_pressed_way = ""
+			$attack/CollisionShape2D.disabled = true
+			$receive/CollisionShape2D.disabled = false
+	
+	if hp <= 0: # 체력이 0이하일떄 player dead 로 씬 전환
+		var dead_body_scene = load("res://scene/player_dead.tscn")
+		var dead_body = dead_body_scene.instance()
+		dead_body.global_position = global_position
+		dead_body.get_node("player_dead").velocity = velocity
+		get_node("..").add_child(dead_body)
+		queue_free()
+		pass
+	
+	if target == null:
+		if manager.targets.size() > 0:
+			target = manager.targets[0]
+			get_node("../aim").show()
+			get_node("../aim").global_position = target.global_position
+			#print("target is : "+target.name)
+			pass
+		else:
+			get_node("../aim").hide()
+			#print("there no target")
+		pass
 	
 	if is_on_wall():
 		pass
@@ -65,48 +105,40 @@ func _process(delta):
 			$power_gauge.value = (power * 100) + 700
 		pass
 	
-	if attack_pause == false and Engine.get_time_scale() != 1.0:
+	if manager.hit_pause == false and Engine.get_time_scale() != 1.0:
 		Engine.set_time_scale(lerp(Engine.get_time_scale(), 1.0, .1))
 	pass
 
 func attack_in(body):
 	if body.name == "ball_body":
 		if state == "jump":
-			body.hitted(power)
+			body.hitted(power, velocity.x)
 			get_node("../../camera").camera_shake(.05, 5)
-			Engine.set_time_scale(.01)
-			$attack/timer.wait_time = 2 * Engine.get_time_scale()
-			$attack/timer.start()
-			attack_pause = true
-			print("느려짐 시작")
-		elif state == "idle":
-			$sprite.animation = "receive"
+			manager.combo += 1
+			manager.hit_pause()
 	pass # Replace with function body.
 
-func hit_pause_timer():
-	$attack/timer.stop()
-	attack_pause = false
-	get_node("../../ball/ball_body/sprite").texture = load("res://sprite/ball.png")
-	get_node("../../ball/ball_body/effect2").hide()
-	print("느려짐 끝")
-	pass # Replace with function body.
+func receive_in(body):
+	if body.name == "ball_body":
+		if state == "idle":
+			$sprite.animation = "receive"
+			ball.receive()
+	pass
 
 func _on_sprite_animation_finished():
 	if $sprite.animation == "receive":
-		$sprite/timer.start()
-		get_node("../../ball/ball_body").receive()
+		$sprite.animation = "idle"
 	pass # Replace with function body.
 
 func _on_timer_timeout():
-	$sprite.animation = "idle"
+	#$sprite.animation = "idle"
 	$sprite/timer.stop()
 	pass # Replace with function body.
 
 
 func move_button_press(way):
 	
-	get_node("../../"+way).texture_normal = load("res://sprite/button_pressed.png")
-	get_node("../../"+way+"/arrow").position.y += 3
+	var button = get_node("../../controls/"+way)
 	
 	if state == "idle":
 		state = "ready"
@@ -115,12 +147,12 @@ func move_button_press(way):
 	else:
 		pre_pressed = true
 		pre_pressed_way = way
+	$receive/CollisionShape2D.disabled = true
 	pass
 
 func move_button_release(way):
 	
-	get_node("../../"+way).texture_normal = load("res://sprite/button.png")
-	get_node("../../"+way+"/arrow").position.y -= 3
+	var button = get_node("../../controls/"+way)
 	
 	if pre_pressed == true:
 		pre_pressed = false
@@ -138,6 +170,43 @@ func move_button_release(way):
 		move_and_slide(velocity, Vector2(0, -1))
 		
 		$power_gauge.hide()
+		$attack/CollisionShape2D.disabled = false
+		
+	#hp -= 1
+	pass
+
+func target_button_press(way):
+	
+	var button = get_node("../../controls/target_"+way)
+	
+
+	if target != null:
+		if manager.targets.size() > 1:
+			var a = manager.targets.find(target)
+			
+			if way == "prev":
+				if a == 0:
+					target = manager.targets[manager.targets.size()-1]
+				else:
+					target = manager.targets[a-1]
+			else:
+				if a == manager.targets.size()-1:
+					target = manager.targets[0]
+				else:
+					target = manager.targets[a+1]
+			
+			get_node("../aim").global_position = target.global_position
+	pass
+
+	
+	pass
+
+func target_button_release(way):
+	
+	var button = get_node("../../controls/target_"+way)
+	
+	
+	
 	pass
 
 func self_shake(t,p):

@@ -1,14 +1,29 @@
 extends Area2D
 
 onready var camera = get_node("/root/ingame/camera")
+var hp = 5
+onready var manager = get_node("../..")
+onready var player = get_node("../../player/player_body")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$hp_bar.max_value = hp
+	manager.targets.append(self)
+	print(str(manager.targets))
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	$hp_bar.value = hp
+	if hp <= 0:
+		if player.target == self:
+			player.target = null
+			print("목록 초기화")
+		var a = manager.targets.find(self)
+		manager.targets.remove(a)
+		print(str(manager.targets))
+		queue_free()
+	pass
 
 # 필요한것
 # 카메라 흔들기
@@ -16,10 +31,13 @@ func _ready():
 # 피격모션
 
 func _on_target_body_entered(body):
-	if body.name == "ball_body":
+	if body.name == "ball_body" and body.state == "hit":
 		print("hit target")
 		#camera.camera_shake(.3 ,5)
 		self_shake(.3, 9)
+		hp -= 1
+		
+		body.state = "hitted"
 	pass # Replace with function body.
 
 func self_shake(t,p):
