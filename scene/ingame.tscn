@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -13,20 +13,20 @@
 [ext_resource path="res://sprite/receive1.png" type="Texture" id=11]
 [ext_resource path="res://sprite/receive2.png" type="Texture" id=12]
 [ext_resource path="res://sprite/jump_attack.png" type="Texture" id=13]
-[ext_resource path="res://script/ball_body.gd" type="Script" id=14]
-[ext_resource path="res://sprite/ball.png" type="Texture" id=15]
-[ext_resource path="res://sprite/effect2.png" type="Texture" id=16]
-[ext_resource path="res://sprite/icon.png" type="Texture" id=17]
-[ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=18]
-[ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=19]
-[ext_resource path="res://sprite/button_ver2-2_pressed_left.png" type="Texture" id=20]
-[ext_resource path="res://sprite/button_ver2-2_right.png" type="Texture" id=21]
-[ext_resource path="res://sprite/button_ver2-2_pressed_right.png" type="Texture" id=22]
-[ext_resource path="res://sprite/target_button_left.png" type="Texture" id=23]
-[ext_resource path="res://sprite/target_button_pressed_left.png" type="Texture" id=24]
-[ext_resource path="res://sprite/target_button_right.png" type="Texture" id=25]
-[ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=26]
-
+[ext_resource path="res://sprite/hp_bar.png" type="Texture" id=14]
+[ext_resource path="res://script/ball_body.gd" type="Script" id=15]
+[ext_resource path="res://sprite/ball.png" type="Texture" id=16]
+[ext_resource path="res://sprite/effect2.png" type="Texture" id=17]
+[ext_resource path="res://sprite/icon.png" type="Texture" id=18]
+[ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=19]
+[ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=20]
+[ext_resource path="res://sprite/button_ver2-2_pressed_left.png" type="Texture" id=21]
+[ext_resource path="res://sprite/button_ver2-2_right.png" type="Texture" id=22]
+[ext_resource path="res://sprite/button_ver2-2_pressed_right.png" type="Texture" id=23]
+[ext_resource path="res://sprite/target_button_left.png" type="Texture" id=24]
+[ext_resource path="res://sprite/target_button_pressed_left.png" type="Texture" id=25]
+[ext_resource path="res://sprite/target_button_right.png" type="Texture" id=26]
+[ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=27]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -344,7 +344,6 @@ color = Color( 0, 0, 0, 1 )
 shape = SubResource( 4 )
 
 [node name="player" type="Node2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
@@ -356,8 +355,7 @@ margin_right = 704.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0.345098, 1, 1 )
-text = "상태 : STATE
-체력 : HP"
+text = "상태 : STATE"
 align = 1
 valign = 1
 
@@ -367,6 +365,7 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
 
 [node name="player_body" type="KinematicBody2D" parent="player"]
+editor/display_folded = true
 position = Vector2( 363, 873 )
 collision_layer = 2
 collision_mask = 2
@@ -423,13 +422,23 @@ max_value = 1600.0
 value = 700.0
 texture_progress = ExtResource( 5 )
 
+[node name="hp_bar" type="TextureProgress" parent="player"]
+margin_left = 287.0
+margin_top = 109.0
+margin_right = 715.0
+margin_bottom = 187.0
+max_value = 5.0
+value = 3.0
+texture_progress = ExtResource( 14 )
+fill_mode = 1
+
 [node name="ball" type="Node2D" parent="."]
 
 [node name="Label" type="Label" parent="ball"]
-margin_left = 399.0
-margin_top = 130.0
-margin_right = 635.0
-margin_bottom = 160.0
+margin_left = 396.0
+margin_top = 76.0
+margin_right = 632.0
+margin_bottom = 106.0
 custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "선형가속도 : 가속도"
@@ -445,12 +454,12 @@ gravity_scale = 8.0
 contacts_reported = 1
 contact_monitor = true
 angular_damp = 128.0
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="sprite" type="Sprite" parent="ball/ball_body"]
 editor/display_folded = true
 scale = Vector2( 2, 2 )
-texture = ExtResource( 15 )
+texture = ExtResource( 16 )
 
 [node name="timer" type="Timer" parent="ball/ball_body/sprite"]
 
@@ -461,7 +470,7 @@ shape = SubResource( 14 )
 
 [node name="effect2" type="Sprite" parent="ball/ball_body"]
 visible = false
-texture = ExtResource( 16 )
+texture = ExtResource( 17 )
 offset = Vector2( -220, 25 )
 
 [node name="receive_tween" type="Tween" parent="ball/ball_body"]
@@ -472,7 +481,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 120.0
-texture_normal = ExtResource( 17 )
+texture_normal = ExtResource( 18 )
 expand = true
 
 [node name="go_to_main_screen" type="TextureButton" parent="."]
@@ -490,7 +499,7 @@ margin_bottom = 40.0
 
 [node name="control_pannel" type="Sprite" parent="controls"]
 position = Vector2( 0, 1070 )
-texture = ExtResource( 18 )
+texture = ExtResource( 19 )
 centered = false
 
 [node name="left" type="TextureButton" parent="controls"]
@@ -498,32 +507,32 @@ margin_left = 16.0
 margin_top = 1087.0
 margin_right = 347.0
 margin_bottom = 1264.0
-texture_normal = ExtResource( 19 )
-texture_pressed = ExtResource( 20 )
+texture_normal = ExtResource( 20 )
+texture_pressed = ExtResource( 21 )
 
 [node name="right" type="TextureButton" parent="controls"]
 margin_left = 373.0
 margin_top = 1087.0
 margin_right = 704.0
 margin_bottom = 1264.0
-texture_normal = ExtResource( 21 )
-texture_pressed = ExtResource( 22 )
+texture_normal = ExtResource( 22 )
+texture_pressed = ExtResource( 23 )
 
 [node name="target_prev" type="TextureButton" parent="controls"]
 margin_left = 16.0
 margin_top = 1087.0
 margin_right = 107.0
 margin_bottom = 1154.0
-texture_normal = ExtResource( 23 )
-texture_pressed = ExtResource( 24 )
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 25 )
 
 [node name="target_next" type="TextureButton" parent="controls"]
 margin_left = 613.0
 margin_top = 1087.0
 margin_right = 704.0
 margin_bottom = 1154.0
-texture_normal = ExtResource( 25 )
-texture_pressed = ExtResource( 26 )
+texture_normal = ExtResource( 26 )
+texture_pressed = ExtResource( 27 )
 
 [node name="ingame_menu" type="Control" parent="."]
 editor/display_folded = true
@@ -537,7 +546,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 120.0
-texture_normal = ExtResource( 17 )
+texture_normal = ExtResource( 18 )
 expand = true
 
 [node name="go_to_main_screen" type="TextureButton" parent="ingame_menu"]

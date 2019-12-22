@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var hp = 3
+var hp_max = 3
 var velocity = Vector2()
 var speed = 350
 var gravity = 5000
@@ -43,6 +44,10 @@ func _process(delta):
 		move_button_release("left")
 	elif Input.is_action_just_released("ui_right"):
 		move_button_release("right")
+	elif Input.is_action_just_released("target_prev"):
+		target_button_release("prev")
+	elif Input.is_action_just_released("target_next"):
+		target_button_release("next")
 	
 	if !is_on_floor():
 		if velocity.y < gravity:
@@ -171,8 +176,12 @@ func move_button_release(way):
 		
 		$power_gauge.hide()
 		$attack/CollisionShape2D.disabled = false
-		
-	#hp -= 1
+	"""
+	if way == "left":
+		hp_update(-1)
+	elif way == "right":
+		hp_update(1)
+	"""
 	pass
 
 func target_button_press(way):
@@ -204,9 +213,13 @@ func target_button_press(way):
 func target_button_release(way):
 	
 	var button = get_node("../../controls/target_"+way)
-	
-	
-	
+	"""
+	if way == "prev":
+		hp_max -= 1
+	elif way == "next":
+		hp_max += 1
+	print(str(hp_max))
+	"""
 	pass
 
 func self_shake(t,p):
@@ -231,3 +244,15 @@ func self_shake(t,p):
 	
 	s.position = initial_offset
 	print("camera shake end")
+
+func hp_update(a):
+
+	if hp + a > hp_max and a > 0:
+		if hp < hp_max:
+			hp = hp_max
+	elif hp + a < 0:
+		hp = 0
+	else:
+		hp += a
+	
+	get_node("../hp_bar").value = hp
