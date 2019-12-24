@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -132,6 +132,14 @@ radius = 28.5175
 [sub_resource type="StreamTexture" id=15]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
+
+[sub_resource type="StreamTexture" id=16]
+flags = 4
+load_path = "res://.import/button_ver2-2_right.png-952ee34d44f6159551eed360ef82ab70.stex"
+
+[sub_resource type="StreamTexture" id=17]
+flags = 4
+load_path = "res://.import/button_ver2-2_pressed_right.png-7dddaf39c048637baeacc82c0898478c.stex"
 
 [node name="ingame" type="Node2D"]
 script = ExtResource( 1 )
@@ -365,7 +373,6 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
 
 [node name="player_body" type="KinematicBody2D" parent="player"]
-editor/display_folded = true
 position = Vector2( 363, 873 )
 collision_layer = 2
 collision_mask = 2
@@ -388,7 +395,6 @@ shape = SubResource( 7 )
 
 [node name="attack" type="Area2D" parent="player/player_body"]
 editor/display_folded = true
-visible = false
 position = Vector2( 1, 44 )
 collision_layer = 4
 collision_mask = 4
@@ -402,7 +408,6 @@ disabled = true
 
 [node name="receive" type="Area2D" parent="player/player_body"]
 editor/display_folded = true
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/receive"]
 position = Vector2( -1, 27 )
@@ -433,6 +438,7 @@ texture_progress = ExtResource( 14 )
 fill_mode = 1
 
 [node name="ball" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="Label" type="Label" parent="ball"]
 margin_left = 396.0
@@ -518,6 +524,26 @@ margin_bottom = 1264.0
 texture_normal = ExtResource( 22 )
 texture_pressed = ExtResource( 23 )
 
+[node name="w_left" type="TextureButton" parent="controls"]
+visible = false
+self_modulate = Color( 1, 0, 0, 1 )
+margin_left = 16.0
+margin_top = 1087.0
+margin_right = 347.0
+margin_bottom = 1264.0
+texture_normal = ExtResource( 20 )
+texture_pressed = ExtResource( 21 )
+
+[node name="w_right" type="TextureButton" parent="controls"]
+visible = false
+self_modulate = Color( 1, 0, 0, 1 )
+margin_left = 373.0
+margin_top = 1087.0
+margin_right = 704.0
+margin_bottom = 1264.0
+texture_normal = SubResource( 16 )
+texture_pressed = SubResource( 17 )
+
 [node name="target_prev" type="TextureButton" parent="controls"]
 margin_left = 16.0
 margin_top = 1087.0
@@ -575,6 +601,10 @@ expand = true
 [connection signal="button_up" from="controls/left" to="player/player_body" method="move_button_release" binds= [ "left" ]]
 [connection signal="button_down" from="controls/right" to="player/player_body" method="move_button_press" binds= [ "right" ]]
 [connection signal="button_up" from="controls/right" to="player/player_body" method="move_button_release" binds= [ "right" ]]
+[connection signal="button_down" from="controls/w_left" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
+[connection signal="button_up" from="controls/w_left" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
+[connection signal="button_down" from="controls/w_right" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]
+[connection signal="button_up" from="controls/w_right" to="player/player_body" method="wall_grab_button_release" binds= [ "right" ]]
 [connection signal="button_down" from="controls/target_prev" to="player/player_body" method="target_button_press" binds= [ "prev" ]]
 [connection signal="button_up" from="controls/target_prev" to="player/player_body" method="target_button_release" binds= [ "prev" ]]
 [connection signal="button_down" from="controls/target_next" to="player/player_body" method="target_button_press" binds= [ "next" ]]

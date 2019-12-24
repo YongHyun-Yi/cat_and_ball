@@ -18,9 +18,13 @@ var in_area_actioned = []
 var power = 0
 var pre_pressed = false
 var pre_pressed_way = ""
+var w_grab_able = false
+var w_grab_way = ""
+var w_grab = false
 onready var dir_sp = $sprite/jump_direction
 onready var manager = get_node("../..")
 onready var ball = get_node("../../ball/ball_body")
+onready var controls = get_node("../../controls")
 var target = null
 
 # Called when the node enters the scene tree for the first time.
@@ -31,35 +35,59 @@ func _ready():
 func _process(delta):
 	get_node("../Label").text = "상태 : "+state+"\n 체력 : "+str(hp)
 	
+	# 버튼을 눌렀을 떄-------------------------
+	
 	if Input.is_action_just_pressed("ui_left"):
-		move_button_press("left")
+		if w_grab_able == true and w_grab_way == "left":
+			wall_grab_button_press("left")
+		else:
+			move_button_press("left")
+	
 	elif Input.is_action_just_pressed("ui_right"):
-		move_button_press("right")
+		if w_grab_able == true and w_grab_way == "right":
+			wall_grab_button_press("right")
+		else:
+			move_button_press("right")
+	
 	elif Input.is_action_just_pressed("target_prev"):
 		target_button_press("prev")
+	
 	elif Input.is_action_just_pressed("target_next"):
 		target_button_press("next")
 	
+	# 버튼을 뗏을때 ---------------------
+	
 	if Input.is_action_just_released("ui_left"):
-		move_button_release("left")
+		if w_grab_able == true and w_grab_way == "left":
+			wall_grab_button_release("left")
+		else:
+			move_button_release("left")
+	
 	elif Input.is_action_just_released("ui_right"):
-		move_button_release("right")
+		if w_grab_able == true and w_grab_way == "right":
+			wall_grab_button_release("right")
+		else:
+			move_button_release("right")
+	
 	elif Input.is_action_just_released("target_prev"):
 		target_button_release("prev")
+	
 	elif Input.is_action_just_released("target_next"):
 		target_button_release("next")
 	
-	if !is_on_floor():
-		if velocity.y < gravity:
-			velocity.y += gravity * delta
-		if velocity.x != 0:
-			velocity.x = lerp(velocity.x, 0, Engine.get_time_scale()/10) # 기본값이 0.1이니 타임스케일이 1.0일떄 0.1이 나오도록 설정
+	if !is_on_floor(): # 공중에 있을 때----------------------------
+		if w_grab == false:
+			if velocity.y < gravity:
+				velocity.y += gravity * delta
+			if velocity.x != 0:
+				velocity.x = lerp(velocity.x, 0, Engine.get_time_scale()/10) # 기본값이 0.1이니 타임스케일이 1.0일떄 0.1이 나오도록 설정
 		#if state != "jump":
 		#	state = "jump"
-	else:
+		
+	else: # 땅에 있을 때---------------------------
 		if double_jump == false:
 			double_jump = true
-		if state == "jump":
+		if state != "idle" and state != "ready":
 			velocity.x = 0
 			velocity.y = 0
 			power = 0
@@ -72,6 +100,11 @@ func _process(delta):
 				pre_pressed_way = ""
 			$attack/CollisionShape2D.disabled = true
 			$receive/CollisionShape2D.disabled = false
+		if w_grab_able == true:
+			print("벽 잡을수 없음")
+			w_grab_able = false
+			controls.get_node("w_" + w_grab_way).hide()
+			w_grab_way = ""
 	
 	if hp <= 0: # 체력이 0이하일떄 player dead 로 씬 전환
 		var dead_body_scene = load("res://scene/player_dead.tscn")
@@ -94,8 +127,27 @@ func _process(delta):
 			#print("there no target")
 		pass
 	
-	if is_on_wall():
-		pass
+	if is_on_wall(): # 벽에 닿았을 때
+		if w_grab_able == false and velocity.y != 0:
+			print("벽 잡을수 있음")
+			w_grab_able = true
+			if $sprite.flip_h == true: # 오른쪽으로 이동중
+				w_grab_way = "right"
+				print("오른쪽 그랩버튼")
+			else:
+				w_grab_way = "left"
+				print("왼쪽 그랩버튼")
+			controls.get_node("w_" + w_grab_way).show()
+	"""else:
+		if w_grab_able == true:
+			print("벽 잡을수 없음")
+			w_grab_able = false
+			controls.get_node("w_" + w_grab_way).hide()
+			w_grab_way = ""
+		# 벽 매달리기, 벽 점프
+		pass"""
+	
+	
 	
 	move_and_slide(velocity, Vector2(0, -1))
 	
@@ -116,7 +168,7 @@ func _process(delta):
 
 func attack_in(body):
 	if body.name == "ball_body":
-		if state == "jump":
+		#if state == "jump":
 			body.hitted(power, velocity.x)
 			get_node("../../camera").camera_shake(.05, 5)
 			manager.combo += 1
@@ -125,9 +177,11 @@ func attack_in(body):
 
 func receive_in(body):
 	if body.name == "ball_body":
-		if state == "idle":
+		if state != "ready":
 			$sprite.animation = "receive"
 			ball.receive()
+		# 공의 상태를 체크하고 공 줍기 추가
+		# 공의 선형 가속도를 체크?
 	pass
 
 func _on_sprite_animation_finished():
@@ -143,7 +197,7 @@ func _on_timer_timeout():
 
 func move_button_press(way):
 	
-	var button = get_node("../../controls/"+way)
+	var button = controls.get_node(way)
 	
 	if state == "idle":
 		state = "ready"
@@ -157,7 +211,7 @@ func move_button_press(way):
 
 func move_button_release(way):
 	
-	var button = get_node("../../controls/"+way)
+	var button = controls.get_node(way)
 	
 	if pre_pressed == true:
 		pre_pressed = false
@@ -176,6 +230,7 @@ func move_button_release(way):
 		
 		$power_gauge.hide()
 		$attack/CollisionShape2D.disabled = false
+		$receive/CollisionShape2D.disabled = true
 	"""
 	if way == "left":
 		hp_update(-1)
@@ -186,7 +241,7 @@ func move_button_release(way):
 
 func target_button_press(way):
 	
-	var button = get_node("../../controls/target_"+way)
+	var button = controls.get_node("target_"+way)
 	
 
 	if target != null:
@@ -212,7 +267,7 @@ func target_button_press(way):
 
 func target_button_release(way):
 	
-	var button = get_node("../../controls/target_"+way)
+	var button = controls.get_node("target_"+way)
 	"""
 	if way == "prev":
 		hp_max -= 1
@@ -221,6 +276,27 @@ func target_button_release(way):
 	print(str(hp_max))
 	"""
 	pass
+
+func wall_grab_button_press(way):
+	
+	var button = controls.get_node("w_"+way)
+	print(button.name+"is pressed and wall grabbed")
+	w_grab = true
+	state = "grab"
+	w_grab_way = way
+	velocity = Vector2(0, 0)
+	$attack/CollisionShape2D.disabled = true
+	$receive/CollisionShape2D.disabled = false
+
+func wall_grab_button_release(way):
+	
+	var button = controls.get_node("w_"+way)
+	print(button.name+"is released and wall not gragged")
+	w_grab = false
+	state = "jump"
+	$attack/CollisionShape2D.disabled = false
+	$receive/CollisionShape2D.disabled = true
+	#w_grab_way = ""
 
 func self_shake(t,p):
 	print("self shake start")
