@@ -1,32 +1,33 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://script/target.gd" type="Script" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
-[ext_resource path="res://sprite/ball_ghost.png" type="Texture" id=6]
-[ext_resource path="res://sprite/aim.png" type="Texture" id=7]
-[ext_resource path="res://script/player_body.gd" type="Script" id=8]
-[ext_resource path="res://sprite/idle.png" type="Texture" id=9]
-[ext_resource path="res://sprite/jump_ready.png" type="Texture" id=10]
-[ext_resource path="res://sprite/receive1.png" type="Texture" id=11]
-[ext_resource path="res://sprite/receive2.png" type="Texture" id=12]
-[ext_resource path="res://sprite/jump_attack.png" type="Texture" id=13]
-[ext_resource path="res://sprite/hp_bar.png" type="Texture" id=14]
-[ext_resource path="res://script/ball_body.gd" type="Script" id=15]
-[ext_resource path="res://sprite/ball.png" type="Texture" id=16]
-[ext_resource path="res://sprite/effect2.png" type="Texture" id=17]
-[ext_resource path="res://sprite/icon.png" type="Texture" id=18]
-[ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=19]
-[ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=20]
-[ext_resource path="res://sprite/button_ver2-2_pressed_left.png" type="Texture" id=21]
-[ext_resource path="res://sprite/button_ver2-2_right.png" type="Texture" id=22]
-[ext_resource path="res://sprite/button_ver2-2_pressed_right.png" type="Texture" id=23]
-[ext_resource path="res://sprite/target_button_left.png" type="Texture" id=24]
-[ext_resource path="res://sprite/target_button_pressed_left.png" type="Texture" id=25]
-[ext_resource path="res://sprite/target_button_right.png" type="Texture" id=26]
-[ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=27]
+[ext_resource path="res://script/move_block.gd" type="Script" id=6]
+[ext_resource path="res://sprite/icon.png" type="Texture" id=7]
+[ext_resource path="res://sprite/ball_ghost.png" type="Texture" id=8]
+[ext_resource path="res://sprite/aim.png" type="Texture" id=9]
+[ext_resource path="res://script/player_body.gd" type="Script" id=10]
+[ext_resource path="res://sprite/idle.png" type="Texture" id=11]
+[ext_resource path="res://sprite/jump_ready.png" type="Texture" id=12]
+[ext_resource path="res://sprite/receive1.png" type="Texture" id=13]
+[ext_resource path="res://sprite/receive2.png" type="Texture" id=14]
+[ext_resource path="res://sprite/jump_attack.png" type="Texture" id=15]
+[ext_resource path="res://sprite/hp_bar.png" type="Texture" id=16]
+[ext_resource path="res://script/ball_body.gd" type="Script" id=17]
+[ext_resource path="res://sprite/ball.png" type="Texture" id=18]
+[ext_resource path="res://sprite/effect2.png" type="Texture" id=19]
+[ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
+[ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=21]
+[ext_resource path="res://sprite/button_ver2-2_pressed_left.png" type="Texture" id=22]
+[ext_resource path="res://sprite/button_ver2-2_right.png" type="Texture" id=23]
+[ext_resource path="res://sprite/button_ver2-2_pressed_right.png" type="Texture" id=24]
+[ext_resource path="res://sprite/target_button_left.png" type="Texture" id=25]
+[ext_resource path="res://sprite/target_button_pressed_left.png" type="Texture" id=26]
+[ext_resource path="res://sprite/target_button_right.png" type="Texture" id=27]
+[ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=28]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -36,48 +37,57 @@ font_data = ExtResource( 3 )
 extents = Vector2( 70, 72 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 640, 30 )
+extents = Vector2( 48, 48 )
 
 [sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 4, 46 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 640, 30 )
+
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 360, 30 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=7]
 size = 50
 font_data = ExtResource( 3 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=8]
 animations = [ {
-"frames": [ ExtResource( 9 ) ],
+"frames": [ ExtResource( 11 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 10 ) ],
+"frames": [ ExtResource( 12 ) ],
 "loop": true,
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ) ],
+"frames": [ ExtResource( 13 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
 }, {
-"frames": [ ExtResource( 13 ) ],
+"frames": [ ExtResource( 15 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 35, 46 )
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 37, 46 )
 
-[sub_resource type="CircleShape2D" id=8]
+[sub_resource type="CircleShape2D" id=10]
 radius = 49.3584
 
-[sub_resource type="CircleShape2D" id=9]
+[sub_resource type="CircleShape2D" id=11]
 radius = 98.5089
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 37, 46 )
+
+[sub_resource type="Animation" id=13]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
@@ -92,7 +102,7 @@ tracks/0/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=14]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
@@ -119,25 +129,25 @@ tracks/1/keys = {
 "values": [ "idle" ]
 }
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=15]
 size = 30
 font_data = ExtResource( 3 )
 
-[sub_resource type="PhysicsMaterial" id=13]
+[sub_resource type="PhysicsMaterial" id=16]
 bounce = 0.7
 
-[sub_resource type="CircleShape2D" id=14]
+[sub_resource type="CircleShape2D" id=17]
 radius = 28.5175
 
-[sub_resource type="StreamTexture" id=15]
+[sub_resource type="StreamTexture" id=18]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
 
-[sub_resource type="StreamTexture" id=16]
+[sub_resource type="StreamTexture" id=19]
 flags = 4
 load_path = "res://.import/button_ver2-2_right.png-952ee34d44f6159551eed360ef82ab70.stex"
 
-[sub_resource type="StreamTexture" id=17]
+[sub_resource type="StreamTexture" id=20]
 flags = 4
 load_path = "res://.import/button_ver2-2_pressed_right.png-7dddaf39c048637baeacc82c0898478c.stex"
 
@@ -255,6 +265,30 @@ nine_patch_stretch = true
 
 [node name="obstacle" type="Node2D" parent="."]
 
+[node name="move_block" type="KinematicBody2D" parent="obstacle"]
+editor/display_folded = true
+position = Vector2( 123, 869 )
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 6 )
+speed_x = 50
+
+[node name="Sprite" type="Sprite" parent="obstacle/move_block"]
+scale = Vector2( 1.52, 1.52 )
+texture = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="obstacle/move_block"]
+shape = SubResource( 3 )
+
+[node name="w_stuck_detect" type="Area2D" parent="obstacle/move_block"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="obstacle/move_block/w_stuck_detect"]
+self_modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 46, 0 )
+shape = SubResource( 4 )
+
 [node name="ball_ghost" type="Node2D" parent="."]
 editor/display_folded = true
 visible = false
@@ -264,27 +298,27 @@ scale = Vector2( 2, 2 )
 [node name="ghost5" type="Sprite" parent="ball_ghost"]
 self_modulate = Color( 0, 0.227451, 1, 1 )
 position = Vector2( 0, 27.2019 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 
 [node name="ghost4" type="Sprite" parent="ball_ghost"]
 self_modulate = Color( 0, 0.415686, 1, 1 )
 position = Vector2( 0, 21.2019 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 
 [node name="ghost3" type="Sprite" parent="ball_ghost"]
 self_modulate = Color( 0, 0.576471, 1, 1 )
 position = Vector2( 0, 16.2019 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 
 [node name="ghost2" type="Sprite" parent="ball_ghost"]
 self_modulate = Color( 0, 0.741176, 1, 1 )
 position = Vector2( 0, 11 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 
 [node name="ghost1" type="Sprite" parent="ball_ghost"]
 self_modulate = Color( 0, 0.858824, 1, 1 )
 position = Vector2( 0, 5.2019 )
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 
 [node name="walls" type="Node2D" parent="."]
 editor/display_folded = true
@@ -307,14 +341,14 @@ color = Color( 0, 0, 0, 1 )
 [node name="wall_left" type="CollisionShape2D" parent="walls/wall_left"]
 position = Vector2( 0, 240 )
 rotation = 1.57079
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
 position = Vector2( 360, 30 )
 
 [node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
-shape = SubResource( 4 )
+shape = SubResource( 6 )
 
 [node name="wall_right" type="StaticBody2D" parent="walls" groups=[
 "wall",
@@ -333,7 +367,7 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="wall_right" type="CollisionShape2D" parent="walls/wall_right"]
 rotation = 1.57079
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
@@ -349,7 +383,7 @@ margin_bottom = 30.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="floor" type="CollisionShape2D" parent="walls/floor"]
-shape = SubResource( 4 )
+shape = SubResource( 6 )
 
 [node name="player" type="Node2D" parent="."]
 __meta__ = {
@@ -361,7 +395,7 @@ margin_left = 410.0
 margin_top = 20.0
 margin_right = 704.0
 margin_bottom = 70.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0.345098, 1, 1 )
 text = "상태 : STATE"
 align = 1
@@ -370,28 +404,24 @@ valign = 1
 [node name="aim" type="Sprite" parent="player"]
 position = Vector2( 363, 873 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 7 )
+texture = ExtResource( 9 )
 
 [node name="player_body" type="KinematicBody2D" parent="player"]
 position = Vector2( 363, 873 )
 collision_layer = 2
 collision_mask = 2
-script = ExtResource( 8 )
+script = ExtResource( 10 )
 
 [node name="sprite" type="AnimatedSprite" parent="player/player_body"]
-editor/display_folded = true
 scale = Vector2( 2, 2 )
-frames = SubResource( 6 )
+frames = SubResource( 8 )
 animation = "idle"
 playing = true
-
-[node name="timer" type="Timer" parent="player/player_body/sprite"]
-wait_time = 0.3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body"]
 position = Vector2( 1, 44 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 7 )
+shape = SubResource( 9 )
 
 [node name="attack" type="Area2D" parent="player/player_body"]
 editor/display_folded = true
@@ -403,7 +433,7 @@ collision_mask = 4
 self_modulate = Color( 0, 1, 0.180392, 1 )
 position = Vector2( -2, -17 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 8 )
+shape = SubResource( 10 )
 disabled = true
 
 [node name="receive" type="Area2D" parent="player/player_body"]
@@ -411,11 +441,19 @@ editor/display_folded = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/receive"]
 position = Vector2( -1, 27 )
-shape = SubResource( 9 )
+shape = SubResource( 11 )
+
+[node name="wall" type="Area2D" parent="player/player_body"]
+editor/display_folded = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="player/player_body/wall"]
+position = Vector2( 1, 44 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 12 )
 
 [node name="anim" type="AnimationPlayer" parent="player/player_body"]
-anims/attack = SubResource( 10 )
-anims/reset = SubResource( 11 )
+anims/attack = SubResource( 13 )
+anims/reset = SubResource( 14 )
 
 [node name="power_gauge" type="TextureProgress" parent="player/player_body"]
 margin_left = -30.0
@@ -434,7 +472,7 @@ margin_right = 715.0
 margin_bottom = 187.0
 max_value = 5.0
 value = 3.0
-texture_progress = ExtResource( 14 )
+texture_progress = ExtResource( 16 )
 fill_mode = 1
 
 [node name="ball" type="Node2D" parent="."]
@@ -445,7 +483,7 @@ margin_left = 396.0
 margin_top = 76.0
 margin_right = 632.0
 margin_bottom = 106.0
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "선형가속도 : 가속도"
 align = 2
@@ -455,28 +493,28 @@ valign = 1
 position = Vector2( 359, 320 )
 collision_layer = 5
 collision_mask = 5
-physics_material_override = SubResource( 13 )
+physics_material_override = SubResource( 16 )
 gravity_scale = 8.0
 contacts_reported = 1
 contact_monitor = true
 angular_damp = 128.0
-script = ExtResource( 15 )
+script = ExtResource( 17 )
 
 [node name="sprite" type="Sprite" parent="ball/ball_body"]
 editor/display_folded = true
 scale = Vector2( 2, 2 )
-texture = ExtResource( 16 )
+texture = ExtResource( 18 )
 
 [node name="timer" type="Timer" parent="ball/ball_body/sprite"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
 position = Vector2( -1, -1 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 14 )
+shape = SubResource( 17 )
 
 [node name="effect2" type="Sprite" parent="ball/ball_body"]
 visible = false
-texture = ExtResource( 17 )
+texture = ExtResource( 19 )
 offset = Vector2( -220, 25 )
 
 [node name="receive_tween" type="Tween" parent="ball/ball_body"]
@@ -487,7 +525,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 120.0
-texture_normal = ExtResource( 18 )
+texture_normal = ExtResource( 7 )
 expand = true
 
 [node name="go_to_main_screen" type="TextureButton" parent="."]
@@ -496,69 +534,97 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 15 )
+texture_normal = SubResource( 18 )
 expand = true
 
 [node name="controls" type="Control" parent="."]
+editor/display_folded = true
 margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="control_pannel" type="Sprite" parent="controls"]
 position = Vector2( 0, 1070 )
-texture = ExtResource( 19 )
+texture = ExtResource( 20 )
 centered = false
 
-[node name="left" type="TextureButton" parent="controls"]
+[node name="left1" type="TextureButton" parent="controls"]
+visible = false
 margin_left = 16.0
 margin_top = 1087.0
 margin_right = 347.0
 margin_bottom = 1264.0
-texture_normal = ExtResource( 20 )
-texture_pressed = ExtResource( 21 )
+action_mode = 0
+texture_normal = ExtResource( 21 )
+texture_pressed = ExtResource( 22 )
 
-[node name="right" type="TextureButton" parent="controls"]
+[node name="right1" type="TextureButton" parent="controls"]
+visible = false
 margin_left = 373.0
 margin_top = 1087.0
 margin_right = 704.0
 margin_bottom = 1264.0
-texture_normal = ExtResource( 22 )
-texture_pressed = ExtResource( 23 )
+texture_normal = ExtResource( 23 )
+texture_pressed = ExtResource( 24 )
 
-[node name="w_left" type="TextureButton" parent="controls"]
+[node name="left" type="TouchScreenButton" parent="controls"]
+position = Vector2( 16, 1087 )
+normal = ExtResource( 21 )
+pressed = ExtResource( 22 )
+
+[node name="right" type="TouchScreenButton" parent="controls"]
+position = Vector2( 373, 1087 )
+normal = ExtResource( 23 )
+pressed = ExtResource( 24 )
+
+[node name="w_left1" type="TextureButton" parent="controls"]
 visible = false
 self_modulate = Color( 1, 0, 0, 1 )
 margin_left = 16.0
 margin_top = 1087.0
 margin_right = 347.0
 margin_bottom = 1264.0
-texture_normal = ExtResource( 20 )
-texture_pressed = ExtResource( 21 )
+texture_normal = ExtResource( 21 )
+texture_pressed = ExtResource( 22 )
 
-[node name="w_right" type="TextureButton" parent="controls"]
+[node name="w_right1" type="TextureButton" parent="controls"]
 visible = false
 self_modulate = Color( 1, 0, 0, 1 )
 margin_left = 373.0
 margin_top = 1087.0
 margin_right = 704.0
 margin_bottom = 1264.0
-texture_normal = SubResource( 16 )
-texture_pressed = SubResource( 17 )
+texture_normal = SubResource( 19 )
+texture_pressed = SubResource( 20 )
+
+[node name="w_left" type="TouchScreenButton" parent="controls"]
+visible = false
+self_modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 16, 1087 )
+normal = ExtResource( 21 )
+pressed = ExtResource( 22 )
+
+[node name="w_right" type="TouchScreenButton" parent="controls"]
+visible = false
+self_modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 373, 1087 )
+normal = ExtResource( 23 )
+pressed = ExtResource( 24 )
 
 [node name="target_prev" type="TextureButton" parent="controls"]
 margin_left = 16.0
 margin_top = 1087.0
 margin_right = 107.0
 margin_bottom = 1154.0
-texture_normal = ExtResource( 24 )
-texture_pressed = ExtResource( 25 )
+texture_normal = ExtResource( 25 )
+texture_pressed = ExtResource( 26 )
 
 [node name="target_next" type="TextureButton" parent="controls"]
 margin_left = 613.0
 margin_top = 1087.0
 margin_right = 704.0
 margin_bottom = 1154.0
-texture_normal = ExtResource( 26 )
-texture_pressed = ExtResource( 27 )
+texture_normal = ExtResource( 27 )
+texture_pressed = ExtResource( 28 )
 
 [node name="ingame_menu" type="Control" parent="."]
 editor/display_folded = true
@@ -572,7 +638,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 120.0
-texture_normal = ExtResource( 18 )
+texture_normal = ExtResource( 7 )
 expand = true
 
 [node name="go_to_main_screen" type="TextureButton" parent="ingame_menu"]
@@ -581,30 +647,41 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 15 )
+texture_normal = SubResource( 18 )
 expand = true
 
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="body_entered" from="enemys/target" to="enemys/target" method="_on_target_body_entered"]
 [connection signal="body_entered" from="enemys/target2" to="enemys/target2" method="_on_target_body_entered"]
 [connection signal="body_entered" from="enemys/target3" to="enemys/target3" method="_on_target_body_entered"]
+[connection signal="body_entered" from="obstacle/move_block/w_stuck_detect" to="obstacle/move_block" method="_on_w_stuck_detect_body_entered"]
+[connection signal="body_exited" from="obstacle/move_block/w_stuck_detect" to="obstacle/move_block" method="_on_w_stuck_detect_body_exited"]
 [connection signal="animation_finished" from="player/player_body/sprite" to="player/player_body" method="_on_sprite_animation_finished"]
-[connection signal="timeout" from="player/player_body/sprite/timer" to="player/player_body" method="_on_timer_timeout"]
 [connection signal="body_entered" from="player/player_body/attack" to="player/player_body" method="attack_in"]
 [connection signal="body_entered" from="player/player_body/receive" to="player/player_body" method="receive_in"]
+[connection signal="body_entered" from="player/player_body/wall" to="player/player_body" method="wall_detect" binds= [ "in" ]]
+[connection signal="body_exited" from="player/player_body/wall" to="player/player_body" method="wall_detect" binds= [ "out" ]]
 [connection signal="body_entered" from="ball/ball_body" to="ball/ball_body" method="_on_ball_body_body_entered"]
 [connection signal="timeout" from="ball/ball_body/sprite/timer" to="ball/ball_body" method="attack_pause_timer"]
 [connection signal="tween_completed" from="ball/ball_body/receive_tween" to="ball/ball_body" method="_on_receive_tween_tween_completed"]
 [connection signal="button_up" from="restart" to="." method="restart"]
 [connection signal="button_up" from="go_to_main_screen" to="." method="go_to_main_screen"]
-[connection signal="button_down" from="controls/left" to="player/player_body" method="move_button_press" binds= [ "left" ]]
-[connection signal="button_up" from="controls/left" to="player/player_body" method="move_button_release" binds= [ "left" ]]
-[connection signal="button_down" from="controls/right" to="player/player_body" method="move_button_press" binds= [ "right" ]]
-[connection signal="button_up" from="controls/right" to="player/player_body" method="move_button_release" binds= [ "right" ]]
-[connection signal="button_down" from="controls/w_left" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
-[connection signal="button_up" from="controls/w_left" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
-[connection signal="button_down" from="controls/w_right" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]
-[connection signal="button_up" from="controls/w_right" to="player/player_body" method="wall_grab_button_release" binds= [ "right" ]]
+[connection signal="button_down" from="controls/left1" to="player/player_body" method="move_button_press" binds= [ "left" ]]
+[connection signal="button_up" from="controls/left1" to="player/player_body" method="move_button_release" binds= [ "left" ]]
+[connection signal="button_down" from="controls/right1" to="player/player_body" method="move_button_press" binds= [ "right" ]]
+[connection signal="button_up" from="controls/right1" to="player/player_body" method="move_button_release" binds= [ "right" ]]
+[connection signal="pressed" from="controls/left" to="player/player_body" method="move_button_press" binds= [ "left" ]]
+[connection signal="released" from="controls/left" to="player/player_body" method="move_button_release" binds= [ "left" ]]
+[connection signal="pressed" from="controls/right" to="player/player_body" method="move_button_press" binds= [ "right" ]]
+[connection signal="released" from="controls/right" to="player/player_body" method="move_button_release" binds= [ "right" ]]
+[connection signal="button_down" from="controls/w_left1" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
+[connection signal="button_up" from="controls/w_left1" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
+[connection signal="button_down" from="controls/w_right1" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]
+[connection signal="button_up" from="controls/w_right1" to="player/player_body" method="wall_grab_button_release" binds= [ "right" ]]
+[connection signal="pressed" from="controls/w_left" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
+[connection signal="released" from="controls/w_left" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
+[connection signal="pressed" from="controls/w_right" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]
+[connection signal="released" from="controls/w_right" to="player/player_body" method="wall_grab_button_release" binds= [ "right" ]]
 [connection signal="button_down" from="controls/target_prev" to="player/player_body" method="target_button_press" binds= [ "prev" ]]
 [connection signal="button_up" from="controls/target_prev" to="player/player_body" method="target_button_release" binds= [ "prev" ]]
 [connection signal="button_down" from="controls/target_next" to="player/player_body" method="target_button_press" binds= [ "next" ]]

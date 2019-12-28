@@ -2,29 +2,36 @@ extends KinematicBody2D
 
 var hp = 3
 var hp_max = 3
+
 var velocity = Vector2()
-var speed = 350
 var gravity = 5000
 var jump = -700
 var d_jump = -550
+
+var on_floor = true
+var jump_ready = false
 var double_jump = true
-var move_button_first = Vector2()
+var w_grab = false
+
+var w_detect = false
+var w_stuck_check = false
+
 var move_button_press = false
+
 var state = "idle"
-var first = Vector2()
-var last = Vector2()
-var in_area = []
-var in_area_actioned = []
+
 var power = 0
+
 var pre_pressed = false
 var pre_pressed_way = ""
+
 var w_grab_able = false
 var w_grab_way = ""
-var w_grab = false
-onready var dir_sp = $sprite/jump_direction
+
 onready var manager = get_node("../..")
 onready var ball = get_node("../../ball/ball_body")
 onready var controls = get_node("../../controls")
+
 var target = null
 
 # Called when the node enters the scene tree for the first time.
@@ -87,32 +94,27 @@ func _process(delta):
 	else: # 땅에 있을 때---------------------------
 		if double_jump == false:
 			double_jump = true
-		if state != "idle" and state != "ready":
+		if on_floor == false:
+			on_floor = true
 			velocity.x = 0
 			velocity.y = 0
-			power = 0
-			state = "idle"
 			$sprite.animation = "idle"
-			$sprite.flip_h = false
+			$attack/CollisionShape2D.disabled = true
+			$receive/CollisionShape2D.disabled = false
 			if pre_pressed == true:
 				move_button_press(pre_pressed_way)
 				pre_pressed = false
 				pre_pressed_way = ""
-			$attack/CollisionShape2D.disabled = true
-			$receive/CollisionShape2D.disabled = false
+			
 		if w_grab_able == true:
 			print("벽 잡을수 없음")
 			w_grab_able = false
+			controls.get_node(w_grab_way).show()
 			controls.get_node("w_" + w_grab_way).hide()
 			w_grab_way = ""
 	
 	if hp <= 0: # 체력이 0이하일떄 player dead 로 씬 전환
-		var dead_body_scene = load("res://scene/player_dead.tscn")
-		var dead_body = dead_body_scene.instance()
-		dead_body.global_position = global_position
-		dead_body.get_node("player_dead").velocity = velocity
-		get_node("..").add_child(dead_body)
-		queue_free()
+		player_dead()
 		pass
 	
 	if target == null:
@@ -137,51 +139,47 @@ func _process(delta):
 			else:
 				w_grab_way = "left"
 				print("왼쪽 그랩버튼")
+			controls.get_node(w_grab_way).hide()
 			controls.get_node("w_" + w_grab_way).show()
-	"""else:
-		if w_grab_able == true:
-			print("벽 잡을수 없음")
-			w_grab_able = false
-			controls.get_node("w_" + w_grab_way).hide()
-			w_grab_way = ""
-		# 벽 매달리기, 벽 점프
-		pass"""
 	
+	# 벽과 움직이는 벽 사이에 끼었을떄 플레이어가 죽도록
+	var collision = get_slide_collision(0) # 충돌체를 구한다
 	
-	
+	if collision != null: # 충돌체가 null 이 아닌경우
+		var collider = collision.collider
+		if collider.is_in_group("wall") and w_stuck_check == true: # 충돌체가 wall 그룹에 속하고 플레이어가 움직이는 벽의 area안에 들어있는경우
+			player_dead()
+			pass
+
 	move_and_slide(velocity, Vector2(0, -1))
 	
-	if state == "ready":
-		"""
-		last = get_global_mouse_position()
-		var a = clamp((last.x - first.x)/2, -70, 70)
-		dir_sp.rotation_degrees = a
-		"""
+	if jump_ready == true:
 		if power < 9:
 			power += .4
 			$power_gauge.value = (power * 100) + 700
 		pass
-	
+
 	if manager.hit_pause == false and Engine.get_time_scale() != 1.0:
 		Engine.set_time_scale(lerp(Engine.get_time_scale(), 1.0, .1))
 	pass
 
 func attack_in(body):
 	if body.name == "ball_body":
-		#if state == "jump":
-			body.hitted(power, velocity.x)
-			get_node("../../camera").camera_shake(.05, 5)
-			manager.combo += 1
-			manager.hit_pause()
+		body.hitted(power, velocity.x)
+		get_node("../../camera").camera_shake(.05, 5)
+		manager.combo += 1
+		manager.hit_pause()
 	pass # Replace with function body.
 
 func receive_in(body):
 	if body.name == "ball_body":
-		if state != "ready":
-			$sprite.animation = "receive"
-			ball.receive()
+		$sprite.animation = "receive"
+		ball.receive()
 		# 공의 상태를 체크하고 공 줍기 추가
 		# 공의 선형 가속도를 체크?
+	pass
+
+func wall_detect(body,inout):
 	pass
 
 func _on_sprite_animation_finished():
@@ -189,23 +187,20 @@ func _on_sprite_animation_finished():
 		$sprite.animation = "idle"
 	pass # Replace with function body.
 
-func _on_timer_timeout():
-	#$sprite.animation = "idle"
-	$sprite/timer.stop()
-	pass # Replace with function body.
-
-
 func move_button_press(way):
 	
 	var button = controls.get_node(way)
 	
-	if state == "idle":
-		state = "ready"
-		$sprite.animation = "ready"
-		$power_gauge.show()
+	if on_floor == true or w_grab == true:
+		if jump_ready == false:
+			jump_ready = true
+			$sprite.animation = "ready"
+			$power_gauge.show()
+		pass
 	else:
 		pre_pressed = true
 		pre_pressed_way = way
+	$attack/CollisionShape2D.disabled = true
 	$receive/CollisionShape2D.disabled = true
 	pass
 
@@ -217,20 +212,33 @@ func move_button_release(way):
 		pre_pressed = false
 		pre_pressed_way = ""
 	
-	if state == "ready":
-		state = "jump"
+	if jump_ready == true:
+		on_floor = false
+		jump_ready = false
 		$sprite.animation = "jump"
 		if way == "right":
 			$sprite.flip_h = true
 		velocity.x = (power * 200) + 200
 		if way == "left":
 			velocity *= -1
+			$sprite.flip_h = false
 		velocity.y = -((power * 50) + 700)
 		move_and_slide(velocity, Vector2(0, -1))
 		
+		if w_grab_able == true:
+			w_grab = false
+			w_grab_able = false
+			controls.get_node(w_grab_way).show()
+			controls.get_node("w_" + w_grab_way).hide()
+			w_grab_way = ""
+			$attack/CollisionShape2D.disabled = false
+			$receive/CollisionShape2D.disabled = true
+		
+		power = 0
 		$power_gauge.hide()
 		$attack/CollisionShape2D.disabled = false
 		$receive/CollisionShape2D.disabled = true
+	
 	"""
 	if way == "left":
 		hp_update(-1)
@@ -262,9 +270,6 @@ func target_button_press(way):
 			get_node("../aim").global_position = target.global_position
 	pass
 
-	
-	pass
-
 func target_button_release(way):
 	
 	var button = controls.get_node("target_"+way)
@@ -293,7 +298,6 @@ func wall_grab_button_release(way):
 	var button = controls.get_node("w_"+way)
 	print(button.name+"is released and wall not gragged")
 	w_grab = false
-	state = "jump"
 	$attack/CollisionShape2D.disabled = false
 	$receive/CollisionShape2D.disabled = true
 	#w_grab_way = ""
@@ -332,3 +336,11 @@ func hp_update(a):
 		hp += a
 	
 	get_node("../hp_bar").value = hp
+
+func player_dead():
+	var dead_body_scene = load("res://scene/player_dead.tscn")
+	var dead_body = dead_body_scene.instance()
+	dead_body.global_position = global_position
+	dead_body.get_node("player_dead").velocity = velocity
+	get_node("..").add_child(dead_body)
+	queue_free()
