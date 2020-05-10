@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -40,19 +40,23 @@ extents = Vector2( 70, 72 )
 extents = Vector2( 48, 48 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 4, 46 )
+extents = Vector2( 30, 535 )
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 640, 30 )
-
-[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 360, 30 )
 
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 30, 535 )
+
 [sub_resource type="DynamicFont" id=7]
-size = 50
+size = 30
 font_data = ExtResource( 3 )
 
-[sub_resource type="SpriteFrames" id=8]
+[sub_resource type="DynamicFont" id=8]
+size = 30
+font_data = ExtResource( 3 )
+
+[sub_resource type="SpriteFrames" id=9]
 animations = [ {
 "frames": [ ExtResource( 11 ) ],
 "loop": true,
@@ -75,81 +79,72 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 37, 46 )
-
-[sub_resource type="CircleShape2D" id=10]
-radius = 49.3584
 
 [sub_resource type="CircleShape2D" id=11]
+radius = 49.3584
+
+[sub_resource type="CircleShape2D" id=12]
 radius = 98.5089
 
-[sub_resource type="RectangleShape2D" id=12]
-extents = Vector2( 37, 46 )
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 0.5, 46 )
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 0.5, 46 )
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 37, 0.5 )
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 37, 0.5 )
+
+[sub_resource type="Animation" id=17]
+resource_name = "hitted"
 length = 0.2
+loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
+tracks/0/path = NodePath("sprite:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.498039 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=18]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("attack/CollisionShape2D:disabled")
+tracks/0/path = NodePath("sprite:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("sprite:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ "idle" ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=19]
 size = 30
 font_data = ExtResource( 3 )
 
-[sub_resource type="PhysicsMaterial" id=16]
+[sub_resource type="PhysicsMaterial" id=20]
 bounce = 0.7
 
-[sub_resource type="CircleShape2D" id=17]
+[sub_resource type="CircleShape2D" id=21]
 radius = 28.5175
 
-[sub_resource type="StreamTexture" id=18]
+[sub_resource type="StreamTexture" id=22]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
-
-[sub_resource type="StreamTexture" id=19]
-flags = 4
-load_path = "res://.import/button_ver2-2_right.png-952ee34d44f6159551eed360ef82ab70.stex"
-
-[sub_resource type="StreamTexture" id=20]
-flags = 4
-load_path = "res://.import/button_ver2-2_pressed_right.png-7dddaf39c048637baeacc82c0898478c.stex"
 
 [node name="ingame" type="Node2D"]
 script = ExtResource( 1 )
@@ -265,13 +260,16 @@ nine_patch_stretch = true
 
 [node name="obstacle" type="Node2D" parent="."]
 
-[node name="move_block" type="KinematicBody2D" parent="obstacle"]
+[node name="move_block" type="KinematicBody2D" parent="obstacle" groups=[
+"move_wall",
+]]
 editor/display_folded = true
-position = Vector2( 123, 869 )
-collision_layer = 2
+position = Vector2( 148, 887 )
+collision_layer = 8
 collision_mask = 2
 script = ExtResource( 6 )
-speed_x = 50
+speed = 1
+way = 1
 
 [node name="Sprite" type="Sprite" parent="obstacle/move_block"]
 scale = Vector2( 1.52, 1.52 )
@@ -279,15 +277,6 @@ texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="obstacle/move_block"]
 shape = SubResource( 3 )
-
-[node name="w_stuck_detect" type="Area2D" parent="obstacle/move_block"]
-collision_layer = 2
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="obstacle/move_block/w_stuck_detect"]
-self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 46, 0 )
-shape = SubResource( 4 )
 
 [node name="ball_ghost" type="Node2D" parent="."]
 editor/display_folded = true
@@ -327,53 +316,48 @@ editor/display_folded = true
 "wall",
 ]]
 editor/display_folded = true
-position = Vector2( 30, 400 )
-collision_layer = 3
-collision_mask = 3
+position = Vector2( 30, 534 )
+collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/wall_left"]
 margin_left = -30.0
-margin_top = -400.0
+margin_top = -535.0
 margin_right = 30.0
-margin_bottom = 670.0
+margin_bottom = 535.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="wall_left" type="CollisionShape2D" parent="walls/wall_left"]
-position = Vector2( 0, 240 )
-rotation = 1.57079
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
 position = Vector2( 360, 30 )
+collision_mask = 6
 
 [node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="wall_right" type="StaticBody2D" parent="walls" groups=[
 "wall",
 ]]
 editor/display_folded = true
-position = Vector2( 690, 640 )
-collision_layer = 3
-collision_mask = 3
+position = Vector2( 690, 535 )
+collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/wall_right"]
 margin_left = -30.0
-margin_top = -640.0
+margin_top = -535.0
 margin_right = 30.0
-margin_bottom = 430.0
+margin_bottom = 535.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="wall_right" type="CollisionShape2D" parent="walls/wall_right"]
-rotation = 1.57079
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
 editor/display_folded = true
 position = Vector2( 360, 1040 )
-collision_layer = 3
-collision_mask = 3
+collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/floor"]
 margin_left = -360.0
@@ -383,7 +367,7 @@ margin_bottom = 30.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="floor" type="CollisionShape2D" parent="walls/floor"]
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="player" type="Node2D" parent="."]
 __meta__ = {
@@ -391,69 +375,133 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="player"]
-margin_left = 410.0
-margin_top = 20.0
-margin_right = 704.0
-margin_bottom = 70.0
+margin_left = 32.0
+margin_top = 24.0
+margin_right = 326.0
+margin_bottom = 74.0
 custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0.345098, 1, 1 )
-text = "상태 : STATE"
-align = 1
-valign = 1
+text = "행렬1
+행렬2
+행렬3
+행렬4"
+
+[node name="Label2" type="Label" parent="player"]
+margin_left = 36.0
+margin_top = 172.0
+margin_right = 330.0
+margin_bottom = 301.0
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0, 0.345098, 1, 1 )
+text = "행렬1
+행렬2
+행렬3
+행렬4"
+
+[node name="Label3" type="Label" parent="player"]
+margin_left = 39.0
+margin_top = 314.0
+margin_right = 333.0
+margin_bottom = 443.0
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0, 0.345098, 1, 1 )
+text = "위치"
 
 [node name="aim" type="Sprite" parent="player"]
+visible = false
 position = Vector2( 363, 873 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 9 )
 
 [node name="player_body" type="KinematicBody2D" parent="player"]
-position = Vector2( 363, 873 )
+position = Vector2( 359, 871 )
 collision_layer = 2
-collision_mask = 2
+collision_mask = 9
 script = ExtResource( 10 )
 
 [node name="sprite" type="AnimatedSprite" parent="player/player_body"]
 scale = Vector2( 2, 2 )
-frames = SubResource( 8 )
+frames = SubResource( 9 )
 animation = "idle"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body"]
 position = Vector2( 1, 44 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 9 )
+shape = SubResource( 10 )
 
 [node name="attack" type="Area2D" parent="player/player_body"]
 editor/display_folded = true
-position = Vector2( 1, 44 )
-collision_layer = 4
+visible = false
+position = Vector2( 1, 26 )
+collision_layer = 2
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/attack"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
-position = Vector2( -2, -17 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 disabled = true
 
 [node name="receive" type="Area2D" parent="player/player_body"]
 editor/display_folded = true
+visible = false
+position = Vector2( 1, 26 )
+collision_layer = 2
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player/player_body/receive"]
-position = Vector2( -1, 27 )
-shape = SubResource( 11 )
-
-[node name="wall" type="Area2D" parent="player/player_body"]
-editor/display_folded = true
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="player/player_body/wall"]
-position = Vector2( 1, 44 )
-scale = Vector2( 2, 2 )
 shape = SubResource( 12 )
 
-[node name="anim" type="AnimationPlayer" parent="player/player_body"]
-anims/attack = SubResource( 13 )
-anims/reset = SubResource( 14 )
+[node name="w_detect" type="Node2D" parent="player/player_body"]
+visible = false
+
+[node name="left" type="Area2D" parent="player/player_body/w_detect"]
+editor/display_folded = true
+position = Vector2( -73, 44 )
+collision_layer = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="player/player_body/w_detect/left"]
+self_modulate = Color( 0.101961, 1, 0, 1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 13 )
+
+[node name="right" type="Area2D" parent="player/player_body/w_detect"]
+editor/display_folded = true
+position = Vector2( 75, 44 )
+collision_layer = 2
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="player/player_body/w_detect/right"]
+self_modulate = Color( 0.101961, 1, 0, 1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 14 )
+
+[node name="up" type="Area2D" parent="player/player_body/w_detect"]
+editor/display_folded = true
+position = Vector2( 1, -48 )
+collision_layer = 2
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="player/player_body/w_detect/up"]
+self_modulate = Color( 0.101961, 1, 0, 1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 15 )
+
+[node name="down" type="Area2D" parent="player/player_body/w_detect"]
+editor/display_folded = true
+position = Vector2( 1, 136 )
+collision_layer = 2
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="player/player_body/w_detect/down"]
+self_modulate = Color( 0.101961, 1, 0, 1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 16 )
+
+[node name="hitted_anim" type="AnimationPlayer" parent="player/player_body"]
+anims/hitted = SubResource( 17 )
+anims/reset = SubResource( 18 )
+
+[node name="Timer" type="Timer" parent="player/player_body/hitted_anim"]
+wait_time = 2.0
 
 [node name="power_gauge" type="TextureProgress" parent="player/player_body"]
 margin_left = -30.0
@@ -476,24 +524,24 @@ texture_progress = ExtResource( 16 )
 fill_mode = 1
 
 [node name="ball" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Label" type="Label" parent="ball"]
+visible = false
 margin_left = 396.0
 margin_top = 76.0
 margin_right = 632.0
 margin_bottom = 106.0
-custom_fonts/font = SubResource( 15 )
+custom_fonts/font = SubResource( 19 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "선형가속도 : 가속도"
 align = 2
 valign = 1
 
 [node name="ball_body" type="RigidBody2D" parent="ball"]
-position = Vector2( 359, 320 )
-collision_layer = 5
-collision_mask = 5
-physics_material_override = SubResource( 16 )
+editor/display_folded = true
+position = Vector2( 390, 498 )
+collision_layer = 4
+physics_material_override = SubResource( 20 )
 gravity_scale = 8.0
 contacts_reported = 1
 contact_monitor = true
@@ -510,7 +558,7 @@ texture = ExtResource( 18 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ball/ball_body"]
 position = Vector2( -1, -1 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 17 )
+shape = SubResource( 21 )
 
 [node name="effect2" type="Sprite" parent="ball/ball_body"]
 visible = false
@@ -534,7 +582,7 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 18 )
+texture_normal = SubResource( 22 )
 expand = true
 
 [node name="controls" type="Control" parent="."]
@@ -547,25 +595,6 @@ position = Vector2( 0, 1070 )
 texture = ExtResource( 20 )
 centered = false
 
-[node name="left1" type="TextureButton" parent="controls"]
-visible = false
-margin_left = 16.0
-margin_top = 1087.0
-margin_right = 347.0
-margin_bottom = 1264.0
-action_mode = 0
-texture_normal = ExtResource( 21 )
-texture_pressed = ExtResource( 22 )
-
-[node name="right1" type="TextureButton" parent="controls"]
-visible = false
-margin_left = 373.0
-margin_top = 1087.0
-margin_right = 704.0
-margin_bottom = 1264.0
-texture_normal = ExtResource( 23 )
-texture_pressed = ExtResource( 24 )
-
 [node name="left" type="TouchScreenButton" parent="controls"]
 position = Vector2( 16, 1087 )
 normal = ExtResource( 21 )
@@ -575,26 +604,6 @@ pressed = ExtResource( 22 )
 position = Vector2( 373, 1087 )
 normal = ExtResource( 23 )
 pressed = ExtResource( 24 )
-
-[node name="w_left1" type="TextureButton" parent="controls"]
-visible = false
-self_modulate = Color( 1, 0, 0, 1 )
-margin_left = 16.0
-margin_top = 1087.0
-margin_right = 347.0
-margin_bottom = 1264.0
-texture_normal = ExtResource( 21 )
-texture_pressed = ExtResource( 22 )
-
-[node name="w_right1" type="TextureButton" parent="controls"]
-visible = false
-self_modulate = Color( 1, 0, 0, 1 )
-margin_left = 373.0
-margin_top = 1087.0
-margin_right = 704.0
-margin_bottom = 1264.0
-texture_normal = SubResource( 19 )
-texture_pressed = SubResource( 20 )
 
 [node name="w_left" type="TouchScreenButton" parent="controls"]
 visible = false
@@ -647,37 +656,34 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 18 )
+texture_normal = SubResource( 22 )
 expand = true
 
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="body_entered" from="enemys/target" to="enemys/target" method="_on_target_body_entered"]
 [connection signal="body_entered" from="enemys/target2" to="enemys/target2" method="_on_target_body_entered"]
 [connection signal="body_entered" from="enemys/target3" to="enemys/target3" method="_on_target_body_entered"]
-[connection signal="body_entered" from="obstacle/move_block/w_stuck_detect" to="obstacle/move_block" method="_on_w_stuck_detect_body_entered"]
-[connection signal="body_exited" from="obstacle/move_block/w_stuck_detect" to="obstacle/move_block" method="_on_w_stuck_detect_body_exited"]
 [connection signal="animation_finished" from="player/player_body/sprite" to="player/player_body" method="_on_sprite_animation_finished"]
 [connection signal="body_entered" from="player/player_body/attack" to="player/player_body" method="attack_in"]
 [connection signal="body_entered" from="player/player_body/receive" to="player/player_body" method="receive_in"]
-[connection signal="body_entered" from="player/player_body/wall" to="player/player_body" method="wall_detect" binds= [ "in" ]]
-[connection signal="body_exited" from="player/player_body/wall" to="player/player_body" method="wall_detect" binds= [ "out" ]]
+[connection signal="body_entered" from="player/player_body/w_detect/left" to="player/player_body" method="wall_detect_in" binds= [ "left" ]]
+[connection signal="body_exited" from="player/player_body/w_detect/left" to="player/player_body" method="wall_detect_out" binds= [ "left" ]]
+[connection signal="body_entered" from="player/player_body/w_detect/right" to="player/player_body" method="wall_detect_in" binds= [ "right" ]]
+[connection signal="body_exited" from="player/player_body/w_detect/right" to="player/player_body" method="wall_detect_out" binds= [ "right" ]]
+[connection signal="body_entered" from="player/player_body/w_detect/up" to="player/player_body" method="wall_detect_in" binds= [ "up" ]]
+[connection signal="body_exited" from="player/player_body/w_detect/up" to="player/player_body" method="wall_detect_out" binds= [ "up" ]]
+[connection signal="body_entered" from="player/player_body/w_detect/down" to="player/player_body" method="wall_detect_in" binds= [ "down" ]]
+[connection signal="body_exited" from="player/player_body/w_detect/down" to="player/player_body" method="wall_detect_out" binds= [ "down" ]]
+[connection signal="timeout" from="player/player_body/hitted_anim/Timer" to="player/player_body" method="hitted_timeout"]
 [connection signal="body_entered" from="ball/ball_body" to="ball/ball_body" method="_on_ball_body_body_entered"]
 [connection signal="timeout" from="ball/ball_body/sprite/timer" to="ball/ball_body" method="attack_pause_timer"]
 [connection signal="tween_completed" from="ball/ball_body/receive_tween" to="ball/ball_body" method="_on_receive_tween_tween_completed"]
 [connection signal="button_up" from="restart" to="." method="restart"]
 [connection signal="button_up" from="go_to_main_screen" to="." method="go_to_main_screen"]
-[connection signal="button_down" from="controls/left1" to="player/player_body" method="move_button_press" binds= [ "left" ]]
-[connection signal="button_up" from="controls/left1" to="player/player_body" method="move_button_release" binds= [ "left" ]]
-[connection signal="button_down" from="controls/right1" to="player/player_body" method="move_button_press" binds= [ "right" ]]
-[connection signal="button_up" from="controls/right1" to="player/player_body" method="move_button_release" binds= [ "right" ]]
 [connection signal="pressed" from="controls/left" to="player/player_body" method="move_button_press" binds= [ "left" ]]
 [connection signal="released" from="controls/left" to="player/player_body" method="move_button_release" binds= [ "left" ]]
 [connection signal="pressed" from="controls/right" to="player/player_body" method="move_button_press" binds= [ "right" ]]
 [connection signal="released" from="controls/right" to="player/player_body" method="move_button_release" binds= [ "right" ]]
-[connection signal="button_down" from="controls/w_left1" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
-[connection signal="button_up" from="controls/w_left1" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
-[connection signal="button_down" from="controls/w_right1" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]
-[connection signal="button_up" from="controls/w_right1" to="player/player_body" method="wall_grab_button_release" binds= [ "right" ]]
 [connection signal="pressed" from="controls/w_left" to="player/player_body" method="wall_grab_button_press" binds= [ "left" ]]
 [connection signal="released" from="controls/w_left" to="player/player_body" method="wall_grab_button_release" binds= [ "left" ]]
 [connection signal="pressed" from="controls/w_right" to="player/player_body" method="wall_grab_button_press" binds= [ "right" ]]

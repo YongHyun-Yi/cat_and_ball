@@ -28,6 +28,11 @@ var pre_pressed_way = ""
 var w_grab_able = false
 var w_grab_way = ""
 
+var w_detect_list = [[],[],[],[]] # 좌우상하
+var m_w_detect_list = [[],[],[],[]] # 우좌하상 - 닿은부분이 아니라 체크할 부분으로
+enum wall_way {left, right, up, down}
+enum move_wall_way {right, left, down, up}
+
 onready var manager = get_node("../..")
 onready var ball = get_node("../../ball/ball_body")
 onready var controls = get_node("../../controls")
@@ -36,12 +41,18 @@ var target = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if Vector2(0, 1) == Vector2(-0, 1):
+		print("똑, 같, 다")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	get_node("../Label").text = "상태 : "+state+"\n 체력 : "+str(hp)
-	
+	#get_node("../Label").text = "왼쪽 : "+str(w_detect_list[wall_way.left])+"\n"+"오른쪽 : "+str(w_detect_list[wall_way.right])+"\n"+"위쪽 : "+str(w_detect_list[wall_way.up])+"\n"+"아래쪽 : "+str(w_detect_list[wall_way.down])+"\n"#"상태 : "+state+"\n 체력 : "+str(hp)
+	#get_node("../Label2").text = "왼쪽 : "+str(m_w_detect_list[move_wall_way.left])+"\n"+"오른쪽 : "+str(m_w_detect_list[move_wall_way.right])+"\n"+"위쪽 : "+str(m_w_detect_list[move_wall_way.up])+"\n"+"아래쪽 : "+str(m_w_detect_list[move_wall_way.down])
+	get_node("../Label").text = "속력 : "+str(velocity)
+	get_node("../Label2").text = "왼쪽 : "+str($w_detect/left.get_overlapping_bodies())+"\n"+"오른쪽 : "+str($w_detect/right.get_overlapping_bodies())+"\n"+"위쪽 : "+str($w_detect/up.get_overlapping_bodies())+"\n"+"아래쪽 : "+str($w_detect/down.get_overlapping_bodies())
+	get_node("../Label3").text = str(((global_position - get_node("../../obstacle/move_block").global_position).normalized()).round())
+
 	# 버튼을 눌렀을 떄-------------------------
 	
 	if Input.is_action_just_pressed("ui_left"):
@@ -82,12 +93,13 @@ func _process(delta):
 	elif Input.is_action_just_released("target_next"):
 		target_button_release("next")
 	
-	if !is_on_floor(): # 공중에 있을 때----------------------------
+	if is_on_floor() == false: # 공중에 있을 때----------------------------
 		if w_grab == false:
 			if velocity.y < gravity:
 				velocity.y += gravity * delta
 			if velocity.x != 0:
 				velocity.x = lerp(velocity.x, 0, Engine.get_time_scale()/10) # 기본값이 0.1이니 타임스케일이 1.0일떄 0.1이 나오도록 설정
+		print("공중에 뜸")
 		#if state != "jump":
 		#	state = "jump"
 		
@@ -95,9 +107,9 @@ func _process(delta):
 		if double_jump == false:
 			double_jump = true
 		if on_floor == false:
+			print("바닥에 닿음")
 			on_floor = true
-			velocity.x = 0
-			velocity.y = 0
+			velocity = Vector2(0,0)
 			$sprite.animation = "idle"
 			$attack/CollisionShape2D.disabled = true
 			$receive/CollisionShape2D.disabled = false
@@ -130,28 +142,51 @@ func _process(delta):
 		pass
 	
 	if is_on_wall(): # 벽에 닿았을 때
-		if w_grab_able == false and velocity.y != 0:
-			print("벽 잡을수 있음")
+		var collision = get_slide_collision(0) # 충돌판정
+		var obj = collision.collider # 충돌체 가져오기
+		var col_pos = -1*collision.get_normal().x # 충돌위치 정규화 (객체중심 위치임으로 -1을 곱해서 플레이어 중심으로 변경
+		#print("벽 위치"+str(col_pos))
+
+		if w_grab_able == false and velocity.y != 0 and col_pos != 0:
+			#print("벽 잡을수 있음")
 			w_grab_able = true
-			if $sprite.flip_h == true: # 오른쪽으로 이동중
-				w_grab_way = "right"
-				print("오른쪽 그랩버튼")
-			else:
+			if col_pos < 0: # 대상이 왼쪽에 있다
 				w_grab_way = "left"
-				print("왼쪽 그랩버튼")
+				#print("왼쪽 그랩버튼")
+			elif col_pos > 0: # 대상이 오른쪽에 있다
+				w_grab_way = "right"
+				#print("오른쪽 그랩버튼")
 			controls.get_node(w_grab_way).hide()
 			controls.get_node("w_" + w_grab_way).show()
 	
 	# 벽과 움직이는 벽 사이에 끼었을떄 플레이어가 죽도록
-	var collision = get_slide_collision(0) # 충돌체를 구한다
+
+	for i in [0, 1, 2, 3]: # 0-좌 1-우 2-상 3-하 w_detect_list 배열과 같은 순서 / 움직이는 벽은 반대로 체크함
+		
+		if m_w_detect_list[i].empty() == false: # 움직이는 벽 배열이 비어있지 않다면 - 움직이는 벽과 다른 벽에 끼여서 게임오버를 만들기
+
+			for o in range(m_w_detect_list[i].size()): # 해당하는 움직이는 벽의 배열을 일일이 체크
+				if m_w_detect_list[i][o].way == i: # 해당 움직이는 벽의 진행방향과 체크할 방향이 같은지
+
+					if w_detect_list[i].empty() == false: # 반대편에 벽이 있는경우 / 같은 인자일때 벽과 움직이는 벽은 서로 반대 벽의 배열을 확인한다.
+						if $hitted_anim.current_animation != "hitted": # 피격중이 아닌경우
+							player_dead()
+						
+					else: # 반대편에 벽은없고 똑같이 움직이는 벽이 있는경우
+						if m_w_detect_list[move_wall_way[wall_way.keys()[i]]].empty() == false: # 같은 인자로 반대편을 확인하기위해 그냥 벽의 enum 키를 참조 움직이는 벽의 enum에 삽입하여 반대값을 확인
+							if $hitted_anim.current_animation != "hitted": # 피격중이 아닌경우
+								player_dead()
+
+					pass
 	
-	if collision != null: # 충돌체가 null 이 아닌경우
-		var collider = collision.collider
-		if collider.is_in_group("wall") and w_stuck_check == true: # 충돌체가 wall 그룹에 속하고 플레이어가 움직이는 벽의 area안에 들어있는경우
-			player_dead()
-			pass
+	# 그냥 벽 좌우가 비어있지 않다면 - 벽 타기
+	if w_detect_list[wall_way["left"]].empty() == false:
+		pass
+	elif w_detect_list[wall_way["right"]].empty() == false:
+		pass
 
 	move_and_slide(velocity, Vector2(0, -1))
+	#move_and_collide(velocity*delta)
 	
 	if jump_ready == true:
 		if power < 9:
@@ -179,7 +214,29 @@ func receive_in(body):
 		# 공의 선형 가속도를 체크?
 	pass
 
-func wall_detect(body,inout):
+func wall_detect_in(body, way):
+	var a = ""
+	var b = ""
+
+	if body.is_in_group("move_wall"):
+		a = "m_"
+		b = "move_"
+
+	get(a+"w_detect_list")[get(b+"wall_way")[way]].append(body) # 벽목록 더함 [벽 방향 enum 값] / 움직이는 벽일경우 문자가 추가됨
+
+	pass
+	
+
+func wall_detect_out(body, way):
+	var a = ""
+	var b = ""
+
+	if body.is_in_group("move_wall"):
+		a = "m_"
+		b = "move_"
+
+	get(a+"w_detect_list")[get(b+"wall_way")[way]].erase(body) # 벽목록 뺌 [벽 방향 enum 값] / 움직이는 벽일경우 문자가 추가됨
+
 	pass
 
 func _on_sprite_animation_finished():
@@ -325,6 +382,7 @@ func self_shake(t,p):
 	s.position = initial_offset
 	print("camera shake end")
 
+"""
 func hp_update(a):
 
 	if hp + a > hp_max and a > 0:
@@ -336,6 +394,34 @@ func hp_update(a):
 		hp += a
 	
 	get_node("../hp_bar").value = hp
+"""
+
+func hp_plus(a):
+	if hp + a > hp_max:
+		hp = hp_max
+	else:
+		hp += a
+	get_node("../hp_bar").value = hp
+	pass
+
+func hp_minus(a):
+	if $hitted_anim.current_animation != "hitted":
+		hp -= a
+		get_node("../hp_bar").value = hp
+		$hitted_anim.play("hitted")
+		$hitted_anim/Timer.start()
+		velocity.y = -700
+		if velocity.x > 0:
+			velocity.x = -100
+		elif velocity.x < 0 :
+			velocity.x = 350
+		move_and_slide(velocity, Vector2(0, -1))
+	pass
+
+func hitted_timeout():
+	$hitted_anim.play("reset")
+	$hitted_anim/Timer.stop()
+	pass
 
 func player_dead():
 	var dead_body_scene = load("res://scene/player_dead.tscn")

@@ -48,6 +48,13 @@ target_next={
 
 pointing/emulate_touch_from_mouse=true
 
+[layer_names]
+
+2d_physics/layer_1="벽"
+2d_physics/layer_2="플레이어"
+2d_physics/layer_3="공"
+2d_physics/layer_4="장애물"
+
 [rendering]
 
 quality/2d/use_pixel_snap=true
