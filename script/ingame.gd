@@ -2,7 +2,7 @@ extends Node2D
 
 var combo = 0
 var targets = []
-var hit_pause = false
+var hit_pause = false#수정?
 
 onready var player = get_node("player/player_body")
 onready var ball = get_node("ball/ball_body")

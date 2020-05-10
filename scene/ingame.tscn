@@ -68,15 +68,15 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 13 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ) ],
-"loop": false,
-"name": "receive",
-"speed": 20.0
-}, {
 "frames": [ ExtResource( 15 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ) ],
+"loop": false,
+"name": "receive",
+"speed": 20.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=10]
@@ -178,10 +178,8 @@ align = 1
 valign = 1
 
 [node name="enemys" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="target" type="Area2D" parent="enemys"]
-editor/display_folded = true
 position = Vector2( 520, 330 )
 collision_layer = 4
 collision_mask = 4
@@ -207,7 +205,6 @@ tint_progress = Color( 100, 0, 0, 1 )
 nine_patch_stretch = true
 
 [node name="target2" type="Area2D" parent="enemys"]
-editor/display_folded = true
 position = Vector2( 180, 420 )
 collision_layer = 4
 collision_mask = 4
@@ -233,7 +230,6 @@ tint_progress = Color( 100, 0, 0, 1 )
 nine_patch_stretch = true
 
 [node name="target3" type="Area2D" parent="enemys"]
-editor/display_folded = true
 position = Vector2( 330, 170 )
 collision_layer = 4
 collision_mask = 4
@@ -263,7 +259,6 @@ nine_patch_stretch = true
 [node name="move_block" type="KinematicBody2D" parent="obstacle" groups=[
 "move_wall",
 ]]
-editor/display_folded = true
 position = Vector2( 148, 887 )
 collision_layer = 8
 collision_mask = 2
@@ -279,7 +274,6 @@ texture = ExtResource( 7 )
 shape = SubResource( 3 )
 
 [node name="ball_ghost" type="Node2D" parent="."]
-editor/display_folded = true
 visible = false
 position = Vector2( 370, 150 )
 scale = Vector2( 2, 2 )
@@ -310,12 +304,10 @@ position = Vector2( 0, 5.2019 )
 texture = ExtResource( 8 )
 
 [node name="walls" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="wall_left" type="StaticBody2D" parent="walls" groups=[
 "wall",
 ]]
-editor/display_folded = true
 position = Vector2( 30, 534 )
 collision_mask = 6
 
@@ -330,7 +322,6 @@ color = Color( 0, 0, 0, 1 )
 shape = SubResource( 4 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
-editor/display_folded = true
 position = Vector2( 360, 30 )
 collision_mask = 6
 
@@ -340,7 +331,6 @@ shape = SubResource( 5 )
 [node name="wall_right" type="StaticBody2D" parent="walls" groups=[
 "wall",
 ]]
-editor/display_folded = true
 position = Vector2( 690, 535 )
 collision_mask = 6
 
@@ -355,7 +345,6 @@ color = Color( 0, 0, 0, 1 )
 shape = SubResource( 6 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
-editor/display_folded = true
 position = Vector2( 360, 1040 )
 collision_mask = 6
 
@@ -431,7 +420,6 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 10 )
 
 [node name="attack" type="Area2D" parent="player/player_body"]
-editor/display_folded = true
 visible = false
 position = Vector2( 1, 26 )
 collision_layer = 2
@@ -444,7 +432,6 @@ shape = SubResource( 11 )
 disabled = true
 
 [node name="receive" type="Area2D" parent="player/player_body"]
-editor/display_folded = true
 visible = false
 position = Vector2( 1, 26 )
 collision_layer = 2
@@ -457,7 +444,6 @@ shape = SubResource( 12 )
 visible = false
 
 [node name="left" type="Area2D" parent="player/player_body/w_detect"]
-editor/display_folded = true
 position = Vector2( -73, 44 )
 collision_layer = 2
 
@@ -467,7 +453,6 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 13 )
 
 [node name="right" type="Area2D" parent="player/player_body/w_detect"]
-editor/display_folded = true
 position = Vector2( 75, 44 )
 collision_layer = 2
 
@@ -477,7 +462,6 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 14 )
 
 [node name="up" type="Area2D" parent="player/player_body/w_detect"]
-editor/display_folded = true
 position = Vector2( 1, -48 )
 collision_layer = 2
 
@@ -487,7 +471,6 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 15 )
 
 [node name="down" type="Area2D" parent="player/player_body/w_detect"]
-editor/display_folded = true
 position = Vector2( 1, 136 )
 collision_layer = 2
 
@@ -538,7 +521,6 @@ align = 2
 valign = 1
 
 [node name="ball_body" type="RigidBody2D" parent="ball"]
-editor/display_folded = true
 position = Vector2( 390, 498 )
 collision_layer = 4
 physics_material_override = SubResource( 20 )
@@ -549,7 +531,6 @@ angular_damp = 128.0
 script = ExtResource( 17 )
 
 [node name="sprite" type="Sprite" parent="ball/ball_body"]
-editor/display_folded = true
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 
@@ -586,7 +567,6 @@ texture_normal = SubResource( 22 )
 expand = true
 
 [node name="controls" type="Control" parent="."]
-editor/display_folded = true
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -636,7 +616,6 @@ texture_normal = ExtResource( 27 )
 texture_pressed = ExtResource( 28 )
 
 [node name="ingame_menu" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 margin_right = 40.0
 margin_bottom = 40.0
@@ -658,7 +637,6 @@ margin_right = 240.0
 margin_bottom = 120.0
 texture_normal = SubResource( 22 )
 expand = true
-
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="body_entered" from="enemys/target" to="enemys/target" method="_on_target_body_entered"]
 [connection signal="body_entered" from="enemys/target2" to="enemys/target2" method="_on_target_body_entered"]
