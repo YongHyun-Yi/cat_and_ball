@@ -5,7 +5,7 @@
 [ext_resource path="res://sprite/jump_attack.png" type="Texture" id=3]
 [ext_resource path="res://sprite/receive2.png" type="Texture" id=4]
 [ext_resource path="res://sprite/jump_ready.png" type="Texture" id=5]
-[ext_resource path="res://script/player_remake.gd" type="Script" id=6]
+[ext_resource path="res://script/enemy_remake.gd" type="Script" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -34,8 +34,8 @@ animations = [ {
 extents = Vector2( 37, 46 )
 
 [sub_resource type="CapsuleShape2D" id=3]
-radius = 29.7859
-height = 53.2881
+radius = 3.96402
+height = 19.1307
 
 [sub_resource type="Animation" id=4]
 resource_name = "hitted"
@@ -69,7 +69,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="player_body" type="KinematicBody2D"]
+[node name="enemy_body" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource( 6 )
@@ -86,18 +86,15 @@ position = Vector2( 0, -92 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
-[node name="attack" type="Area2D" parent="."]
+[node name="hitted" type="StaticBody2D" parent="."]
 position = Vector2( 0, -92 )
-collision_layer = 0
+collision_layer = 16
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitted"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 3 )
-
-[node name="Position2D" type="Position2D" parent="attack"]
-position = Vector2( 0, 47 )
 
 [node name="hitted_anim" type="AnimationPlayer" parent="."]
 autoplay = "reset"

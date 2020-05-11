@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
@@ -73,7 +74,6 @@ __meta__ = {
 "wall",
 ]]
 position = Vector2( 30, 534 )
-collision_layer = 0
 collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/wall_left"]
@@ -88,7 +88,6 @@ shape = SubResource( 2 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
 position = Vector2( 360, 30 )
-collision_layer = 0
 collision_mask = 6
 
 [node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
@@ -98,7 +97,6 @@ shape = SubResource( 3 )
 "wall",
 ]]
 position = Vector2( 690, 535 )
-collision_layer = 0
 collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/wall_right"]
@@ -113,7 +111,6 @@ shape = SubResource( 4 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
 position = Vector2( 360, 1040 )
-collision_layer = 0
 collision_mask = 6
 
 [node name="ColorRect" type="ColorRect" parent="walls/floor"]
@@ -126,6 +123,11 @@ color = Color( 0, 0, 0, 1 )
 [node name="floor" type="CollisionShape2D" parent="walls/floor"]
 shape = SubResource( 3 )
 
+[node name="enemys" type="Node2D" parent="."]
+
+[node name="enemy_body" parent="enemys" instance=ExtResource( 4 )]
+position = Vector2( 230.719, 667.36 )
+
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
@@ -134,7 +136,7 @@ position = Vector2( 383.981, 863.388 )
 [node name="ball" type="Node2D" parent="."]
 
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
-position = Vector2( 379.437, 636.181 )
+position = Vector2( 382.761, 589.644 )
 
 [node name="restart" type="TextureButton" parent="."]
 self_modulate = Color( 1, 1, 1, 0.490196 )

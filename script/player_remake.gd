@@ -15,6 +15,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#if get_slide_count():
+	#	for i in get_slide_count():
+	#		var collision = get_slide_collision(i)
+	#		print("Collided with: ", collision.collider.name)
 	arrowkey_move_input()
 	jump_and_gravity(delta)
 	move_and_slide(velocity, Vector2(0, -1))
@@ -49,7 +53,7 @@ func jump_and_gravity(delta):
 func _unhandled_key_input(event):
 	if Input.is_action_just_pressed("ui_accept"):
 		var b = $attack.get_overlapping_bodies()
-		print(str(b))
+		#print(str(b))
 		if b.size() > 0:
 			for i in b:
 				
@@ -63,6 +67,6 @@ func _unhandled_key_input(event):
 				bs = $attack/Position2D.global_position.direction_to(i.global_position)
 				bs.x = stepify(bs.x, 0.1)
 				bs.y = stepify(bs.y, 0.1)
-				print(str(bs))
+				#print(str(bs))
 				
 				i.attacked(bs)
