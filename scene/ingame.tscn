@@ -20,16 +20,16 @@
 size = 100
 font_data = ExtResource( 3 )
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 30, 535 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 360, 30 )
+
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 30, 535 )
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 360, 30 )
-
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 30, 535 )
-
-[sub_resource type="StreamTexture" id=22]
+[sub_resource type="StreamTexture" id=5]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
 
@@ -84,7 +84,7 @@ margin_bottom = 535.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="wall_left" type="CollisionShape2D" parent="walls/wall_left"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="ceiling" type="StaticBody2D" parent="walls"]
 position = Vector2( 360, 30 )
@@ -92,7 +92,7 @@ collision_layer = 0
 collision_mask = 6
 
 [node name="ceiling" type="CollisionShape2D" parent="walls/ceiling"]
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="wall_right" type="StaticBody2D" parent="walls" groups=[
 "wall",
@@ -109,7 +109,7 @@ margin_bottom = 535.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="wall_right" type="CollisionShape2D" parent="walls/wall_right"]
-shape = SubResource( 6 )
+shape = SubResource( 4 )
 
 [node name="floor" type="StaticBody2D" parent="walls"]
 position = Vector2( 360, 1040 )
@@ -124,7 +124,7 @@ margin_bottom = 30.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="floor" type="CollisionShape2D" parent="walls/floor"]
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="player" type="Node2D" parent="."]
 
@@ -151,7 +151,7 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 22 )
+texture_normal = SubResource( 5 )
 expand = true
 
 [node name="controls" type="Control" parent="."]
@@ -224,7 +224,7 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 22 )
+texture_normal = SubResource( 5 )
 expand = true
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="restart" to="." method="restart"]

@@ -15,5 +15,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func attacked():
+func attacked(direction):
+	set_linear_velocity(Vector2(0, 0))
+	apply_impulse(Vector2(0, 0), direction*1000)
 	pass

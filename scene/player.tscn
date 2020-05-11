@@ -33,10 +33,11 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 37, 46 )
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 49.3584
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 29.7859
+height = 53.2881
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=4]
 resource_name = "hitted"
 length = 0.2
 loop = true
@@ -53,7 +54,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.498039 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:self_modulate")
@@ -74,33 +75,34 @@ collision_mask = 0
 script = ExtResource( 6 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -136 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
 animation = "idle"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 1, 44 )
+position = Vector2( 0, -92 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
 [node name="attack" type="Area2D" parent="."]
-visible = false
-position = Vector2( 1, 26 )
-collision_layer = 2
+position = Vector2( 0, -92 )
+collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 3 )
-disabled = true
+
+[node name="Position2D" type="Position2D" parent="attack"]
+position = Vector2( 0, 41 )
 
 [node name="hitted_anim" type="AnimationPlayer" parent="."]
-anims/hitted = SubResource( 9 )
-anims/reset = SubResource( 10 )
+anims/hitted = SubResource( 4 )
+anims/reset = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="hitted_anim"]
 wait_time = 2.0
-[connection signal="body_entered" from="attack" to="." method="attack_in"]
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]
