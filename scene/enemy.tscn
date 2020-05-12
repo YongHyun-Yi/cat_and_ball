@@ -34,7 +34,7 @@ animations = [ {
 extents = Vector2( 37, 46 )
 
 [sub_resource type="CapsuleShape2D" id=3]
-radius = 3.96402
+radius = 28.3911
 height = 19.1307
 
 [sub_resource type="Animation" id=4]
@@ -70,7 +70,7 @@ tracks/0/keys = {
 }
 
 [node name="enemy_body" type="KinematicBody2D"]
-collision_layer = 2
+collision_layer = 16
 collision_mask = 0
 script = ExtResource( 6 )
 
@@ -86,10 +86,10 @@ position = Vector2( 0, -92 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
-[node name="hitted" type="StaticBody2D" parent="."]
+[node name="hitted" type="Area2D" parent="."]
 position = Vector2( 0, -92 )
-collision_layer = 16
-collision_mask = 4
+collision_layer = 32
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitted"]
 self_modulate = Color( 0, 1, 0.180392, 1 )

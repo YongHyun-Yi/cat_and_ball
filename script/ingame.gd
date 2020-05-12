@@ -25,15 +25,17 @@ func go_to_main_screen():
 	pass
 
 func hit_pause():
-	Engine.set_time_scale(.01)
-	$hit_pause_timer.wait_time = 2 * Engine.get_time_scale()
+	get_tree().paused = true
+	#Engine.set_time_scale(.01)
+	#$hit_pause_timer.wait_time = 1.8 * Engine.get_time_scale()
 	$hit_pause_timer.start()
 	hit_pause = true
 	print("느려짐 시작")
 
 func hit_pause_timer_timeout():
+	get_tree().paused = false
 	$hit_pause_timer.stop()
-	Engine.set_time_scale(1.0)
+	#Engine.set_time_scale(1.0)
 	hit_pause = false
 	ball.get_node("sprite").texture = load("res://sprite/ball.png")
 	ball.get_node("effect2").hide()
