@@ -34,8 +34,8 @@ animations = [ {
 extents = Vector2( 37, 46 )
 
 [sub_resource type="CapsuleShape2D" id=3]
-radius = 29.7859
-height = 53.2881
+radius = 33.5
+height = 21.0001
 
 [sub_resource type="Animation" id=4]
 resource_name = "hitted"
@@ -93,6 +93,8 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
+position = Vector2( 52, 0 )
+rotation = -1.57079
 scale = Vector2( 2, 2 )
 shape = SubResource( 3 )
 

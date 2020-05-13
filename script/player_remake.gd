@@ -7,6 +7,8 @@ var gravity = 2000
 var jump = -900
 var speed = 400
 
+var attack_angle = Vector2()
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,14 +24,17 @@ func _process(delta):
 	arrowkey_move_input()
 	jump_and_gravity(delta)
 	move_and_slide(velocity, Vector2(0, -1))
+	
+	$attack.look_at(get_global_mouse_position())
+	
 	pass
 
 func arrowkey_move_input():
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("move_left"):
 		
 		velocity.x = -speed
 		
-	elif Input.is_action_pressed("ui_right"):
+	elif Input.is_action_pressed("move_right"):
 		
 		velocity.x = speed
 		
@@ -42,7 +47,7 @@ func jump_and_gravity(delta):
 			velocity.y = 0
 			$sprite.animation = "idle"
 		
-		if Input.is_action_pressed("ui_up"):
+		if Input.is_action_pressed("move_jump"):
 			velocity.y += jump
 			$sprite.animation = "jump"
 	else:
@@ -50,8 +55,8 @@ func jump_and_gravity(delta):
 			velocity.y += gravity * delta
 	pass
 
-func _unhandled_key_input(event):
-	if Input.is_action_just_pressed("ui_accept"):
+func _input(event):
+	if Input.is_action_just_pressed("move_attack"):
 		var b = $attack.get_overlapping_bodies()
 		#print(str(b))
 		if b.size() > 0:
@@ -64,9 +69,9 @@ func _unhandled_key_input(event):
 				
 				#bs = $attack/CollisionShape2D.global_position.angle_to_point(i.global_position)
 				#bs = Vector2.RIGHT.rotated(bs)
-				bs = $attack/Position2D.global_position.direction_to(i.global_position)
+				bs = $attack.global_position.direction_to(get_global_mouse_position())
 				bs.x = stepify(bs.x, 0.1)
 				bs.y = stepify(bs.y, 0.1)
-				#print(str(bs))
+				print(str(bs))
 				
 				i.attacked(bs)

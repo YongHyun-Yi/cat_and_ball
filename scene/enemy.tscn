@@ -88,8 +88,8 @@ shape = SubResource( 2 )
 
 [node name="hitted" type="Area2D" parent="."]
 position = Vector2( 0, -92 )
-collision_layer = 32
-collision_mask = 0
+collision_layer = 0
+collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitted"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
