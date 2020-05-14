@@ -1,6 +1,8 @@
 extends RigidBody2D
 
 onready var manager = get_node("/root/ingame")
+onready var camera = get_node("/root/ingame/camera")
+
 signal hit_pause
 
 
@@ -17,7 +19,7 @@ func _process(delta):
 
 func attacked(direction):
 	set_linear_velocity(Vector2(0, 0))
-	apply_impulse(Vector2(0, 0), direction*1000)
+	apply_impulse(Vector2(0, 0), direction*2000)
 	$hit_zone/CollisionShape2D2.disabled = false
 	pass
 
@@ -38,7 +40,8 @@ func hit_zone_area_entered(area):
 	#$hit_zone/CollisionShape2D2.disabled = true
 	$hit_zone/CollisionShape2D2.set_deferred("disabled", true) # 버그인가? disabled를 해도 계속 시그널이 방출되서 사용
 	linear_velocity *= -1
-	area.get_parent().damaged()
+	area.get_parent().ball_hit()
+	camera.camera_shake(.2, 20)
 	pass # Replace with function body.
 
 

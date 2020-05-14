@@ -21,12 +21,12 @@ config/icon="res://sprite/icon.png"
 
 [display]
 
-window/size/width=720
-window/size/height=1280
+window/size/width=1280
+window/size/height=720
 window/size/resizable=false
 window/size/borderless=true
-window/size/test_width=360
-window/size/test_height=640
+window/size/test_width=640
+window/size/test_height=360
 window/handheld/orientation="portrait"
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
@@ -76,6 +76,7 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_4="장애물"
 2d_physics/layer_5="적"
 2d_physics/layer_6="공 히트존"
+2d_physics/layer_7="공격 히트존"
 
 [rendering]
 

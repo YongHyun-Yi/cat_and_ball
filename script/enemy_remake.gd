@@ -47,6 +47,9 @@ func jump_and_gravity(delta):
 			velocity.y += gravity * delta
 	pass
 
-func damaged():
+func ball_hit():
+	print("ball hit!")
+
+func attacked(a):
 	print("damaged!")
 	pass

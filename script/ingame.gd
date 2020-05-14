@@ -6,6 +6,7 @@ var hit_pause = false
 
 onready var player = get_node("player/player_body")
 onready var ball = get_node("ball/ball_body")
+onready var camera = get_node("camera")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -41,3 +42,7 @@ func hit_pause_timer_timeout():
 	ball.get_node("effect2").hide()
 	print("느려짐 끝")
 	pass # Replace with function body.
+
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("ui_accept"):
+		camera.camera_shake(1, 30)
