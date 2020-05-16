@@ -52,25 +52,28 @@ func arrowkey_move_input():
 		velocity.x = 0
 
 func jump_and_gravity(delta):
-
+	
 	if is_on_floor():
 		if velocity.y > 0:
 			velocity.y = 0
 			$sprite.animation = "idle"
 			can_dubble_jump = true
 		
-		if Input.is_action_pressed("move_jump"):
+		if Input.is_action_just_pressed("move_jump"):
 			velocity.y += jump
 			$sprite.animation = "jump"
+			print(str(can_dubble_jump))
 	else:
 		if Input.is_action_just_pressed("move_jump") and can_dubble_jump == true:
 			can_dubble_jump = false
 			velocity.y = 0
 			velocity.y += dubble_jump
 			$sprite.animation = "jump"
+			print(str(can_dubble_jump))
 		
 		if velocity.y < gravity:
 			velocity.y += gravity * delta
+	
 	pass
 
 func _input(event):

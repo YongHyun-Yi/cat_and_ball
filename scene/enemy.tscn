@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://sprite/receive1.png" type="Texture" id=1]
 [ext_resource path="res://sprite/idle.png" type="Texture" id=2]
@@ -69,10 +69,17 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.866667, 0.231373, 0.231373, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 1 )
+
 [node name="enemy_body" type="KinematicBody2D"]
 collision_layer = 16
 collision_mask = 0
 script = ExtResource( 6 )
+hp = 5
 
 [node name="sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -136 )
@@ -103,4 +110,19 @@ anims/reset = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="hitted_anim"]
 wait_time = 2.0
+
+[node name="hp_bar" type="ProgressBar" parent="."]
+margin_left = -56.7764
+margin_top = -213.022
+margin_right = 56.2236
+margin_bottom = -199.022
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+max_value = 10.0
+step = 1.0
+value = 10.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]

@@ -1,8 +1,10 @@
 extends Camera2D
 
 onready var player = get_node("/root/ingame/player/player_body")
+onready var ball = get_node("/root/ingame/ball/ball_body")
 
 var current_shake = 0
+var distance = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,7 +13,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	global_position = player.global_position
+	
+	distance = player.global_position.distance_to(ball.global_position) # 거리 구하기
+	distance *= 0.001 # 단위 낮추기
+	distance += 1 # 가장 가까이 있을때 1배수가 나오도록
+	#print(str(distance))
+	
+	if distance < 1.6 and distance > 1.1:
+		set_zoom(Vector2(1, 1) * distance) # 거리에 따른 줌 설정
+	
+	global_position = (player.global_position + ball.global_position) * 0.5 # 두 오브젝트 사이에 카메라 위치 설정
 	pass
 
 func camera_shake(t,p):

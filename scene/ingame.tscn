@@ -22,7 +22,7 @@
 size = 100
 font_data = ExtResource( 3 )
 
-[sub_resource type="StreamTexture" id=5]
+[sub_resource type="StreamTexture" id=2]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
 
@@ -40,8 +40,10 @@ zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 2361.0
-margin_bottom = 1328.0
+margin_left = -82.0
+margin_top = -3.0
+margin_right = 2279.0
+margin_bottom = 1325.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -113,30 +115,12 @@ position = Vector2( 407, 509 )
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 1760, 899 )
+position = Vector2( 1285, 633 )
 
 [node name="ball" type="Node2D" parent="."]
 
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
 position = Vector2( 1225, 478 )
-
-[node name="restart" type="TextureButton" parent="."]
-self_modulate = Color( 1, 1, 1, 0.490196 )
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 120.0
-margin_bottom = 120.0
-texture_normal = ExtResource( 7 )
-expand = true
-
-[node name="go_to_main_screen" type="TextureButton" parent="."]
-self_modulate = Color( 1, 1, 1, 0.490196 )
-margin_left = 140.0
-margin_top = 20.0
-margin_right = 240.0
-margin_bottom = 120.0
-texture_normal = SubResource( 5 )
-expand = true
 
 [node name="controls" type="Control" parent="."]
 visible = false
@@ -208,10 +192,33 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 5 )
+texture_normal = SubResource( 2 )
+expand = true
+
+[node name="buttons" type="CanvasLayer" parent="."]
+
+[node name="restart" type="TextureButton" parent="buttons"]
+self_modulate = Color( 1, 1, 1, 0.490196 )
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 120.0
+margin_bottom = 120.0
+texture_normal = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="go_to_main_screen" type="TextureButton" parent="buttons"]
+self_modulate = Color( 1, 1, 1, 0.490196 )
+margin_left = 140.0
+margin_top = 20.0
+margin_right = 240.0
+margin_bottom = 120.0
+texture_normal = SubResource( 2 )
 expand = true
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
-[connection signal="button_up" from="restart" to="." method="restart"]
-[connection signal="button_up" from="go_to_main_screen" to="." method="go_to_main_screen"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]
+[connection signal="button_up" from="buttons/restart" to="." method="restart"]
+[connection signal="button_up" from="buttons/go_to_main_screen" to="." method="go_to_main_screen"]
