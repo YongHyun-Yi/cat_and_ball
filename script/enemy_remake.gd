@@ -55,7 +55,7 @@ func ball_hit():
 	hp_update(-1)
 	print("ball hit!")
 
-func attacked(a):
+func enemy_attacked(a):
 	hp_update(-1)
 	print("damaged!")
 

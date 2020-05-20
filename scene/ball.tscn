@@ -11,7 +11,7 @@ bounce = 0.7
 radius = 28.5175
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 6.95181
+radius = 18.6126
 
 [sub_resource type="Animation" id=4]
 resource_name = "reset"
@@ -68,6 +68,7 @@ tracks/3/keys = {
 [node name="ball_body" type="RigidBody2D"]
 collision_layer = 4
 collision_mask = 0
+mode = 2
 physics_material_override = SubResource( 1 )
 gravity_scale = 8.0
 contacts_reported = 1
@@ -86,7 +87,7 @@ scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
 [node name="hit_zone" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 64
 collision_mask = 32
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="hit_zone"]
@@ -94,7 +95,6 @@ modulate = Color( 0.827451, 1, 0, 1 )
 position = Vector2( -1, -1 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 3 )
-disabled = true
 
 [node name="effect2" type="Sprite" parent="."]
 visible = false
@@ -106,6 +106,12 @@ offset = Vector2( -220, 25 )
 [node name="anim" type="AnimationPlayer" parent="."]
 autoplay = "reset"
 anims/reset = SubResource( 4 )
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+points = PoolVector2Array( 0, 0, 100, 0 )
+default_color = Color( 1, 0.4, 0.4, 1 )
+end_cap_mode = 2
 [connection signal="timeout" from="sprite/timer" to="." method="attack_pause_timer"]
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_area_entered"]
 [connection signal="tween_completed" from="receive_tween" to="." method="_on_receive_tween_tween_completed"]

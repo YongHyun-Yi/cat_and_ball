@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
@@ -18,13 +19,13 @@
 [ext_resource path="res://sprite/target_button_right.png" type="Texture" id=27]
 [ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=28]
 
-[sub_resource type="DynamicFont" id=1]
-size = 100
-font_data = ExtResource( 3 )
-
-[sub_resource type="StreamTexture" id=2]
+[sub_resource type="StreamTexture" id=1]
 flags = 4
 load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+font_data = ExtResource( 3 )
 
 [node name="ingame" type="Node2D"]
 script = ExtResource( 1 )
@@ -38,30 +39,6 @@ position = Vector2( 640, 360 )
 current = true
 zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -82.0
-margin_top = -3.0
-margin_right = 2279.0
-margin_bottom = 1325.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="combo" type="Label" parent="."]
-margin_left = 452.0
-margin_top = 247.0
-margin_right = 825.0
-margin_bottom = 450.0
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.760784, 0.760784, 0.760784, 1 )
-text = "COMBO
-NUM"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="walls" type="Node2D" parent="."]
 
@@ -88,24 +65,6 @@ margin_left = 2357.0
 margin_top = -52.0
 margin_right = 2819.0
 margin_bottom = 1485.0
-
-[node name="wall4" parent="walls" instance=ExtResource( 5 )]
-margin_left = 187.0
-margin_top = 518.0
-margin_right = 606.0
-margin_bottom = 627.0
-
-[node name="wall5" parent="walls" instance=ExtResource( 5 )]
-margin_left = 1038.0
-margin_top = 716.0
-margin_right = 1457.0
-margin_bottom = 825.0
-
-[node name="wall6" parent="walls" instance=ExtResource( 5 )]
-margin_left = 1824.0
-margin_top = 500.0
-margin_right = 2243.0
-margin_bottom = 609.0
 
 [node name="enemys" type="Node2D" parent="."]
 
@@ -192,8 +151,34 @@ margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 2 )
+texture_normal = SubResource( 1 )
 expand = true
+
+[node name="background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="background"]
+margin_right = 1280.0
+margin_bottom = 720.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="combo" type="Label" parent="background"]
+margin_left = 455.0
+margin_top = 175.0
+margin_right = 828.0
+margin_bottom = 378.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.760784, 0.760784, 0.760784, 1 )
+text = "COMBO
+NUM"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="buttons" type="CanvasLayer" parent="."]
 
@@ -210,13 +195,34 @@ __meta__ = {
 }
 
 [node name="go_to_main_screen" type="TextureButton" parent="buttons"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.490196 )
 margin_left = 140.0
 margin_top = 20.0
 margin_right = 240.0
 margin_bottom = 120.0
-texture_normal = SubResource( 2 )
+texture_normal = SubResource( 1 )
 expand = true
+
+[node name="icon" type="Sprite" parent="."]
+position = Vector2( -120, 686 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="icon2" type="Sprite" parent="."]
+position = Vector2( -120, 402 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="icon3" type="Sprite" parent="."]
+position = Vector2( 2486, 739 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="icon4" type="Sprite" parent="."]
+position = Vector2( 2483, 505 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

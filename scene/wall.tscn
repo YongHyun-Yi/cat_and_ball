@@ -1,12 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://script/wall.gd" type="Script" id=1]
-
-[sub_resource type="RectangleShape2D" id=1]
 
 [node name="wall" type="ColorRect"]
 margin_right = 100.0
 margin_bottom = 100.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -17,6 +16,4 @@ __meta__ = {
 collision_mask = 22
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Staticbody2D"]
-rotation = 3.14159
-shape = SubResource( 1 )
 one_way_collision = true

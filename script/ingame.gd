@@ -14,7 +14,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$combo.text = "COMBO\n"+str(combo)
+	$background/combo.text = "COMBO\n"+str(combo)
 	pass
 
 func restart():

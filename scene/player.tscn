@@ -19,23 +19,22 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 37, 46 )
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 33.5
-height = 21.0001
+[sub_resource type="CircleShape2D" id=6]
+radius = 55.0091
 
 [sub_resource type="Animation" id=4]
 resource_name = "hitted"
@@ -71,32 +70,28 @@ tracks/0/keys = {
 
 [node name="player_body" type="KinematicBody2D"]
 collision_layer = 2
-collision_mask = 0
 script = ExtResource( 6 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -136 )
+position = Vector2( 0, -44 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
 animation = "idle"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -92 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
 [node name="attack" type="Area2D" parent="."]
-position = Vector2( 0, -92 )
 collision_layer = 0
-collision_mask = 68
+collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
-position = Vector2( 52, 0 )
 rotation = -1.57079
 scale = Vector2( 2, 2 )
-shape = SubResource( 3 )
+shape = SubResource( 6 )
 
 [node name="Position2D" type="Position2D" parent="attack"]
 position = Vector2( 0, 44 )
@@ -108,4 +103,6 @@ anims/reset = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="hitted_anim"]
 wait_time = 2.0
+[connection signal="area_entered" from="attack" to="." method="attack_zone_in"]
+[connection signal="area_exited" from="attack" to="." method="attack_zone_out"]
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]
