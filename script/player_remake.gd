@@ -9,7 +9,7 @@ var dubble_jump = -800
 var can_dubble_jump = true
 var speed = 400
 
-var kick_power = 3000
+var kick_power = 2000
 var attack_power = 1
 
 var flipped = false

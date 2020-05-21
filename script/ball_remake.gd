@@ -24,7 +24,8 @@ func _process(delta):
 	pass
 
 func attackable_check():
-	#print(str(linear_velocity))
+	#print(str(rotation_degrees))
+	set_angular_velocity(0)
 	if abs(linear_velocity.x)/1000 > 1 or abs(linear_velocity.y)/1000 > 1:
 		if attackable != true:
 			attackable = true
@@ -43,10 +44,14 @@ func move_dir_arrow_toggle(a):
 		$Line2D.hide()
 
 func move_dir_update():
+	#print("line2d's rotation degree : "+ str($Line2D.rotation_degrees))
+	#print("rotation degree : "+ str(rotation_degrees))
+	if abs($Line2D.rotation_degrees) != abs(rotation_degrees):
+		$Line2D.rotation_degrees = -rotation_degrees
 	move_direction = global_position.direction_to(get_global_mouse_position())
 	move_direction.x = stepify(move_direction.x, 0.1)
 	move_direction.y = stepify(move_direction.y, 0.1)
-	$Line2D.points[1] = move_direction * 100
+	$Line2D.points[1] =  move_direction * 100
 
 func ball_attacked(kick_power):
 	print(str(linear_velocity))
