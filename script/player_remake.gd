@@ -2,12 +2,17 @@ extends KinematicBody2D
 
 onready var ball = get_node("/root/ingame/ball/ball_body")
 
+export var movement_state = "idle"
+
 var velocity = Vector2()
 var gravity = 2000
 var jump = -900
 var dubble_jump = -800
 var can_dubble_jump = true
 var speed = 400
+
+var slide_acl = 20
+var slide_max = 700
 
 var kick_power = 2000
 var attack_power = 1
@@ -46,23 +51,39 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 		if flipped == false:
 			flipped = true
 			scale.x *= -1
+			#$sprite.flip_h = true
 	else:
-		velocity.x = speed
+		#velocity.x = speed
 		if flipped == true:
 			flipped = false
 			scale.x *= -1
+			#$sprite.flip_h = false
 
 func arrowkey_move_input():
 	if Input.is_action_pressed("move_left"):
 		
-		velocity.x = -speed
+		match movement_state:
+			"idle":
+				velocity.x = -speed
+			"slide":
+				velocity.x = max(velocity.x - slide_acl, -slide_max)
 		
 	elif Input.is_action_pressed("move_right"):
 		
-		velocity.x = speed
+		match movement_state:
+			"idle":
+				velocity.x = speed
+			"slide":
+				velocity.x = min(velocity.x + slide_acl, slide_max)
 		
 	else:
-		velocity.x = 0
+		match movement_state:
+			"idle":
+				velocity.x = 0
+			"slide":
+				if velocity.x != 0:
+					#print(str(velocity))
+					velocity.x = lerp(velocity.x, 0, 0.04) # 슬라이딩 멈추는 속도
 
 func jump_and_gravity(delta):
 	

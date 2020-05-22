@@ -73,7 +73,6 @@ physics_material_override = SubResource( 1 )
 gravity_scale = 8.0
 contacts_reported = 1
 can_sleep = false
-angular_damp = 128.0
 script = ExtResource( 3 )
 
 [node name="sprite" type="Sprite" parent="."]

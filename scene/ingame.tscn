@@ -75,6 +75,7 @@ position = Vector2( 407, 509 )
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
 position = Vector2( 1285, 633 )
+movement_state = "slide"
 
 [node name="ball" type="Node2D" parent="."]
 

@@ -23,6 +23,9 @@ func _process(delta):
 	attackable_check()
 	pass
 
+func _integrate_forces(state):
+	rotation_degrees = 0
+
 func attackable_check():
 	#print(str(rotation_degrees))
 	set_angular_velocity(0)
@@ -44,10 +47,6 @@ func move_dir_arrow_toggle(a):
 		$Line2D.hide()
 
 func move_dir_update():
-	#print("line2d's rotation degree : "+ str($Line2D.rotation_degrees))
-	#print("rotation degree : "+ str(rotation_degrees))
-	if abs($Line2D.rotation_degrees) != abs(rotation_degrees):
-		$Line2D.rotation_degrees = -rotation_degrees
 	move_direction = global_position.direction_to(get_global_mouse_position())
 	move_direction.x = stepify(move_direction.x, 0.1)
 	move_direction.y = stepify(move_direction.y, 0.1)
