@@ -2,17 +2,20 @@ extends KinematicBody2D
 
 onready var ball = get_node("/root/ingame/ball/ball_body")
 
-export var movement_state = "idle"
+export (String, "idle", "slide", "scroll", "on_air") var movement_state = "idle"
 
 var velocity = Vector2()
 var gravity = 2000
 var jump = -900
 var dubble_jump = -800
 var can_dubble_jump = true
+
 var speed = 400
 
 var slide_acl = 20
 var slide_max = 700
+
+var scroll_acl = 0
 
 var kick_power = 2000
 var attack_power = 1
@@ -60,13 +63,20 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 			#$sprite.flip_h = false
 
 func arrowkey_move_input():
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
 		
 		match movement_state:
 			"idle":
 				velocity.x = -speed
 			"slide":
 				velocity.x = max(velocity.x - slide_acl, -slide_max)
+			"scroll":
+				velocity.x = (-speed) + scroll_acl
+			"on_air":
+				if velocity.x < -speed:
+					velocity.x = velocity.x
+				else:
+					velocity.x = lerp(velocity.x, -speed, 0.15)
 		
 	elif Input.is_action_pressed("move_right"):
 		
@@ -75,6 +85,13 @@ func arrowkey_move_input():
 				velocity.x = speed
 			"slide":
 				velocity.x = min(velocity.x + slide_acl, slide_max)
+			"scroll":
+				velocity.x = speed + scroll_acl
+			"on_air":
+				if velocity.x > speed:
+					velocity.x = velocity.x
+				else:
+					velocity.x = lerp(velocity.x, speed, 0.15)
 		
 	else:
 		match movement_state:
@@ -84,11 +101,15 @@ func arrowkey_move_input():
 				if velocity.x != 0:
 					#print(str(velocity))
 					velocity.x = lerp(velocity.x, 0, 0.04) # 슬라이딩 멈추는 속도
+			"scroll":
+				velocity.x = scroll_acl
+			"on_air":
+				velocity.x = lerp(velocity.x, speed, 0.001)
 
 func jump_and_gravity(delta):
-	
+	"""
 	if is_on_floor():
-		if velocity.y > 0:
+		if velocity.y != 0:
 			velocity.y = 0
 			$sprite.animation = "idle"
 			can_dubble_jump = true
@@ -107,7 +128,27 @@ func jump_and_gravity(delta):
 		
 		if velocity.y < gravity:
 			velocity.y += gravity * delta
+	"""
 	
+	if is_on_floor():
+		if velocity.y != 0:
+			velocity.y = 0
+			$sprite.animation = "idle"
+			#can_dubble_jump = true
+	else:
+		if velocity.y < gravity:
+			velocity.y += gravity * delta
+	
+	if Input.is_action_just_pressed("move_jump"):
+		if is_on_floor():
+			velocity.y += jump
+			$sprite.animation = "jump"
+		else:
+			if can_dubble_jump == true:
+				can_dubble_jump = false
+				velocity.y = 0
+				velocity.y += dubble_jump
+				$sprite.animation = "jump"
 	pass
 
 func _unhandled_input(event):
@@ -154,4 +195,21 @@ func attack_zone_out(area):
 	var a = area.get_parent()
 	if a.has_method("move_dir_arrow_toggle"):
 		a.move_dir_arrow_toggle("hide")
+	pass # Replace with function body.
+
+
+func floor_check_in(body):
+	#if can_dubble_jump == false:
+	can_dubble_jump = true
+	
+	var a = body.get_parent()
+	
+	if not a.get("state") == null:
+		a.state_update(self)
+	
+	pass # Replace with function body.
+
+
+func floor_check_out(body):
+	movement_state = "on_air"
 	pass # Replace with function body.

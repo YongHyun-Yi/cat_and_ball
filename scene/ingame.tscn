@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
+[ext_resource path="res://scene/ice_block.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scene/scroll_block.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
@@ -75,7 +77,6 @@ position = Vector2( 407, 509 )
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
 position = Vector2( 1285, 633 )
-movement_state = "slide"
 
 [node name="ball" type="Node2D" parent="."]
 
@@ -224,6 +225,19 @@ texture = ExtResource( 6 )
 position = Vector2( 2483, 505 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 6 )
+
+[node name="ice_block" parent="." instance=ExtResource( 8 )]
+margin_left = 337.0
+margin_top = 885.0
+margin_right = 903.0
+margin_bottom = 985.0
+
+[node name="scroll_block" parent="." instance=ExtResource( 9 )]
+margin_left = 1082.0
+margin_top = 893.0
+margin_right = 1382.0
+margin_bottom = 993.0
+scroll_way = "left"
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]
