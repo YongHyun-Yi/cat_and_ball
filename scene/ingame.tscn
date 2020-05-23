@@ -50,6 +50,13 @@ margin_top = 957.0
 margin_right = 2432.0
 margin_bottom = 1359.0
 
+[node name="wall4" parent="walls" instance=ExtResource( 5 )]
+margin_left = 1559.0
+margin_top = 682.0
+margin_right = 1921.0
+margin_bottom = 746.0
+one_way = true
+
 [node name="wall7" parent="walls" instance=ExtResource( 5 )]
 margin_left = -113.0
 margin_top = -395.0
@@ -237,7 +244,7 @@ margin_left = 1082.0
 margin_top = 893.0
 margin_right = 1382.0
 margin_bottom = 993.0
-scroll_way = "left"
+scroll_way = "right"
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

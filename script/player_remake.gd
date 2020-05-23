@@ -134,21 +134,21 @@ func jump_and_gravity(delta):
 		if velocity.y != 0:
 			velocity.y = 0
 			$sprite.animation = "idle"
-			#can_dubble_jump = true
+			can_dubble_jump = true
 	else:
 		if velocity.y < gravity:
 			velocity.y += gravity * delta
 	
 	if Input.is_action_just_pressed("move_jump"):
-		if is_on_floor():
-			velocity.y += jump
-			$sprite.animation = "jump"
-		else:
+		if not is_on_floor():
 			if can_dubble_jump == true:
 				can_dubble_jump = false
 				velocity.y = 0
 				velocity.y += dubble_jump
 				$sprite.animation = "jump"
+		else:
+			velocity.y += jump
+			$sprite.animation = "jump"
 	pass
 
 func _unhandled_input(event):
@@ -200,7 +200,7 @@ func attack_zone_out(area):
 
 func floor_check_in(body):
 	#if can_dubble_jump == false:
-	can_dubble_jump = true
+	#can_dubble_jump = true
 	
 	var a = body.get_parent()
 	
