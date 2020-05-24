@@ -10,6 +10,12 @@ var attackable = false
 
 signal hit_pause
 
+export (String, "idle", "slide", "scroll") var movement_state = "idle"
+
+var slide_acl = 20
+var slide_max = 700
+
+var scroll_acl = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,7 +27,18 @@ func _ready():
 func _process(delta):
 	move_dir_update()
 	attackable_check()
+	floor_check()
 	pass
+
+func floor_check():
+	var a = Physics2DTestMotionResult.new()
+	var b = test_motion(Vector2.LEFT, true, 0.08, a)
+	if b:
+		#a.collider.ball_state_update()
+		print("collide")
+	else:
+		if movement_state != "on_air":
+			movement_state = "on_air"
 
 func _integrate_forces(state):
 	rotation_degrees = 0
