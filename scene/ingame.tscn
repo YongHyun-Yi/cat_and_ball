@@ -1,14 +1,12 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scene/scroll_block.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
-[ext_resource path="res://scene/ice_block.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scene/scroll_block.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
@@ -50,13 +48,6 @@ margin_top = 957.0
 margin_right = 2432.0
 margin_bottom = 1359.0
 
-[node name="wall4" parent="walls" instance=ExtResource( 5 )]
-margin_left = 1559.0
-margin_top = 682.0
-margin_right = 1921.0
-margin_bottom = 746.0
-one_way = true
-
 [node name="wall7" parent="walls" instance=ExtResource( 5 )]
 margin_left = -113.0
 margin_top = -395.0
@@ -75,20 +66,31 @@ margin_top = -52.0
 margin_right = 2819.0
 margin_bottom = 1485.0
 
-[node name="enemys" type="Node2D" parent="."]
+[node name="scroll_block" parent="walls" instance=ExtResource( 4 )]
+margin_left = 117.0
+margin_top = 278.0
+margin_right = 497.0
+margin_bottom = 393.0
+scroll_way = "right"
 
-[node name="enemy_body" parent="enemys" instance=ExtResource( 4 )]
-position = Vector2( 407, 509 )
+[node name="scroll_block2" parent="walls" instance=ExtResource( 4 )]
+margin_left = 749.0
+margin_top = 474.0
+margin_right = 1129.0
+margin_bottom = 589.0
+scroll_way = "left"
+
+[node name="enemys" type="Node2D" parent="."]
 
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 1285, 633 )
+position = Vector2( 492, 816 )
 
 [node name="ball" type="Node2D" parent="."]
 
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
-position = Vector2( 1225, 478 )
+position = Vector2( 176, 209 )
 
 [node name="controls" type="Control" parent="."]
 visible = false
@@ -233,18 +235,7 @@ position = Vector2( 2483, 505 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 6 )
 
-[node name="ice_block" parent="." instance=ExtResource( 8 )]
-margin_left = 337.0
-margin_top = 885.0
-margin_right = 903.0
-margin_bottom = 985.0
-
-[node name="scroll_block" parent="." instance=ExtResource( 9 )]
-margin_left = 1082.0
-margin_top = 893.0
-margin_right = 1382.0
-margin_bottom = 993.0
-scroll_way = "right"
+[node name="obstacles" type="Node2D" parent="."]
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

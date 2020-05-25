@@ -21,3 +21,12 @@ func state_update(a):
 	
 	if a.scroll_acl != speed:
 		a.scroll_acl = speed
+
+func ball_state_update(a):
+	a.movement_state = state
+	
+	#var b = a.get_applied_force() 
+	if a.applied_force.x != speed*3:
+		#a.friction = 0
+		a.applied_force.x = speed*3
+	pass

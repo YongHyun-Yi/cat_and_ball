@@ -5,7 +5,7 @@
 [ext_resource path="res://script/ball_remake.gd" type="Script" id=3]
 
 [sub_resource type="PhysicsMaterial" id=1]
-friction = 0.5
+rough = true
 bounce = 0.7
 
 [sub_resource type="CircleShape2D" id=2]
@@ -72,7 +72,7 @@ collision_mask = 0
 physics_material_override = SubResource( 1 )
 gravity_scale = 8.0
 contacts_reported = 1
-can_sleep = false
+sleeping = true
 script = ExtResource( 3 )
 
 [node name="sprite" type="Sprite" parent="."]
@@ -112,6 +112,8 @@ visible = false
 points = PoolVector2Array( 0, 0, 100, 0 )
 default_color = Color( 1, 0.4, 0.4, 1 )
 end_cap_mode = 2
+[connection signal="body_entered" from="." to="." method="floor_in"]
+[connection signal="body_exited" from="." to="." method="floor_out"]
 [connection signal="timeout" from="sprite/timer" to="." method="attack_pause_timer"]
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_area_entered"]
 [connection signal="tween_completed" from="receive_tween" to="." method="_on_receive_tween_tween_completed"]

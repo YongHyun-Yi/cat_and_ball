@@ -32,10 +32,15 @@ func _process(delta):
 
 func floor_check():
 	var a = Physics2DTestMotionResult.new()
-	var b = test_motion(Vector2.LEFT, true, 0.08, a)
+	var b = test_motion(Vector2.ZERO, true, 0.08, a) # 여기에 주어진 벡터는 해당값으로 이동시키기만 하는것
 	if b:
-		#a.collider.ball_state_update()
-		print("collide")
+		var collision_pos : Vector2 = (a.collision_point - global_position).normalized() # 충돌지점은 위치좌표로 뜸
+		#print(str(ceil(collision_pos.y))) # 정상화해줘도 불분명해서 반올림
+		
+		if a.collision_point.y >= global_position.y :
+			if movement_state != a.collider.get_parent().state:
+				a.collider.get_parent().ball_state_update(self)
+				#print("update")
 	else:
 		if movement_state != "on_air":
 			movement_state = "on_air"
@@ -96,4 +101,14 @@ func hit_zone_area_entered(area):
 func hit_zone_body_entered(body):
 	linear_velocity *= -1
 	body.get_parent().damaged()
+	pass # Replace with function body.
+
+
+func floor_in(body):
+	print("floor in")
+	pass # Replace with function body.
+
+
+func floor_out(body):
+	print("floor out")
 	pass # Replace with function body.
