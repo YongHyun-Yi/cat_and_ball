@@ -15,6 +15,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$background/combo.text = "COMBO\n"+str(combo)
+	$buttons/Label.text = "state : "+ball.movement_state+"\n applied force.x : "+str(ball.applied_force.x)
 	pass
 
 func restart():

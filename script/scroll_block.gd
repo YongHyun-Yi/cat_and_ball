@@ -26,7 +26,8 @@ func ball_state_update(a):
 	a.movement_state = state
 	
 	#var b = a.get_applied_force() 
-	if a.applied_force.x != speed*3:
+	if a.applied_force.x != speed:
 		#a.friction = 0
-		a.applied_force.x = speed*3
+		a.applied_force.x = speed
+		#a.friction = 0
 	pass

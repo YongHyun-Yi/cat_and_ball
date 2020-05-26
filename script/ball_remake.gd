@@ -31,6 +31,7 @@ func _process(delta):
 	pass
 
 func floor_check():
+	"""
 	var a = Physics2DTestMotionResult.new()
 	var b = test_motion(Vector2.ZERO, true, 0.08, a) # 여기에 주어진 벡터는 해당값으로 이동시키기만 하는것
 	if b:
@@ -41,25 +42,32 @@ func floor_check():
 			if movement_state != a.collider.get_parent().state:
 				a.collider.get_parent().ball_state_update(self)
 				#print("update")
+	"""
+	if $floor_ray.is_colliding(): # 위 코드를 레이캐스트로 대체 / 마찰계수는 안건드는게 더 자연스럽게 나옴
+		var a = $floor_ray.get_collider()
+		if movement_state != a.get_parent().state:
+			a.get_parent().ball_state_update(self)
 	else:
 		if movement_state != "on_air":
+			if movement_state == "scroll":
+				applied_force.x = 0
+				#friction = 1
 			movement_state = "on_air"
 
 func _integrate_forces(state):
 	rotation_degrees = 0
+	#set_angular_velocity(0)
 
 func attackable_check():
 	#print(str(rotation_degrees))
-	set_angular_velocity(0)
+	#set_angular_velocity(0)
 	if abs(linear_velocity.x)/1000 > 1 or abs(linear_velocity.y)/1000 > 1:
 		if attackable != true:
 			attackable = true
-			print("attackable")
 			$sprite.self_modulate = "ffffff"
 	else:
 		if attackable != false:
 			attackable = false
-			print("dis attackable")
 			$sprite.self_modulate = "ff0000"
 
 func move_dir_arrow_toggle(a):
@@ -75,12 +83,16 @@ func move_dir_update():
 	$Line2D.points[1] =  move_direction * 100
 
 func ball_attacked(kick_power):
-	print(str(linear_velocity))
+	
 	attackable = true
-	print("attackable")
 	$sprite.self_modulate = "ffffff"
 	set_linear_velocity(Vector2(0, 0))
 	apply_impulse(Vector2(0, 0), move_direction * kick_power)
+	
+	if friction != 1:
+		friction = 1
+	if applied_force.x != 0:
+		applied_force.x = 0
 	pass
 
 func hit_zone_area_entered(area):
@@ -103,12 +115,5 @@ func hit_zone_body_entered(body):
 	body.get_parent().damaged()
 	pass # Replace with function body.
 
-
-func floor_in(body):
-	print("floor in")
-	pass # Replace with function body.
-
-
-func floor_out(body):
-	print("floor out")
-	pass # Replace with function body.
+func ball_dead():
+	pass

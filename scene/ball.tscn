@@ -112,8 +112,10 @@ visible = false
 points = PoolVector2Array( 0, 0, 100, 0 )
 default_color = Color( 1, 0.4, 0.4, 1 )
 end_cap_mode = 2
-[connection signal="body_entered" from="." to="." method="floor_in"]
-[connection signal="body_exited" from="." to="." method="floor_out"]
+
+[node name="floor_ray" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 60 )
 [connection signal="timeout" from="sprite/timer" to="." method="attack_pause_timer"]
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_area_entered"]
 [connection signal="tween_completed" from="receive_tween" to="." method="_on_receive_tween_tween_completed"]

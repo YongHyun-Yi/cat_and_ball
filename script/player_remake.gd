@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 onready var ball = get_node("/root/ingame/ball/ball_body")
 
-export (String, "idle", "slide", "scroll", "on_air") var movement_state = "idle"
+export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
 
 var velocity = Vector2()
 var gravity = 2000
@@ -19,6 +19,7 @@ var scroll_acl = 0
 
 var kick_power = 2000
 var attack_power = 1
+var invincible = false
 
 var flipped = false
 
@@ -64,7 +65,6 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 
 func arrowkey_move_input():
 	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
-		
 		match movement_state:
 			"idle":
 				velocity.x = -speed
@@ -92,7 +92,20 @@ func arrowkey_move_input():
 					velocity.x = velocity.x
 				else:
 					velocity.x = lerp(velocity.x, speed, 0.15)
-		
+		"""
+		match movement_state:
+			"idle":
+				velocity.x = speed
+			"slide":
+				velocity.x = min(velocity.x + slide_acl, slide_max)
+			"scroll":
+				velocity.x = speed + scroll_acl
+			"on_air":
+				if velocity.x > speed:
+					velocity.x = velocity.x
+				else:
+					velocity.x = lerp(velocity.x, speed, 0.15)
+		"""
 	else:
 		match movement_state:
 			"idle":
@@ -143,8 +156,8 @@ func jump_and_gravity(delta):
 		if not is_on_floor():
 			if can_dubble_jump == true:
 				can_dubble_jump = false
-				velocity.y = 0
-				velocity.y += dubble_jump
+				#velocity.y = 0
+				velocity.y = dubble_jump
 				$sprite.animation = "jump"
 		else:
 			velocity.y += jump
@@ -212,4 +225,11 @@ func floor_check_in(body):
 
 func floor_check_out(body):
 	movement_state = "on_air"
+	pass # Replace with function body.
+
+
+func hitted_timeout():
+	$hitted_anim/Timer.stop()
+	$hitted_anim.play("reset")
+	invincible = false
 	pass # Replace with function body.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -7,7 +7,11 @@
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
+[ext_resource path="res://scene/spring.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scene/item.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scene/spike.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scene/ball_spawner.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
 [ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=21]
@@ -25,6 +29,10 @@ load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
 
 [sub_resource type="DynamicFont" id=2]
 size = 100
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
 font_data = ExtResource( 3 )
 
 [node name="ingame" type="Node2D"]
@@ -74,10 +82,10 @@ margin_bottom = 393.0
 scroll_way = "right"
 
 [node name="scroll_block2" parent="walls" instance=ExtResource( 4 )]
-margin_left = 749.0
-margin_top = 474.0
-margin_right = 1129.0
-margin_bottom = 589.0
+margin_left = 691.0
+margin_top = 470.0
+margin_right = 1071.0
+margin_bottom = 585.0
 scroll_way = "left"
 
 [node name="enemys" type="Node2D" parent="."]
@@ -85,7 +93,7 @@ scroll_way = "left"
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 492, 816 )
+position = Vector2( 801, 853 )
 
 [node name="ball" type="Node2D" parent="."]
 
@@ -169,6 +177,7 @@ expand = true
 layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="background"]
+visible = false
 margin_right = 1280.0
 margin_bottom = 720.0
 mouse_filter = 2
@@ -177,6 +186,7 @@ __meta__ = {
 }
 
 [node name="combo" type="Label" parent="background"]
+visible = false
 margin_left = 455.0
 margin_top = 175.0
 margin_right = 828.0
@@ -215,6 +225,17 @@ margin_bottom = 120.0
 texture_normal = SubResource( 1 )
 expand = true
 
+[node name="Label" type="Label" parent="buttons"]
+margin_left = 672.0
+margin_top = 12.0
+margin_right = 916.0
+margin_bottom = 105.0
+custom_fonts/font = SubResource( 3 )
+text = "asdasfadasd"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="icon" type="Sprite" parent="."]
 position = Vector2( -120, 686 )
 scale = Vector2( 2, 2 )
@@ -236,6 +257,30 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 6 )
 
 [node name="obstacles" type="Node2D" parent="."]
+
+[node name="sponge" type="Node2D" parent="obstacles"]
+
+[node name="item_box" type="Node2D" parent="obstacles"]
+
+[node name="boom_barrel" type="Node2D" parent="obstacles"]
+
+[node name="blink_block" type="Node2D" parent="obstacles"]
+
+[node name="moving_block" type="Node2D" parent="obstacles"]
+
+[node name="bonus_target" type="Node2D" parent="obstacles"]
+
+[node name="ball_spawner" parent="obstacles" instance=ExtResource( 12 )]
+position = Vector2( 865, 0 )
+
+[node name="spring" parent="obstacles" instance=ExtResource( 8 )]
+position = Vector2( 1269, 896 )
+
+[node name="spike" parent="obstacles" instance=ExtResource( 11 )]
+position = Vector2( 1535, 954 )
+
+[node name="item" parent="." instance=ExtResource( 9 )]
+position = Vector2( 482, 859 )
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

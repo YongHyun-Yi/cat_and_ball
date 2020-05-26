@@ -7,6 +7,8 @@ var gravity = 2000
 var jump = -900
 var speed = 400
 
+var invincible = false
+
 export var hp = 10
 
 
