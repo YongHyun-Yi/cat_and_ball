@@ -5,6 +5,7 @@ export (String, "left", "right") var scroll_way
 
 
 # Called when the node enters the scene tree for the first time.
+
 func _ready():
 	state = "scroll"
 	if scroll_way == "left":

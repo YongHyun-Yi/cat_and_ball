@@ -88,7 +88,7 @@ shape = SubResource( 2 )
 
 [node name="hit_zone" type="Area2D" parent="."]
 collision_layer = 64
-collision_mask = 32
+collision_mask = 40
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="hit_zone"]
 modulate = Color( 0.827451, 1, 0, 1 )
@@ -116,6 +116,11 @@ end_cap_mode = 2
 [node name="floor_ray" type="RayCast2D" parent="."]
 enabled = true
 cast_to = Vector2( 0, 60 )
+
+[node name="dead_timer" type="Timer" parent="."]
+pause_mode = 2
+wait_time = 3.0
 [connection signal="timeout" from="sprite/timer" to="." method="attack_pause_timer"]
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_area_entered"]
 [connection signal="tween_completed" from="receive_tween" to="." method="_on_receive_tween_tween_completed"]
+[connection signal="timeout" from="dead_timer" to="." method="dead_timer_timeout"]

@@ -1,4 +1,4 @@
-extends "res://script/item.gd"
+extends "res://script/interact_object.gd"
 
 
 export var spring_power = -1500
@@ -14,7 +14,7 @@ func _ready():
 #	pass
 
 
-func body_interact(body):
+func interact(body):
 	print("spring_in")
 	body.velocity.y = spring_power
 	body.move_and_slide(body.velocity)

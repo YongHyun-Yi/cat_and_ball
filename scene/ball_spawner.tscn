@@ -11,5 +11,5 @@ position = Vector2( 0, 151 )
 scale = Vector2( 2.03906, 4.96875 )
 texture = ExtResource( 1 )
 
-[node name="spwan_point" type="Position2D" parent="."]
+[node name="spawn_point" type="Position2D" parent="."]
 position = Vector2( 0, 62 )

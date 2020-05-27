@@ -16,7 +16,7 @@ func _ready():
 #	pass
 
 
-func body_interact(body):
-	print("get item!")
+func interact(body):
+	print("interact!")
 	queue_free()
 	pass # Replace with function body.

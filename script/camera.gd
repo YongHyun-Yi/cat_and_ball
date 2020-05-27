@@ -21,6 +21,10 @@ func _process(delta):
 	
 	if distance < 1.6 and distance > 1.1:
 		set_zoom(Vector2(1, 1) * distance) # 거리에 따른 줌 설정
+	elif distance >= 1.6:
+		set_zoom(Vector2(1.6, 1.6))
+	elif distance <= 1.1:
+		set_zoom(Vector2(1.1, 1.1))
 	
 	global_position = (player.global_position + ball.global_position) * 0.5 # 두 오브젝트 사이에 카메라 위치 설정
 	pass

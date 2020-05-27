@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://script/blink_platform.gd" type="Script" id=1]
+[ext_resource path="res://scene/wall.tscn" type="PackedScene" id=2]
+
+[node name="blink_platform" instance=ExtResource( 2 )]
+color = Color( 0.956863, 0.207843, 1, 1 )
+script = ExtResource( 1 )
+blink_time = 3.0
+
+[node name="Timer" type="Timer" parent="." index="1"]
+[connection signal="timeout" from="Timer" to="." method="blink_toggle"]

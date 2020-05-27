@@ -2,11 +2,13 @@ extends RigidBody2D
 
 onready var manager = get_node("/root/ingame")
 onready var camera = get_node("/root/ingame/camera")
+var ball_spawner = null
 
 var move_direction = Vector2()
 var power = 2000
 
 var attackable = false
+var dead = false
 
 signal hit_pause
 
@@ -56,6 +58,8 @@ func floor_check():
 
 func _integrate_forces(state):
 	rotation_degrees = 0
+	#if dead == true:
+	#	set_linear_velocity(Vector2(0, 0))
 	#set_angular_velocity(0)
 
 func attackable_check():
@@ -116,4 +120,18 @@ func hit_zone_body_entered(body):
 	pass # Replace with function body.
 
 func ball_dead():
+	dead = true
+	$dead_timer.start()
+	$CollisionShape2D.disabled = true
+	$hit_zone/CollisionShape2D2.disabled = true
+	set_linear_velocity(Vector2(0, 0))
+	mode = 3
+	hide()
 	pass
+
+
+func dead_timer_timeout():
+	print("timeout")
+	$dead_timer.stop()
+	ball_spawner.ball_spawn()
+	pass # Replace with function body.

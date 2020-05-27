@@ -1,4 +1,4 @@
-extends "res://script/item.gd"
+extends "res://script/interact_object.gd"
 
 
 onready var player = get_node("/root/ingame/player/player_body")
@@ -15,7 +15,7 @@ func _process(delta):
 		hit_check()
 	pass
 
-func body_interact(area):
+func interact(area):
 	var a = area.get_parent()
 	
 	pass # Replace with function body.
@@ -32,9 +32,16 @@ func hit_check():
 	#"""
 	for i in $Area2D.get_overlapping_areas(): # 적에게도 적용하기위한 확장성을 위해 player에서 overlapped area로 변경
 		var a = i.get_parent()
-		if a.invincible == false:
+		if a is KinematicBody2D and a.invincible == false:
 			a.invincible = true
 			a.get_node("hitted_anim").play("hitted")
 			a.get_node("hitted_anim/Timer").start()
 			print("spike!")
+		elif a is RigidBody2D and a.name == "ball_body":
+			if a.dead == false:
+				print("dead is : "+str(a.dead))
+				a.dead = true
+				print("dead is : "+str(a.dead))
+				a.ball_dead()
+				
 	#"""
