@@ -41,7 +41,7 @@ func _process(delta):
 	flip_check()
 	arrowkey_move_input()
 	jump_and_gravity(delta)
-	move_and_slide(velocity, Vector2(0, -1))
+	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
 	
 	#$attack.look_at(get_global_mouse_position())
 	
@@ -144,13 +144,21 @@ func jump_and_gravity(delta):
 	"""
 	
 	if is_on_floor():
+		"""
 		if velocity.y != 0:
 			velocity.y = 0
 			$sprite.animation = "idle"
 			can_dubble_jump = true
+		"""
+		if $sprite.animation != "idle":
+			$sprite.animation = "idle"
+			can_dubble_jump = true
 	else:
-		if velocity.y < gravity:
-			velocity.y += gravity * delta
+		#if velocity.y < gravity:
+		#	velocity.y += gravity * delta
+		if velocity.y > 0 and $sprite.animation != "receive":
+			$sprite.animation = "receive"
+			$sprite.frame = 1
 	
 	if Input.is_action_just_pressed("move_jump"):
 		if not is_on_floor():
@@ -159,9 +167,13 @@ func jump_and_gravity(delta):
 				#velocity.y = 0
 				velocity.y = dubble_jump
 				$sprite.animation = "jump"
+				print("doubble jump")
 		else:
 			velocity.y += jump
 			$sprite.animation = "jump"
+	#print(str(can_dubble_jump))
+	#print("velocity Y : "+str(velocity.y))
+	velocity.y += gravity * delta
 	pass
 
 func _unhandled_input(event):

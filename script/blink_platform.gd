@@ -21,12 +21,12 @@ func blink_toggle():
 		blink = false
 		$Staticbody2D/CollisionShape2D.disabled = true
 		self_modulate.a = .5
-		print("blink false")
+		#print("blink false")
 	
 	elif blink == false:
 		blink = true
 		$Staticbody2D/CollisionShape2D.disabled = false
 		self_modulate.a = 1
-		print("blink true")
+		#print("blink true")
 	
 	pass

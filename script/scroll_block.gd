@@ -30,5 +30,6 @@ func ball_state_update(a):
 	if a.applied_force.x != speed:
 		#a.friction = 0
 		a.applied_force.x = speed
+		a.set_angular_velocity(0)
 		#a.friction = 0
 	pass

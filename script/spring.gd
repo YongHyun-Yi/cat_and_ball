@@ -17,5 +17,6 @@ func _ready():
 func interact(body):
 	print("spring_in")
 	body.velocity.y = spring_power
-	body.move_and_slide(body.velocity)
+	body.velocity = body.move_and_slide(body.velocity, Vector2.UP)
+	body.get_node("sprite").animation = "jump"
 	pass # Replace with function body.
