@@ -22,6 +22,7 @@ func state_update(a):
 	
 	if a.scroll_acl != speed:
 		a.scroll_acl = speed
+	a.velocity = a.move_and_slide(a.velocity, Vector2.UP)
 
 func ball_state_update(a):
 	a.movement_state = state

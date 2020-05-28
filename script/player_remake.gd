@@ -33,10 +33,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#if get_slide_count():
-	#	for i in get_slide_count():
-	#		var collision = get_slide_collision(i)
-	#		print("Collided with: ", collision.collider.name)
 	
 	flip_check()
 	arrowkey_move_input()
@@ -92,27 +88,12 @@ func arrowkey_move_input():
 					velocity.x = velocity.x
 				else:
 					velocity.x = lerp(velocity.x, speed, 0.15)
-		"""
-		match movement_state:
-			"idle":
-				velocity.x = speed
-			"slide":
-				velocity.x = min(velocity.x + slide_acl, slide_max)
-			"scroll":
-				velocity.x = speed + scroll_acl
-			"on_air":
-				if velocity.x > speed:
-					velocity.x = velocity.x
-				else:
-					velocity.x = lerp(velocity.x, speed, 0.15)
-		"""
 	else:
 		match movement_state:
 			"idle":
 				velocity.x = 0
 			"slide":
 				if velocity.x != 0:
-					#print(str(velocity))
 					velocity.x = lerp(velocity.x, 0, 0.04) # 슬라이딩 멈추는 속도
 			"scroll":
 				velocity.x = scroll_acl
@@ -120,79 +101,27 @@ func arrowkey_move_input():
 				velocity.x = lerp(velocity.x, speed, 0.001)
 
 func jump_and_gravity(delta):
-	"""
-	if is_on_floor():
-		if velocity.y != 0:
-			velocity.y = 0
-			$sprite.animation = "idle"
-			can_dubble_jump = true
-		
-		if Input.is_action_just_pressed("move_jump"):
-			velocity.y += jump
-			$sprite.animation = "jump"
-			print(str(can_dubble_jump))
-	else:
-		if Input.is_action_just_pressed("move_jump") and can_dubble_jump == true:
-			can_dubble_jump = false
-			velocity.y = 0
-			velocity.y += dubble_jump
-			$sprite.animation = "jump"
-			print(str(can_dubble_jump))
-		
-		if velocity.y < gravity:
-			velocity.y += gravity * delta
-	"""
 	
-	if is_on_floor():
-		"""
-		if velocity.y != 0:
-			velocity.y = 0
-			$sprite.animation = "idle"
-			can_dubble_jump = true
-		"""
-		if $sprite.animation != "idle":
-			$sprite.animation = "idle"
-			can_dubble_jump = true
-	else:
-		#if velocity.y < gravity:
-		#	velocity.y += gravity * delta
+	if movement_state == "on_air":
 		if velocity.y > 0 and $sprite.animation != "receive":
 			$sprite.animation = "receive"
 			$sprite.frame = 1
 	
 	if Input.is_action_just_pressed("move_jump"):
-		if not is_on_floor():
+		if movement_state == "on_air":
 			if can_dubble_jump == true:
 				can_dubble_jump = false
-				#velocity.y = 0
 				velocity.y = dubble_jump
 				$sprite.animation = "jump"
-				print("doubble jump")
 		else:
 			velocity.y += jump
 			$sprite.animation = "jump"
-	#print(str(can_dubble_jump))
-	#print("velocity Y : "+str(velocity.y))
-	velocity.y += gravity * delta
+
+	velocity.y += gravity * delta # 중력값은 계속 적용
 	pass
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("move_attack"):
-		#print("attack")
-		
-		"""
-		var b = $attack.get_overlapping_bodies() # 공 공격
-		
-		if b.size() > 0:
-			for i in b:
-				
-				var bs = $attack.global_position.direction_to(get_global_mouse_position())
-				bs.x = stepify(bs.x, 0.1)
-				bs.y = stepify(bs.y, 0.1)
-				print(str(bs))
-				
-				i.attacked(bs)
-		"""
 		
 		var b = $attack.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
 		if b.size() > 0:
@@ -208,7 +137,6 @@ func _unhandled_input(event):
 
 
 func attack_zone_in(area): # 공이 공격존 안에 들어오면 공격방향을 표시하도록
-	#print("area in")
 	var a = area.get_parent()
 	if a.has_method("move_dir_arrow_toggle"):
 		a.move_dir_arrow_toggle("show")
@@ -216,22 +144,20 @@ func attack_zone_in(area): # 공이 공격존 안에 들어오면 공격방향�
 
 
 func attack_zone_out(area):
-	#print("area in")
 	var a = area.get_parent()
 	if a.has_method("move_dir_arrow_toggle"):
 		a.move_dir_arrow_toggle("hide")
 	pass # Replace with function body.
 
 
-func floor_check_in(body):
-	#if can_dubble_jump == false:
-	#can_dubble_jump = true
-	
+func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기서 설정?
 	var a = body.get_parent()
 	
 	if not a.get("state") == null:
 		a.state_update(self)
-	
+		$sprite.animation = "idle"
+		$sprite.frame = 1
+		can_dubble_jump = true
 	pass # Replace with function body.
 
 

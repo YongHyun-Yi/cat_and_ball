@@ -18,6 +18,7 @@ func _process(delta):
 	#$buttons/Label.text = "state : "+ball.movement_state+"\n applied force.x : "+str(ball.applied_force.x)
 	#$buttons/Label.text = "state : "+str(player.can_dubble_jump)
 	$buttons/Label.text = "state : "+str(player.velocity.y)
+	$buttons/Label.text = "state : "+str(player.movement_state)
 	pass
 
 func restart():

@@ -49,6 +49,8 @@ current = true
 zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
+[node name="Tween" type="Tween" parent="camera"]
+
 [node name="walls" type="Node2D" parent="."]
 
 [node name="wall" parent="walls" instance=ExtResource( 5 )]
