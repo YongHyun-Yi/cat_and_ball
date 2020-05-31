@@ -66,3 +66,9 @@ func hp_update(a):
 	$hp_bar.value = hp
 	if hp <= 0:
 		queue_free()
+
+func interact_spike():
+	if invincible == false:
+		invincible = true
+		$hitted_anim.play("hitted")
+		$hitted_anim/Timer.start()

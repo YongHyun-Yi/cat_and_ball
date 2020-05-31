@@ -19,15 +19,15 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -90,18 +90,15 @@ playing = true
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
-[node name="attack" type="Area2D" parent="."]
+[node name="attack_zone" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 64
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_zone"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
 rotation = -1.57079
 scale = Vector2( 2, 2 )
 shape = SubResource( 3 )
-
-[node name="Position2D" type="Position2D" parent="attack"]
-position = Vector2( 0, 44 )
 
 [node name="hitted_anim" type="AnimationPlayer" parent="."]
 autoplay = "reset"
@@ -119,7 +116,7 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="floor_check"]
 shape = SubResource( 6 )
 
-[node name="hit_zone" type="Area2D" parent="."]
+[node name="hit_zone" type="StaticBody2D" parent="."]
 collision_layer = 0
 collision_mask = 8
 
@@ -127,8 +124,8 @@ collision_mask = 8
 self_modulate = Color( 0, 1, 0.180392, 1 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 7 )
-[connection signal="area_entered" from="attack" to="." method="attack_zone_in"]
-[connection signal="area_exited" from="attack" to="." method="attack_zone_out"]
+[connection signal="area_entered" from="attack_zone" to="." method="attack_zone_in"]
+[connection signal="area_exited" from="attack_zone" to="." method="attack_zone_out"]
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]
 [connection signal="body_entered" from="floor_check" to="." method="floor_check_in"]
 [connection signal="body_exited" from="floor_check" to="." method="floor_check_out"]

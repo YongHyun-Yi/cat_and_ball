@@ -19,26 +19,25 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 37, 46 )
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 28.3911
 height = 19.1307
 
-[sub_resource type="Animation" id=4]
-resource_name = "hitted"
+[sub_resource type="Animation" id=5]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -54,7 +53,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.498039 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:self_modulate")
@@ -69,10 +68,10 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.866667, 0.231373, 0.231373, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0, 0, 0, 1 )
 
 [node name="enemy_body" type="KinematicBody2D"]
@@ -93,7 +92,7 @@ position = Vector2( 0, -92 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
-[node name="hit_zone" type="Area2D" parent="."]
+[node name="hit_zone" type="StaticBody2D" parent="."]
 position = Vector2( 0, -92 )
 collision_layer = 96
 collision_mask = 8
@@ -101,12 +100,12 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hit_zone"]
 self_modulate = Color( 0, 1, 0.180392, 1 )
 scale = Vector2( 2, 2 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="hitted_anim" type="AnimationPlayer" parent="."]
 autoplay = "reset"
-anims/hitted = SubResource( 4 )
-anims/reset = SubResource( 5 )
+anims/hitted = SubResource( 5 )
+anims/reset = SubResource( 6 )
 
 [node name="Timer" type="Timer" parent="hitted_anim"]
 wait_time = 2.0
@@ -116,8 +115,8 @@ margin_left = -56.7764
 margin_top = -213.022
 margin_right = 56.2236
 margin_bottom = -199.022
-custom_styles/fg = SubResource( 6 )
-custom_styles/bg = SubResource( 7 )
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
 max_value = 10.0
 step = 1.0
 value = 10.0

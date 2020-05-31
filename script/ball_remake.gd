@@ -99,17 +99,17 @@ func ball_attacked(kick_power):
 		applied_force.x = 0
 	pass
 
-func hit_zone_area_entered(area):
-	var a = area.get_parent()
+func hit_zone_in(a):
+	a = a.get_parent()
 	
 	if attackable == true:
 		if a.has_method("ball_hit"): # 적에게 맞을경우
 			emit_signal("hit_pause")
 			$effect2.show()
-			$effect2.rotation_degrees = rad2deg(global_position.angle_to_point(area.get_parent().global_position)-180) # 스프라이트 방향이 반대라서 -180도 해줬음
+			$effect2.rotation_degrees = rad2deg(global_position.angle_to_point(a.global_position)-180) # 스프라이트 방향이 반대라서 -180도 해줬음
 			#$hit_zone/CollisionShape2D2.set_deferred("disabled", true) # 버그인가? disabled를 해도 계속 시그널이 방출되서 사용
-			linear_velocity.x *= -1
-			area.get_parent().ball_hit()
+			#linear_velocity.x *= -1
+			a.ball_hit()
 			camera.camera_shake(.2, 20)
 	pass # Replace with function body.
 
@@ -129,9 +129,13 @@ func ball_dead():
 	hide()
 	pass
 
-
 func dead_timer_timeout():
 	print("timeout")
 	$dead_timer.stop()
 	ball_spawner.ball_spawn()
 	pass # Replace with function body.
+
+func interact_spike():
+	if dead == false:
+		dead = true
+		ball_dead()

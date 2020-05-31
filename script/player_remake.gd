@@ -123,28 +123,29 @@ func jump_and_gravity(delta):
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("move_attack"):
 		
-		var b = $attack.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
+		var b = $attack_zone.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
 		if b.size() > 0:
 			for i in b:
 				
 				var a = i.get_parent()
 				if a.has_method("ball_attacked"):
 					a.ball_attacked(kick_power)
-				elif a.has_method("enemy_attacked"):
-					a.enemy_attacked(attack_power)
+				#elif a.has_method("enemy_attacked"):
+				#	a.enemy_attacked(attack_power)
+				print(i.name)
 		
 		get_tree().is_input_handled()
 
 
-func attack_zone_in(area): # 공이 공격존 안에 들어오면 공격방향을 표시하도록
-	var a = area.get_parent()
+func attack_zone_in(a): # 공이 공격존 안에 들어오면 공격방향을 표시하도록
+	a = a.get_parent()
 	if a.has_method("move_dir_arrow_toggle"):
 		a.move_dir_arrow_toggle("show")
 	pass # Replace with function body.
 
 
-func attack_zone_out(area):
-	var a = area.get_parent()
+func attack_zone_out(a):
+	a = a.get_parent()
 	if a.has_method("move_dir_arrow_toggle"):
 		a.move_dir_arrow_toggle("hide")
 	pass # Replace with function body.
@@ -171,3 +172,9 @@ func hitted_timeout():
 	$hitted_anim.play("reset")
 	invincible = false
 	pass # Replace with function body.
+
+func interact_spike():
+	if invincible == false:
+		invincible = true
+		$hitted_anim.play("hitted")
+		$hitted_anim/Timer.start()

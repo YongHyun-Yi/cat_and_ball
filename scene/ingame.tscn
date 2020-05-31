@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scene/spike.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scene/ball_spawner.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scene/blink_platform.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
 [ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=21]
@@ -84,24 +85,20 @@ margin_right = 436.0
 margin_bottom = 713.0
 scroll_way = "right"
 
-[node name="scroll_block2" parent="walls" instance=ExtResource( 4 )]
-margin_left = 501.0
-margin_top = 574.0
-margin_right = 881.0
-margin_bottom = 689.0
-scroll_way = "left"
-
 [node name="enemys" type="Node2D" parent="."]
+
+[node name="enemy_body" parent="enemys" instance=ExtResource( 15 )]
+position = Vector2( 955, 911 )
 
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 801, 853 )
+position = Vector2( 1824, 850 )
 
 [node name="ball" type="Node2D" parent="."]
 
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
-position = Vector2( 1655, 580 )
+position = Vector2( 1661, 856 )
 
 [node name="controls" type="Control" parent="."]
 visible = false
@@ -269,13 +266,11 @@ texture = ExtResource( 6 )
 
 [node name="moving_block" type="Node2D" parent="obstacles"]
 
-[node name="bonus_target" type="Node2D" parent="obstacles"]
-
 [node name="spring" parent="obstacles" instance=ExtResource( 8 )]
-position = Vector2( 1269, 896 )
+position = Vector2( 369, 96 )
 
 [node name="spike" parent="obstacles" instance=ExtResource( 11 )]
-position = Vector2( 1535, 954 )
+position = Vector2( 2147, 766 )
 
 [node name="ball_spawner" parent="obstacles" instance=ExtResource( 12 )]
 position = Vector2( 865, 0 )
@@ -284,10 +279,10 @@ position = Vector2( 865, 0 )
 position = Vector2( 482, 859 )
 
 [node name="blink_platform" parent="obstacles" instance=ExtResource( 13 )]
-margin_left = 1427.0
-margin_top = 663.0
-margin_right = 1679.0
-margin_bottom = 767.0
+margin_left = 120.0
+margin_top = 314.0
+margin_right = 372.0
+margin_bottom = 418.0
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

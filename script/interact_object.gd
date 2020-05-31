@@ -17,6 +17,6 @@ func _ready():
 
 
 func interact(body):
-	print("interact!")
-	queue_free()
+	#print("interact!")
+	#queue_free()
 	pass # Replace with function body.
