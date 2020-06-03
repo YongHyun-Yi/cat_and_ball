@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scene/spike.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scene/ball_spawner.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scene/blink_platform.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scene/ice_block.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
@@ -79,10 +80,10 @@ margin_right = 2819.0
 margin_bottom = 1485.0
 
 [node name="scroll_block" parent="walls" instance=ExtResource( 4 )]
-margin_left = 56.0
-margin_top = 598.0
-margin_right = 436.0
-margin_bottom = 713.0
+margin_left = 1300.0
+margin_top = 656.0
+margin_right = 1398.0
+margin_bottom = 945.0
 scroll_way = "right"
 
 [node name="enemys" type="Node2D" parent="."]
@@ -283,6 +284,12 @@ margin_left = 120.0
 margin_top = 314.0
 margin_right = 372.0
 margin_bottom = 418.0
+
+[node name="ice_block" parent="." instance=ExtResource( 14 )]
+margin_left = 162.0
+margin_top = 943.0
+margin_right = 1255.0
+margin_bottom = 1043.0
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

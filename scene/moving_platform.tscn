@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://moving_platform.gd" type="Script" id=1]
+[ext_resource path="res://script/moving_platform.gd" type="Script" id=1]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=2]
+
 
 [node name="moving_platform" instance=ExtResource( 2 )]
 color = Color( 0.733333, 1, 0, 1 )

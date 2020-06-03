@@ -4,6 +4,8 @@ onready var ball = get_node("/root/ingame/ball/ball_body")
 
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
 
+onready var sprite_state_machine = $sprite_anim_tree.get("parameters/playback")
+
 var velocity = Vector2()
 var gravity = 2000
 var jump = -900
@@ -16,6 +18,8 @@ var slide_acl = 20
 var slide_max = 700
 
 var scroll_acl = 0
+
+var attacking = false
 
 var kick_power = 2000
 var attack_power = 1
@@ -59,8 +63,37 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 			scale.x *= -1
 			#$sprite.flip_h = false
 
+func movement_state_check(a):
+	match movement_state:
+		"idle":
+			velocity.x = (speed*a)
+		"slide":
+			if a > 0: # 우측입력
+				velocity.x = min(velocity.x + slide_acl, slide_max)
+			elif a < 0: # 좌측입력
+				velocity.x = max(velocity.x - slide_acl, -slide_max)
+			elif a == 0: # 입력없음
+				if velocity.x != 0:
+					velocity.x = lerp(velocity.x, 0, 0.04) 
+		"scroll":
+			velocity.x = (speed*a) + scroll_acl
+		"on_air":
+			if a > 0:
+				if velocity.x > speed:
+					velocity.x = velocity.x
+				else:
+					velocity.x = lerp(velocity.x, speed, 0.15)
+			elif a < 0:
+				if velocity.x < -speed:
+					velocity.x = velocity.x
+				else:
+					velocity.x = lerp(velocity.x, -speed, 0.15)
+			elif a == 0:
+				velocity.x = lerp(velocity.x, speed, 0.001)
+
 func arrowkey_move_input():
 	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
+		"""
 		match movement_state:
 			"idle":
 				velocity.x = -speed
@@ -73,9 +106,14 @@ func arrowkey_move_input():
 					velocity.x = velocity.x
 				else:
 					velocity.x = lerp(velocity.x, -speed, 0.15)
+		"""
+		movement_state_check(-1)
+		if is_on_floor() and attacking == false:
+			if $sprite_anim.current_animation != "walk":
+				$sprite_anim.play("walk")
 		
 	elif Input.is_action_pressed("move_right"):
-		
+		"""
 		match movement_state:
 			"idle":
 				velocity.x = speed
@@ -88,7 +126,14 @@ func arrowkey_move_input():
 					velocity.x = velocity.x
 				else:
 					velocity.x = lerp(velocity.x, speed, 0.15)
+		"""
+		movement_state_check(1)
+		if is_on_floor() and attacking == false:
+			if $sprite_anim.current_animation != "walk":
+				$sprite_anim.play("walk")
+	
 	else:
+		"""
 		match movement_state:
 			"idle":
 				velocity.x = 0
@@ -99,6 +144,11 @@ func arrowkey_move_input():
 				velocity.x = scroll_acl
 			"on_air":
 				velocity.x = lerp(velocity.x, speed, 0.001)
+		"""
+		movement_state_check(0)
+		if is_on_floor() and attacking == false:
+			if $sprite_anim.current_animation != "idle":
+				$sprite_anim.play("idle")
 
 func jump_and_gravity(delta):
 	
@@ -106,6 +156,9 @@ func jump_and_gravity(delta):
 		if velocity.y > 0 and $sprite.animation != "receive":
 			$sprite.animation = "receive"
 			$sprite.frame = 1
+			
+		if velocity.y > 0 and $sprite.animation != "fall":
+			$sprite_anim.play("fall")
 	
 	if Input.is_action_just_pressed("move_jump"):
 		if movement_state == "on_air":
@@ -113,29 +166,33 @@ func jump_and_gravity(delta):
 				can_dubble_jump = false
 				velocity.y = dubble_jump
 				$sprite.animation = "jump"
+				$sprite_anim.play("jump")
 		else:
 			velocity.y += jump
 			$sprite.animation = "jump"
+			$sprite_anim.play("jump")
 
 	velocity.y += gravity * delta # 중력값은 계속 적용
 	pass
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("move_attack"):
-		
+		$sprite_anim.play("attack1")
+		attacking = true
 		var b = $attack_zone.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
 		if b.size() > 0:
 			for i in b:
-				
 				var a = i.get_parent()
 				if a.has_method("ball_attacked"):
 					a.ball_attacked(kick_power)
-				#elif a.has_method("enemy_attacked"):
-				#	a.enemy_attacked(attack_power)
-				print(i.name)
-		
+		b = $attack_zone.get_overlapping_bodies()
+		if b.size() > 0:
+			for i in b:
+				var a = i.get_parent()
+				if a.has_method("enemy_attacked"):
+					a.enemy_attacked(attack_power)
+				
 		get_tree().is_input_handled()
-
 
 func attack_zone_in(a): # 공이 공격존 안에 들어오면 공격방향을 표시하도록
 	a = a.get_parent()
@@ -178,3 +235,13 @@ func interact_spike():
 		invincible = true
 		$hitted_anim.play("hitted")
 		$hitted_anim/Timer.start()
+
+
+func _on_sprite_anim_animation_finished(anim_name):
+	if anim_name == "attack1":
+		$sprite_anim.play("attack2")
+	elif anim_name == "attack2":
+		$sprite_anim.play("attack3")
+	elif anim_name == "attack3":
+		attacking = false
+	pass # Replace with function body.

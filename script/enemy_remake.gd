@@ -9,7 +9,7 @@ var speed = 400
 
 var invincible = false
 
-export var hp = 10
+export var hp = 5
 
 
 # Called when the node enters the scene tree for the first time.

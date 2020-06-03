@@ -2,6 +2,7 @@ extends RigidBody2D
 
 onready var manager = get_node("/root/ingame")
 onready var camera = get_node("/root/ingame/camera")
+onready var player = get_node("/root/ingame/player/player_body")
 var ball_spawner = null
 
 var move_direction = Vector2()
@@ -27,6 +28,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	indicator_range_check()
 	move_dir_update()
 	attackable_check()
 	floor_check()
@@ -68,17 +71,30 @@ func attackable_check():
 	if abs(linear_velocity.x)/1000 > 1 or abs(linear_velocity.y)/1000 > 1:
 		if attackable != true:
 			attackable = true
+			set_collision_mask_bit(5, true)
 			$sprite.self_modulate = "ffffff"
 	else:
 		if attackable != false:
 			attackable = false
 			$sprite.self_modulate = "ff0000"
+			set_collision_mask_bit(5, false)
 
 func move_dir_arrow_toggle(a):
 	if a == "show":
 		$Line2D.show()
 	else:
 		$Line2D.hide()
+
+func indicator_range_check():
+	var a = Vector2(100, 0).rotated(player.global_position.angle_to_point(global_position))
+	$indicator_range.cast_to = a
+	if $indicator_range.collide_with_bodies:
+		if $indicator_range.get_collider() == player:
+			if $Line2D.visible == false:
+				$Line2D.visible = true
+		else:
+			if $Line2D.visible == true:
+				$Line2D.visible = false
 
 func move_dir_update():
 	move_direction = global_position.direction_to(get_global_mouse_position())
@@ -88,8 +104,8 @@ func move_dir_update():
 
 func ball_attacked(kick_power):
 	
-	attackable = true
-	$sprite.self_modulate = "ffffff"
+	#attackable = true
+	#$sprite.self_modulate = "ffffff"
 	set_linear_velocity(Vector2(0, 0))
 	apply_impulse(Vector2(0, 0), move_direction * kick_power)
 	
