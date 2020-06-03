@@ -20,6 +20,8 @@ var slide_max = 700
 var scroll_acl = 0
 
 var attacking = false
+var jump_attack = false
+export var chain_attack = false
 
 var kick_power = 2000
 var attack_power = 1
@@ -64,91 +66,64 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 			#$sprite.flip_h = false
 
 func movement_state_check(a):
-	match movement_state:
-		"idle":
-			velocity.x = (speed*a)
-		"slide":
-			if a > 0: # 우측입력
-				velocity.x = min(velocity.x + slide_acl, slide_max)
-			elif a < 0: # 좌측입력
-				velocity.x = max(velocity.x - slide_acl, -slide_max)
-			elif a == 0: # 입력없음
-				if velocity.x != 0:
-					velocity.x = lerp(velocity.x, 0, 0.04) 
-		"scroll":
-			velocity.x = (speed*a) + scroll_acl
-		"on_air":
-			if a > 0:
-				if velocity.x > speed:
-					velocity.x = velocity.x
-				else:
-					velocity.x = lerp(velocity.x, speed, 0.15)
-			elif a < 0:
-				if velocity.x < -speed:
-					velocity.x = velocity.x
-				else:
-					velocity.x = lerp(velocity.x, -speed, 0.15)
-			elif a == 0:
-				velocity.x = lerp(velocity.x, speed, 0.001)
-
-func arrowkey_move_input():
-	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
-		"""
+	if attacking == false: # 공격중이 아닐때
 		match movement_state:
 			"idle":
-				velocity.x = -speed
+				velocity.x = (speed*a)
 			"slide":
-				velocity.x = max(velocity.x - slide_acl, -slide_max)
+				if a > 0: # 우측입력
+					velocity.x = min(velocity.x + slide_acl, slide_max)
+				elif a < 0: # 좌측입력
+					velocity.x = max(velocity.x - slide_acl, -slide_max)
+				elif a == 0: # 입력없음
+					if velocity.x != 0:
+						velocity.x = lerp(velocity.x, 0, 0.04) 
 			"scroll":
-				velocity.x = (-speed) + scroll_acl
-			"on_air":
-				if velocity.x < -speed:
-					velocity.x = velocity.x
-				else:
-					velocity.x = lerp(velocity.x, -speed, 0.15)
-		"""
-		movement_state_check(-1)
-		if is_on_floor() and attacking == false:
-			if $sprite_anim.current_animation != "walk":
-				$sprite_anim.play("walk")
+				velocity.x = (speed*a) + scroll_acl
 		
-	elif Input.is_action_pressed("move_right"):
-		"""
-		match movement_state:
-			"idle":
-				velocity.x = speed
-			"slide":
-				velocity.x = min(velocity.x + slide_acl, slide_max)
-			"scroll":
-				velocity.x = speed + scroll_acl
-			"on_air":
-				if velocity.x > speed:
-					velocity.x = velocity.x
-				else:
-					velocity.x = lerp(velocity.x, speed, 0.15)
-		"""
-		movement_state_check(1)
-		if is_on_floor() and attacking == false:
-			if $sprite_anim.current_animation != "walk":
-				$sprite_anim.play("walk")
+		if a != 0:
+			sprite_state_machine.travel("walk")
+		else:
+			sprite_state_machine.travel("idle")
 	
-	else:
-		"""
+	else: # 공격중 일 때
 		match movement_state:
 			"idle":
 				velocity.x = 0
 			"slide":
-				if velocity.x != 0:
-					velocity.x = lerp(velocity.x, 0, 0.04) # 슬라이딩 멈추는 속도
+					if velocity.x != 0:
+						velocity.x = lerp(velocity.x, 0, 0.04) 
 			"scroll":
 				velocity.x = scroll_acl
-			"on_air":
-				velocity.x = lerp(velocity.x, speed, 0.001)
-		"""
+	
+	if movement_state == "on_air": # 공중은 공격에 상관없이 같은 스피드
+		if a > 0:
+			if velocity.x > speed:
+				velocity.x = velocity.x
+			else:
+				velocity.x = lerp(velocity.x, speed, 0.15)
+		elif a < 0:
+			if velocity.x < -speed:
+				velocity.x = velocity.x
+			else:
+				velocity.x = lerp(velocity.x, -speed, 0.15)
+		elif a == 0:
+			velocity.x = lerp(velocity.x, speed, 0.001)
+	
+	#if sprite_state_machine.get_current_node() == "idle" and attacking == true:
+	#	attacking = false
+	#	print("finish")
+
+func arrowkey_move_input():
+	
+	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
+		movement_state_check(-1)
+
+	elif Input.is_action_pressed("move_right"):
+		movement_state_check(1)
+
+	else:
 		movement_state_check(0)
-		if is_on_floor() and attacking == false:
-			if $sprite_anim.current_animation != "idle":
-				$sprite_anim.play("idle")
 
 func jump_and_gravity(delta):
 	
@@ -156,9 +131,11 @@ func jump_and_gravity(delta):
 		if velocity.y > 0 and $sprite.animation != "receive":
 			$sprite.animation = "receive"
 			$sprite.frame = 1
-			
-		if velocity.y > 0 and $sprite.animation != "fall":
-			$sprite_anim.play("fall")
+		
+		if velocity.y > 0:
+			sprite_state_machine.travel("fall")
+		elif velocity.y < 0:
+			sprite_state_machine.travel("jump")
 	
 	if Input.is_action_just_pressed("move_jump"):
 		if movement_state == "on_air":
@@ -167,7 +144,7 @@ func jump_and_gravity(delta):
 				velocity.y = dubble_jump
 				$sprite.animation = "jump"
 				$sprite_anim.play("jump")
-		else:
+		elif attacking == false:
 			velocity.y += jump
 			$sprite.animation = "jump"
 			$sprite_anim.play("jump")
@@ -177,8 +154,22 @@ func jump_and_gravity(delta):
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("move_attack"):
-		$sprite_anim.play("attack1")
-		attacking = true
+		if attacking == true and chain_attack == true:
+			match sprite_state_machine.get_current_node():
+				"attack1":
+					sprite_state_machine.travel("attack2")
+				"attack2":
+					sprite_state_machine.travel("attack3")
+		else:
+			if is_on_floor():
+				sprite_state_machine.travel("attack1")
+				attacking = true
+			else:
+				if jump_attack == false:
+					jump_attack = true
+					sprite_state_machine.travel("jump_attack")
+					print("jump attack")
+		
 		var b = $attack_zone.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
 		if b.size() > 0:
 			for i in b:
@@ -215,7 +206,9 @@ func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기
 		a.state_update(self)
 		$sprite.animation = "idle"
 		$sprite.frame = 1
+		sprite_state_machine.travel("idle")
 		can_dubble_jump = true
+		jump_attack = false
 	pass # Replace with function body.
 
 
@@ -236,12 +229,6 @@ func interact_spike():
 		$hitted_anim.play("hitted")
 		$hitted_anim/Timer.start()
 
-
-func _on_sprite_anim_animation_finished(anim_name):
-	if anim_name == "attack1":
-		$sprite_anim.play("attack2")
-	elif anim_name == "attack2":
-		$sprite_anim.play("attack3")
-	elif anim_name == "attack3":
-		attacking = false
-	pass # Replace with function body.
+func anim_finish():
+	attacking = false
+	print("finish")

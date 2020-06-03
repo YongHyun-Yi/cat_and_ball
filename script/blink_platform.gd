@@ -7,6 +7,9 @@ export var blink = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if blink == false:
+		$Staticbody2D/CollisionShape2D.disabled = true
+		self_modulate.a = .5
 	$Timer.wait_time = blink_time
 	$Timer.start()
 	pass # Replace with function body.

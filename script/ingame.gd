@@ -17,8 +17,7 @@ func _process(delta):
 	$background/combo.text = "COMBO\n"+str(combo)
 	#$buttons/Label.text = "state : "+ball.movement_state+"\n applied force.x : "+str(ball.applied_force.x)
 	#$buttons/Label.text = "state : "+str(player.can_dubble_jump)
-	$buttons/Label.text = "state : "+str(player.velocity.y)
-	$buttons/Label.text = "state : "+str(player.movement_state)
+	$buttons/Label.text = "state : "+player.sprite_state_machine.get_current_node()
 	pass
 
 func restart():
