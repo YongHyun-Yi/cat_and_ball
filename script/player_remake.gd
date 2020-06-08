@@ -25,6 +25,11 @@ export var chain_attack = false
 
 var kick_power = 2000
 var attack_power = 1
+
+# 공 잡음 상태 추가
+var ball_grab = false
+var ball_pull = false
+
 var invincible = false
 
 var flipped = false
@@ -53,17 +58,15 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 	
 	var mouse_pos = get_global_mouse_position()
 	
-	if mouse_pos.x < global_position.x:
-		if flipped == false:
-			flipped = true
-			scale.x *= -1
-			#$sprite.flip_h = true
-	else:
-		#velocity.x = speed
-		if flipped == true:
-			flipped = false
-			scale.x *= -1
-			#$sprite.flip_h = false
+	if attacking == false and jump_attack == false:
+		if mouse_pos.x < global_position.x:
+			if flipped == false:
+				flipped = true
+				scale.x *= -1
+		else:
+			if flipped == true:
+				flipped = false
+				scale.x *= -1
 
 func movement_state_check(a):
 	if attacking == false: # 공격중이 아닐때
@@ -154,50 +157,86 @@ func jump_and_gravity(delta):
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("move_attack"):
-		if attacking == true and chain_attack == true:
-			match sprite_state_machine.get_current_node():
-				"attack1":
-					sprite_state_machine.travel("attack2")
-				"attack2":
-					sprite_state_machine.travel("attack3")
-		else:
-			if is_on_floor():
+		
+		attack_events()
+		
+	# 공 던지기 함수 추가
+	# 우클릭으로 공 불러오기 함수 추가
+	if Input.is_action_pressed("ball_grab"):
+		if ball_grab == false: # 끌어당기기
+			if ball_pull == false:
+				ball_pull = true
+				ball.pulled = true
+				ball.linear_velocity = Vector2.ZERO
+				ball.gravity_scale = 1
+			#else:
+				#ball.pulled_speed = Vector2(2000, 0).rotated(global_position.angle_to_point(ball.global_position))
+		pass
+	if Input.is_action_just_released("ball_grab"): # 끌어당기기 취소
+		if ball_grab == false:
+			ball_pull = false
+			ball.pulled = false
+			ball.pulled_speed = Vector2.ZERO
+			ball.gravity_scale = 8
+		#get_tree().is_input_handled()
+
+func attack_events():
+	if ball_grab == false:
+		if is_on_floor(): # 지상공격
+			if attacking == true and chain_attack == true:
+				match sprite_state_machine.get_current_node():
+					"attack1":
+						sprite_state_machine.travel("attack2")
+					"attack2":
+						sprite_state_machine.travel("attack3")
+			else:
 				sprite_state_machine.travel("attack1")
 				attacking = true
-			else:
-				if jump_attack == false:
-					jump_attack = true
-					sprite_state_machine.travel("jump_attack")
-					print("jump attack")
+		else: # 공중공격
+			if jump_attack == false:
+				jump_attack = true
+				sprite_state_machine.travel("jump_attack")
+				print("jump attack")
+	elif ball_grab == true: # 공던지기
+		ball.ball_throw()
 		
-		var b = $attack_zone.get_overlapping_areas() # 적 공격 공도 공격 - area 체크로 모두 통일하기로 했음
-		if b.size() > 0:
-			for i in b:
-				var a = i.get_parent()
-				if a.has_method("ball_attacked"):
-					a.ball_attacked(kick_power)
-		b = $attack_zone.get_overlapping_bodies()
-		if b.size() > 0:
-			for i in b:
-				var a = i.get_parent()
-				if a.has_method("enemy_attacked"):
-					a.enemy_attacked(attack_power)
-				
-		get_tree().is_input_handled()
+	pass
 
-func attack_zone_in(a): # 공이 공격존 안에 들어오면 공격방향을 표시하도록
+func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 실행
 	a = a.get_parent()
-	if a.has_method("move_dir_arrow_toggle"):
-		a.move_dir_arrow_toggle("show")
+	print(a.name)
+	if a.has_method("enemy_attacked"):
+		a.enemy_attacked(attack_power)
+	elif a.has_method("ball_attacked"):
+		a.ball_attacked(kick_power)
 	pass # Replace with function body.
 
 
-func attack_zone_out(a):
-	a = a.get_parent()
-	if a.has_method("move_dir_arrow_toggle"):
-		a.move_dir_arrow_toggle("hide")
+func hit_zone_out(a):
+	#a = a.get_parent()
+	#if a.has_method("move_dir_arrow_toggle"):
+	#	a.move_dir_arrow_toggle("hide")
 	pass # Replace with function body.
 
+func ball_grab_check():
+	var a = $hurt_zone.get_overlapping_bodies()
+	if a.size() > 0:
+		print(str(a))
+		for i in a:
+			if not i.has_method("ball_grabed"):
+				continue
+			
+			i.ball_grabed()
+
+func _on_hurt_zone_body_entered(body):
+	if ball_pull == true:
+		var a = $hurt_zone.get_overlapping_bodies()
+		for i in a:
+			if not i.has_method("ball_grabed"):
+				continue
+			
+			i.ball_grabed()
+	pass # Replace with function body.
 
 func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기서 설정?
 	var a = body.get_parent()
@@ -232,3 +271,6 @@ func interact_spike():
 func anim_finish():
 	attacking = false
 	print("finish")
+
+
+

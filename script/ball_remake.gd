@@ -20,6 +20,10 @@ var slide_max = 700
 
 var scroll_acl = 0
 
+var grabed = false
+var pulled = false
+var pulled_speed = Vector2()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	connect("hit_pause", manager,"hit_pause")
@@ -33,6 +37,11 @@ func _process(delta):
 	move_dir_update()
 	attackable_check()
 	floor_check()
+	if grabed == true:
+		global_position = player.get_node("grabed_ball_point").global_position
+	if pulled == true:
+		pulled_speed = Vector2(2000, 0).rotated(player.global_position.angle_to_point(global_position))
+	applied_force = Vector2((pulled_speed.x + scroll_acl), pulled_speed.y)
 	pass
 
 func floor_check():
@@ -55,8 +64,8 @@ func floor_check():
 	else:
 		if movement_state != "on_air":
 			if movement_state == "scroll":
-				applied_force.x = 0
-				#friction = 1
+				scroll_acl = 0
+				friction = 1
 			movement_state = "on_air"
 
 func _integrate_forces(state):
@@ -115,6 +124,28 @@ func ball_attacked(kick_power):
 		applied_force.x = 0
 	pass
 
+func ball_grabed():
+	player.ball_grab = true
+	player.ball_pull = false
+	grabed = true
+	pulled = false
+	$CollisionShape2D.disabled = true
+	$hurt_zone/CollisionShape2D2.disabled = true
+	mode = RigidBody2D.MODE_CHARACTER
+	gravity_scale = 8
+	pulled_speed = Vector2.ZERO
+	pass
+
+func ball_throw():
+	player.ball_grab = false
+	grabed = false
+	$CollisionShape2D.disabled = false
+	$hurt_zone/CollisionShape2D2.disabled = false
+	mode = RigidBody2D.MODE_RIGID
+	set_linear_velocity(Vector2(0, 0))
+	apply_impulse(Vector2(0, 0), move_direction * 4000) # 임시로 move_direction 삽임
+	pass
+
 func hit_zone_in(a):
 	a = a.get_parent()
 	
@@ -139,7 +170,7 @@ func ball_dead():
 	dead = true
 	$dead_timer.start()
 	$CollisionShape2D.disabled = true
-	$hit_zone/CollisionShape2D2.disabled = true
+	$hurt_zone/CollisionShape2D2.disabled = true
 	set_linear_velocity(Vector2(0, 0))
 	mode = 3
 	hide()

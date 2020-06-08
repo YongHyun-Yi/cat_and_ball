@@ -74,11 +74,11 @@ position = Vector2( -1, -1 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 2 )
 
-[node name="hit_zone" type="Area2D" parent="."]
-collision_layer = 64
-collision_mask = 8
+[node name="hurt_zone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 72
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="hit_zone"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="hurt_zone"]
 modulate = Color( 0.827451, 1, 0, 1 )
 position = Vector2( -1, -1 )
 scale = Vector2( 2, 2 )

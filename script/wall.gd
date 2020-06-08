@@ -25,6 +25,6 @@ func state_update(a):
 
 func ball_state_update(a):
 	a.movement_state = state
-	a.applied_force = Vector2.ZERO
+	#a.applied_force = Vector2.ZERO
 	a.friction = 1
 	pass
