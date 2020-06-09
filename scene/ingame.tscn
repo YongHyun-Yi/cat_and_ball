@@ -1,14 +1,11 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://scene/scroll_block.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
-[ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://sprite/icon.png" type="Texture" id=7]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scene/ball_spawner.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
@@ -41,9 +38,8 @@ pause_mode = 2
 wait_time = 0.2
 
 [node name="camera" type="Camera2D" parent="."]
-position = Vector2( 640, 360 )
+position = Vector2( 1824, 790 )
 current = true
-zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="camera"]
@@ -82,12 +78,12 @@ position = Vector2( 123, 924 )
 [node name="player" type="Node2D" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 1824, 850 )
+position = Vector2( 1824, 798 )
 
 [node name="ball" type="Node2D" parent="."]
 
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
-position = Vector2( 1678, 813 )
+position = Vector2( 1170, 891 )
 
 [node name="controls" type="Control" parent="."]
 visible = false
@@ -225,26 +221,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="icon" type="Sprite" parent="."]
-position = Vector2( -120, 686 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
-
-[node name="icon2" type="Sprite" parent="."]
-position = Vector2( -120, 402 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
-
-[node name="icon3" type="Sprite" parent="."]
-position = Vector2( 2486, 739 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
-
-[node name="icon4" type="Sprite" parent="."]
-position = Vector2( 2483, 505 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
-
 [node name="obstacles" type="Node2D" parent="."]
 
 [node name="sponge" type="Node2D" parent="obstacles"]
@@ -254,21 +230,6 @@ texture = ExtResource( 6 )
 [node name="boom_barrel" type="Node2D" parent="obstacles"]
 
 [node name="moving_block" type="Node2D" parent="obstacles"]
-
-[node name="ball_spawner" parent="obstacles" instance=ExtResource( 12 )]
-position = Vector2( 865, 0 )
-
-[node name="scroll_block" parent="." instance=ExtResource( 4 )]
-margin_left = 1200.0
-margin_top = 633.0
-margin_right = 1581.0
-margin_bottom = 733.0
-
-[node name="scroll_block2" parent="." instance=ExtResource( 4 )]
-margin_left = 1196.0
-margin_top = 889.0
-margin_right = 1577.0
-margin_bottom = 989.0
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
 [connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]

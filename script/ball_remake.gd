@@ -24,6 +24,8 @@ var grabed = false
 var pulled = false
 var pulled_speed = Vector2()
 
+var out_of_caemra = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	connect("hit_pause", manager,"hit_pause")
@@ -37,11 +39,16 @@ func _process(delta):
 	move_dir_update()
 	attackable_check()
 	floor_check()
+	
 	if grabed == true:
 		global_position = player.get_node("grabed_ball_point").global_position
 	if pulled == true:
 		pulled_speed = Vector2(2000, 0).rotated(player.global_position.angle_to_point(global_position))
 	applied_force = Vector2((pulled_speed.x + scroll_acl), pulled_speed.y)
+	
+	if out_of_caemra == true:
+		screen_indicator_check()
+	
 	pass
 
 func floor_check():
@@ -104,6 +111,24 @@ func indicator_range_check():
 		else:
 			if $Line2D.visible == true:
 				$Line2D.visible = false
+
+func screen_indicator_check():
+	"""
+	if global_position.x < camera.global_position.x:
+		$screen_indicator.global_position.x = camera.global_position.x - (640 )#* 1.5)
+	elif global_position.x > camera.global_position.x:
+		$screen_indicator.global_position.x = camera.global_position.x + (640 )#* 1.5)
+	
+	if global_position.y < camera.global_position.y:
+		$screen_indicator.global_position.y = camera.global_position.y - (360 )#* 1.5)
+	elif global_position.y > camera.global_position.y:
+		$screen_indicator.global_position.y = camera.global_position.y + (360 )#* 1.5)
+	"""
+	
+	#$screen_indicator.global_position.x = camera.global_position.x + clamp((global_position.x - camera.global_position.x) , -get_viewport().size.x/2, get_viewport().size.x/2)
+	$screen_indicator.global_position.x = camera.global_position.x -640
+	$screen_indicator.global_position.y = camera.global_position.y + clamp((global_position.y - camera.global_position.y) , -get_viewport().size.y/2, get_viewport().size.y/2)
+	pass
 
 func move_dir_update():
 	move_direction = global_position.direction_to(get_global_mouse_position())
@@ -186,3 +211,17 @@ func interact_spike():
 	if dead == false:
 		dead = true
 		ball_dead()
+
+
+func screen_entered():
+	if out_of_caemra == true:
+		out_of_caemra = false
+		$screen_indicator.hide()
+	pass # Replace with function body.
+
+
+func screen_exited():
+	if out_of_caemra == false:
+		out_of_caemra = true
+		$screen_indicator.show()
+	pass # Replace with function body.
