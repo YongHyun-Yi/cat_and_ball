@@ -33,7 +33,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	
 	indicator_range_check()
 	move_dir_update()
@@ -50,6 +50,7 @@ func _process(delta):
 		screen_indicator_check()
 	
 	pass
+
 
 func floor_check():
 	"""
@@ -125,9 +126,8 @@ func screen_indicator_check():
 		$screen_indicator.global_position.y = camera.global_position.y + (360 )#* 1.5)
 	"""
 	
-	#$screen_indicator.global_position.x = camera.global_position.x + clamp((global_position.x - camera.global_position.x) , -get_viewport().size.x/2, get_viewport().size.x/2)
-	$screen_indicator.global_position.x = camera.global_position.x -640
-	$screen_indicator.global_position.y = camera.global_position.y + clamp((global_position.y - camera.global_position.y) , -get_viewport().size.y/2, get_viewport().size.y/2)
+	$screen_indicator.global_position.x = camera.global_position.x + clamp((global_position.x - camera.global_position.x) , -get_viewport().size.x/2 + 40, get_viewport().size.x/2 - 40)
+	$screen_indicator.global_position.y = camera.global_position.y + clamp((global_position.y - camera.global_position.y) , -get_viewport().size.y/2 + 40, get_viewport().size.y/2 - 40)
 	pass
 
 func move_dir_update():
@@ -171,8 +171,9 @@ func ball_throw():
 	apply_impulse(Vector2(0, 0), move_direction * 4000) # 임시로 move_direction 삽임
 	pass
 
-func hit_zone_in(a):
-	a = a.get_parent()
+func hit_zone_in(area):
+	var a = area.get_parent()
+	print(a.name)
 	
 	if attackable == true:
 		if a.has_method("ball_hit"): # 적에게 맞을경우
@@ -222,6 +223,7 @@ func screen_entered():
 
 func screen_exited():
 	if out_of_caemra == false:
+		print("out")
 		out_of_caemra = true
 		$screen_indicator.show()
 	pass # Replace with function body.

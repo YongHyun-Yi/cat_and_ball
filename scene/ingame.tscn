@@ -40,6 +40,9 @@ wait_time = 0.2
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2( 1824, 790 )
 current = true
+zoom = Vector2( 1.5, 1.5 )
+smoothing_enabled = true
+smoothing_speed = 3.0
 script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="camera"]
@@ -74,6 +77,12 @@ margin_bottom = 1485.0
 
 [node name="enemy_body" parent="enemys" instance=ExtResource( 15 )]
 position = Vector2( 123, 924 )
+
+[node name="enemy_body2" parent="enemys" instance=ExtResource( 15 )]
+position = Vector2( 316, 926 )
+
+[node name="enemy_body3" parent="enemys" instance=ExtResource( 15 )]
+position = Vector2( 520, 928 )
 
 [node name="player" type="Node2D" parent="."]
 

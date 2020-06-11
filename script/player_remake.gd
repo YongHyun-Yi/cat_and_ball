@@ -43,11 +43,12 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	
 	flip_check()
 	arrowkey_move_input()
 	jump_and_gravity(delta)
+	ball_grab_check()
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
 	
 	#$attack.look_at(get_global_mouse_position())
@@ -162,7 +163,7 @@ func _unhandled_input(event):
 		
 	# 공 던지기 함수 추가
 	# 우클릭으로 공 불러오기 함수 추가
-	if Input.is_action_pressed("ball_grab"):
+	if Input.is_action_just_pressed("ball_grab"):
 		if ball_grab == false: # 끌어당기기
 			if ball_pull == false:
 				ball_pull = true
@@ -219,23 +220,17 @@ func hit_zone_out(a):
 	pass # Replace with function body.
 
 func ball_grab_check():
-	var a = $hurt_zone.get_overlapping_bodies()
-	if a.size() > 0:
-		print(str(a))
-		for i in a:
-			if not i.has_method("ball_grabed"):
-				continue
-			
-			i.ball_grabed()
-
-func _on_hurt_zone_body_entered(body):
 	if ball_pull == true:
 		var a = $hurt_zone.get_overlapping_bodies()
-		for i in a:
-			if not i.has_method("ball_grabed"):
-				continue
-			
-			i.ball_grabed()
+		if a.size() > 0:
+			print(str(a))
+			for i in a:
+				if not i.has_method("ball_grabed"):
+					continue
+				
+				i.ball_grabed()
+
+func hurt_zone_in(body):
 	pass # Replace with function body.
 
 func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기서 설정?

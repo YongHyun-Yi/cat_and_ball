@@ -16,20 +16,21 @@ func _process(delta):
 	
 	camera_zoom_setting()
 	
+	
 	pass
 
 func camera_zoom_setting():
 	distance = player.global_position.distance_to(ball.global_position) # 거리 구하기
-	distance *= 0.001 # 단위 낮추기
+	distance *= 0.005 # 단위 낮추기
 	distance += 1 # 가장 가까이 있을때 1배수가 나오도록
 	#print(str(distance))
 	
-	#if distance < 1.6 and distance > 1.1:
+	#if distance < 1.6 and distance > 1.4:
 	#	set_zoom(Vector2(1, 1) * distance) # 거리에 따른 줌 설정
 	#elif distance >= 1.6:
 	#	set_zoom(Vector2(1.6, 1.6))
-	#elif distance <= 1.1:
-	#	set_zoom(Vector2(1.1, 1.1))
+	#elif distance <= 1.4:
+	#	set_zoom(Vector2(1.4, 1.4))
 	
 	#global_position = (player.global_position + get_global_mouse_position()) * 0.5 # 두 오브젝트 사이에 카메라 위치 설정
 	global_position.x = player.global_position.x + clamp((get_global_mouse_position().x - player.global_position.x)/3, -350, 350)
