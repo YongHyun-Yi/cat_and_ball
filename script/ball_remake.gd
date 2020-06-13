@@ -28,7 +28,6 @@ var out_of_caemra = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connect("hit_pause", manager,"hit_pause")
 	pass # Replace with function body.
 
 
@@ -177,7 +176,6 @@ func hit_zone_in(area):
 	
 	if attackable == true:
 		if a.has_method("ball_hit"): # 적에게 맞을경우
-			emit_signal("hit_pause")
 			$effect2.show()
 			$effect2.rotation_degrees = rad2deg(global_position.angle_to_point(a.global_position)-180) # 스프라이트 방향이 반대라서 -180도 해줬음
 			#$hit_zone/CollisionShape2D2.set_deferred("disabled", true) # 버그인가? disabled를 해도 계속 시그널이 방출되서 사용

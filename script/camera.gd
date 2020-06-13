@@ -6,9 +6,12 @@ onready var ball = get_node("/root/ingame/ball/ball_body")
 var current_shake = 0
 var distance = 0
 
+signal hit_pause
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#global_position = Vector2(640, 360)
+	connect("hit_pause", get_parent(),"hit_pause")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,6 +44,7 @@ func camera_zoom_setting():
 func camera_shake(t,p):
 	if p >= current_shake:
 		current_shake = p
+		emit_signal("hit_pause", t)
 		print("camera shake start")
 		var initial_offset = get_offset()
 		

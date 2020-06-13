@@ -19,15 +19,15 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
-"loop": false,
-"name": "receive",
-"speed": 20.0
-}, {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
+"loop": false,
+"name": "receive",
+"speed": 20.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -84,6 +84,7 @@ collision_mask = 0
 script = ExtResource( 6 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0.498039 )
 position = Vector2( 0, -136 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )

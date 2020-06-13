@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var ball = get_node("/root/ingame/ball/ball_body")
+onready var camera = get_node("/root/ingame/camera")
 
 var velocity = Vector2()
 var gravity = 2000
@@ -57,8 +58,9 @@ func ball_hit():
 	hp_update(-1)
 	print("ball hit!")
 
-func enemy_attacked(a):
-	hp_update(-1)
+func enemy_attacked(attack_power, attack_camera_time, attack_camera_power):
+	camera.camera_shake(attack_camera_time, attack_camera_power)
+	hp_update(-attack_power)
 	print("damaged!")
 
 func hp_update(a):

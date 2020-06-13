@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+onready var manager = get_node("/root/ingame")
+onready var camera = get_node("/root/ingame/camera")
 onready var ball = get_node("/root/ingame/ball/ball_body")
 
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
@@ -25,6 +27,7 @@ export var chain_attack = false
 
 var kick_power = 2000
 var attack_power = 1
+export var attack_camera = Vector2()
 
 # 공 잡음 상태 추가
 var ball_grab = false
@@ -84,11 +87,11 @@ func movement_state_check(a):
 						velocity.x = lerp(velocity.x, 0, 0.04) 
 			"scroll":
 				velocity.x = (speed*a) + scroll_acl
-		
-		if a != 0:
-			sprite_state_machine.travel("walk")
-		else:
-			sprite_state_machine.travel("idle")
+		if jump_attack == false:
+			if a != 0:
+				sprite_state_machine.travel("walk")
+			else:
+				sprite_state_machine.travel("idle")
 	
 	else: # 공격중 일 때
 		match movement_state:
@@ -136,10 +139,11 @@ func jump_and_gravity(delta):
 			$sprite.animation = "receive"
 			$sprite.frame = 1
 		
-		if velocity.y > 0:
-			sprite_state_machine.travel("fall")
-		elif velocity.y < 0:
-			sprite_state_machine.travel("jump")
+		if jump_attack == false:
+			if velocity.y > 0:
+				sprite_state_machine.travel("fall")
+			elif velocity.y < 0:
+				sprite_state_machine.travel("jump")
 	
 	if Input.is_action_just_pressed("move_jump"):
 		if movement_state == "on_air":
@@ -205,19 +209,13 @@ func attack_events():
 
 func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 실행
 	a = a.get_parent()
-	print(a.name)
+	#print(a.name)
 	if a.has_method("enemy_attacked"):
-		a.enemy_attacked(attack_power)
+		a.enemy_attacked(attack_power, attack_camera.x, attack_camera.y)
 	elif a.has_method("ball_attacked"):
 		a.ball_attacked(kick_power)
-	pass # Replace with function body.
 
 
-func hit_zone_out(a):
-	#a = a.get_parent()
-	#if a.has_method("move_dir_arrow_toggle"):
-	#	a.move_dir_arrow_toggle("hide")
-	pass # Replace with function body.
 
 func ball_grab_check():
 	if ball_pull == true:
@@ -230,8 +228,6 @@ func ball_grab_check():
 				
 				i.ball_grabed()
 
-func hurt_zone_in(body):
-	pass # Replace with function body.
 
 func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기서 설정?
 	var a = body.get_parent()
@@ -266,6 +262,3 @@ func interact_spike():
 func anim_finish():
 	attacking = false
 	print("finish")
-
-
-

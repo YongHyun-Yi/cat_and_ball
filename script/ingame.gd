@@ -28,13 +28,14 @@ func go_to_main_screen():
 	get_tree().change_scene("res://scene/main_screen.tscn")
 	pass
 
-func hit_pause():
+func hit_pause(time):
 	get_tree().paused = true
 	#Engine.set_time_scale(.01)
 	#$hit_pause_timer.wait_time = 1.8 * Engine.get_time_scale()
+	$hit_pause_timer.wait_time = time
 	$hit_pause_timer.start()
 	hit_pause = true
-	print("느려짐 시작")
+	#print("느려짐 시작")
 
 func hit_pause_timer_timeout():
 	get_tree().paused = false
@@ -43,7 +44,7 @@ func hit_pause_timer_timeout():
 	hit_pause = false
 	ball.get_node("sprite").texture = load("res://sprite/ball.png")
 	ball.get_node("effect2").hide()
-	print("느려짐 끝")
+	#print("느려짐 끝")
 	pass # Replace with function body.
 
 func _unhandled_input(event):
