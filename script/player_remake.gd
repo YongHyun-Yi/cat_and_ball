@@ -25,9 +25,11 @@ var attacking = false
 var jump_attack = false
 export var chain_attack = false
 
-var kick_power = 2000
-var attack_power = 1
+export var kick_power = 2000
+export var attack_power = 1
 export var attack_camera = Vector2()
+export var attack_pause = 0.0
+signal attacked
 
 # 공 잡음 상태 추가
 var ball_grab = false
@@ -211,7 +213,7 @@ func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 
 	a = a.get_parent()
 	#print(a.name)
 	if a.has_method("enemy_attacked"):
-		a.enemy_attacked(attack_power, attack_camera.x, attack_camera.y)
+		a.enemy_attacked(attack_power, attack_camera.x, attack_camera.y, attack_pause)
 	elif a.has_method("ball_attacked"):
 		a.ball_attacked(kick_power)
 

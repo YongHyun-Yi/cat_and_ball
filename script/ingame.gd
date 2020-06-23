@@ -16,8 +16,9 @@ func _ready():
 func _process(delta):
 	$background/combo.text = "COMBO\n"+str(combo)
 	#$buttons/Label.text = "state : "+ball.movement_state+"\n applied force.x : "+str(ball.applied_force.x)
+	$buttons/Label.text = "velocity : "+str(ball.get_linear_velocity())
 	#$buttons/Label.text = "state : "+str(player.can_dubble_jump)
-	$buttons/Label.text = "state : "+player.sprite_state_machine.get_current_node()
+	#$buttons/Label.text = "state : "+player.sprite_state_machine.get_current_node()
 	pass
 
 func restart():
@@ -30,23 +31,16 @@ func go_to_main_screen():
 
 func hit_pause(time):
 	get_tree().paused = true
-	#Engine.set_time_scale(.01)
-	#$hit_pause_timer.wait_time = 1.8 * Engine.get_time_scale()
 	$hit_pause_timer.wait_time = time
 	$hit_pause_timer.start()
 	hit_pause = true
-	#print("느려짐 시작")
+	#print("start")
 
 func hit_pause_timer_timeout():
 	get_tree().paused = false
 	$hit_pause_timer.stop()
-	#Engine.set_time_scale(1.0)
 	hit_pause = false
-	ball.get_node("sprite").texture = load("res://sprite/ball.png")
+	#ball.get_node("sprite").texture = load("res://sprite/ball.png")
 	ball.get_node("effect2").hide()
-	#print("느려짐 끝")
+	#print("finish")
 	pass # Replace with function body.
-
-func _unhandled_input(event):
-	if Input.is_action_just_pressed("ui_accept"):
-		camera.camera_shake(1, 30)

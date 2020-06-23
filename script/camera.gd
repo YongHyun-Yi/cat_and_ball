@@ -2,16 +2,15 @@ extends Camera2D
 
 onready var player = get_node("/root/ingame/player/player_body")
 onready var ball = get_node("/root/ingame/ball/ball_body")
+onready var manager = get_node("/root/ingame")
 
 var current_shake = 0
 var distance = 0
 
-signal hit_pause
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#global_position = Vector2(640, 360)
-	connect("hit_pause", get_parent(),"hit_pause")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,11 +40,14 @@ func camera_zoom_setting():
 	
 	# 상태에 따른 셋팅 추가 (공이 잡힘, 공이 사라짐 - 리스폰 대기, 플레이어 게임오버 등등)
 
-func camera_shake(t,p):
+func hit_pause(pause_t):
+	pass
+
+func camera_shake(t,p,pause_t):
 	if p >= current_shake:
 		current_shake = p
-		emit_signal("hit_pause", t)
-		print("camera shake start")
+		manager.hit_pause(pause_t)
+		#print("camera shake start")
 		var initial_offset = get_offset()
 		
 		var time = 0
@@ -67,4 +69,4 @@ func camera_shake(t,p):
 	
 		set_offset(initial_offset)
 		current_shake = 0
-		print("camera shake end")
+		#print("camera shake end")

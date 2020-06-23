@@ -139,8 +139,13 @@ func ball_attacked(kick_power):
 	
 	#attackable = true
 	#$sprite.self_modulate = "ffffff"
+	
+	
+	
 	set_linear_velocity(Vector2(0, 0))
+	print(str(get_linear_velocity()))
 	apply_impulse(Vector2(0, 0), move_direction * kick_power)
+	print(str(get_linear_velocity()))
 	
 	if friction != 1:
 		friction = 1
@@ -154,6 +159,7 @@ func ball_grabed():
 	grabed = true
 	pulled = false
 	$CollisionShape2D.disabled = true
+	$hit_zone/CollisionShape2D2.disabled = true
 	$hurt_zone/CollisionShape2D2.disabled = true
 	mode = RigidBody2D.MODE_CHARACTER
 	gravity_scale = 8
@@ -164,6 +170,7 @@ func ball_throw():
 	player.ball_grab = false
 	grabed = false
 	$CollisionShape2D.disabled = false
+	$hit_zone/CollisionShape2D2.disabled = false
 	$hurt_zone/CollisionShape2D2.disabled = false
 	mode = RigidBody2D.MODE_RIGID
 	set_linear_velocity(Vector2(0, 0))
@@ -181,7 +188,7 @@ func hit_zone_in(area):
 			#$hit_zone/CollisionShape2D2.set_deferred("disabled", true) # 버그인가? disabled를 해도 계속 시그널이 방출되서 사용
 			#linear_velocity.x *= -1
 			a.ball_hit()
-			camera.camera_shake(.2, 20)
+			camera.camera_shake(.2, 20, .2)
 	pass # Replace with function body.
 
 

@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+onready var manager = get_node("/root/ingame")
 onready var ball = get_node("/root/ingame/ball/ball_body")
 onready var camera = get_node("/root/ingame/camera")
 
@@ -58,8 +59,8 @@ func ball_hit():
 	hp_update(-1)
 	print("ball hit!")
 
-func enemy_attacked(attack_power, attack_camera_time, attack_camera_power):
-	camera.camera_shake(attack_camera_time, attack_camera_power)
+func enemy_attacked(attack_power, attack_camera_time, attack_camera_power, attack_camera_pause):
+	camera.camera_shake(attack_camera_time, attack_camera_power, attack_camera_pause)
 	hp_update(-attack_power)
 	print("damaged!")
 
