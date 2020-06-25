@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://sprite/receive1.png" type="Texture" id=1]
 [ext_resource path="res://sprite/idle.png" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://sprite/remake/jump_attack1-1.png" type="Texture" id=20]
 [ext_resource path="res://sprite/remake/jump_attack.png" type="Texture" id=21]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=22]
+[ext_resource path="res://sprite/remake/mini2.png" type="Texture" id=23]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -35,15 +36,15 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -736,6 +737,7 @@ graph_offset = Vector2( -176, 139.632 )
 
 [sub_resource type="DynamicFont" id=44]
 size = 30
+extra_spacing_top = 12
 font_data = ExtResource( 22 )
 
 [node name="player_body" type="KinematicBody2D"]
@@ -820,30 +822,52 @@ parameters/playback = SubResource( 43 )
 position = Vector2( -35, -33 )
 
 [node name="chat" type="Control" parent="."]
-margin_left = -3.0
-margin_top = -142.0
-margin_right = -3.0
-margin_bottom = -142.0
+visible = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="chat"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -57.0
-margin_top = -77.0
-margin_right = 57.0
-margin_bottom = -43.0
-custom_fonts/font = SubResource( 44 )
-align = 1
-valign = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="chat"]
+margin_left = -53.0
+margin_top = -183.0
+margin_right = 61.0
+margin_bottom = -149.0
+rect_min_size = Vector2( 114, 34 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label" type="Label" parent="chat/VBoxContainer"]
+margin_right = 114.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 114, 34 )
+custom_fonts/font = SubResource( 44 )
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="chat/VBoxContainer/Label"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="chat"]
+wait_time = 2.0
+
+[node name="mini3" type="Sprite" parent="."]
+visible = false
+position = Vector2( -1, 66 )
+texture = ExtResource( 23 )
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_in"]
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]
 [connection signal="body_entered" from="floor_check" to="." method="floor_check_in"]
 [connection signal="body_exited" from="floor_check" to="." method="floor_check_out"]
+[connection signal="resized" from="chat/VBoxContainer/Label" to="." method="chat_Label_resized"]
+[connection signal="timeout" from="chat/Timer" to="." method="chat_timeout"]

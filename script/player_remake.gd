@@ -3,6 +3,7 @@ extends KinematicBody2D
 onready var manager = get_node("/root/ingame")
 onready var camera = get_node("/root/ingame/camera")
 onready var ball = get_node("/root/ingame/ball/ball_body")
+onready var chat_sys = get_node("/root/ingame/buttons/chat_system")
 
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
 
@@ -51,9 +52,10 @@ func _ready():
 func _physics_process(delta):
 	
 	flip_check()
-	arrowkey_move_input()
-	jump_and_gravity(delta)
+	#arrowkey_move_input()
+	#jump_and_gravity(delta)
 	ball_grab_check()
+	velocity.y += gravity * delta # 중력값은 계속 적용
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
 	
 	#$attack.look_at(get_global_mouse_position())
@@ -69,10 +71,12 @@ func flip_check(): # 마우스 위치에 따라서 좌우반전, 회전도 넣�
 			if flipped == false:
 				flipped = true
 				scale.x *= -1
+				$chat.rect_scale.x *= -1
 		else:
 			if flipped == true:
 				flipped = false
 				scale.x *= -1
+				$chat.rect_scale.x *= -1
 
 func movement_state_check(a):
 	if attacking == false: # 공격중이 아닐때
@@ -134,12 +138,28 @@ func arrowkey_move_input():
 	else:
 		movement_state_check(0)
 
+func jump_input():
+	if movement_state == "on_air":
+		if jump_attack == false:
+			if velocity.y > 0:
+				sprite_state_machine.travel("fall")
+			elif velocity.y < 0:
+				sprite_state_machine.travel("jump")
+	
+	if Input.is_action_just_pressed("move_jump"):
+		if movement_state == "on_air":
+			if can_dubble_jump == true:
+				can_dubble_jump = false
+				velocity.y = dubble_jump
+		elif attacking == false:
+			velocity.y += jump
+
 func jump_and_gravity(delta):
 	
 	if movement_state == "on_air":
-		if velocity.y > 0 and $sprite.animation != "receive":
-			$sprite.animation = "receive"
-			$sprite.frame = 1
+		#if velocity.y > 0 and $sprite.animation != "receive":
+		#	$sprite.animation = "receive"
+		#	$sprite.frame = 1
 		
 		if jump_attack == false:
 			if velocity.y > 0:
@@ -163,6 +183,10 @@ func jump_and_gravity(delta):
 	pass
 
 func _unhandled_input(event):
+	
+	arrowkey_move_input()
+	jump_input()
+	
 	if Input.is_action_just_pressed("move_attack"):
 		
 		attack_events()
@@ -264,3 +288,22 @@ func interact_spike():
 func anim_finish():
 	attacking = false
 	print("finish")
+
+func display_chat(chat):
+	$chat/VBoxContainer/Label.text = chat
+	$chat/Timer.start()
+	$chat.show()
+	print(str($chat/VBoxContainer/Label.rect_size))
+
+func chat_timeout():
+	$chat/Timer.stop()
+	$chat/VBoxContainer/Label.text = "타이머 종료"
+	$chat.hide()
+	print(str($chat/VBoxContainer/Label.rect_size))
+	pass # Replace with function body.
+
+func chat_Label_resized():
+	print("chat resize")
+	var a = $chat/VBoxContainer/Label.rect_size.y - 34
+	$chat/VBoxContainer/.rect_position.y = -183 - a
+	pass # Replace with function body.

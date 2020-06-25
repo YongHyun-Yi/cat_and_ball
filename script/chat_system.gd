@@ -28,6 +28,15 @@ func _unhandled_key_input(event):
 	elif Input.is_action_just_pressed("ui_cancel"):
 		if chat_on == true:
 			end_chat()
+	
+	else:
+		if chat_on == true:
+			if event is InputEventKey and chat_init == false:
+				#chat_init()
+				pass
+			get_tree().set_input_as_handled()
+	
+	#print(event.scancode)
 
 func start_chat():
 	chat_on = true
@@ -37,7 +46,7 @@ func start_chat():
 
 func end_chat():
 	chat_on = false
-	chat_init = false
+	#chat_init = false
 	hide()
 	$LineEdit.clear()
 	$LineEdit.release_focus()
@@ -48,10 +57,15 @@ func chat_init():
 
 func chat_output():
 	print($LineEdit.text)
-	player.get_node("chat/Label").text = $LineEdit.text
+	player.display_chat($LineEdit.text)
 
 
 func text_changed(new_text):
 	print("change")
 	if chat_init == false:
 		chat_init()
+
+
+func text_entered(new_text):
+	print("entered")
+	pass # Replace with function body.
