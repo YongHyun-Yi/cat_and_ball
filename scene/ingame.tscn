@@ -52,7 +52,7 @@ wait_time = 0.2
 
 [node name="camera" type="Camera2D" parent="."]
 pause_mode = 1
-position = Vector2( 640, 320 )
+position = Vector2( 640, 360 )
 current = true
 smoothing_speed = 3.0
 script = ExtResource( 2 )
@@ -175,24 +175,27 @@ expand = true
 layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="background"]
-visible = false
 margin_right = 1280.0
 margin_bottom = 720.0
 mouse_filter = 2
+color = Color( 1, 0.839216, 0.105882, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="combo" type="Label" parent="background"]
-visible = false
-margin_left = 455.0
-margin_top = 175.0
-margin_right = 828.0
-margin_bottom = 378.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -270.0
+margin_top = -101.0
+margin_right = 270.0
+margin_bottom = 102.0
 custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0.760784, 0.760784, 0.760784, 1 )
-text = "COMBO
-NUM"
+custom_colors/font_color = Color( 0.439216, 0.368627, 0.054902, 1 )
+text = " PLAYABLE
+DEMO"
 align = 1
 valign = 1
 __meta__ = {
@@ -261,6 +264,7 @@ margin_top = -20.0
 margin_right = 290.5
 margin_bottom = 27.0
 custom_fonts/font = SubResource( 4 )
+placeholder_text = "채팅 입력창 입니다."
 __meta__ = {
 "_edit_use_anchors_": false
 }

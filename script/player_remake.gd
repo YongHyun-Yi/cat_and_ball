@@ -52,8 +52,6 @@ func _ready():
 func _physics_process(delta):
 	
 	flip_check()
-	#arrowkey_move_input()
-	#jump_and_gravity(delta)
 	ball_grab_check()
 	velocity.y += gravity * delta # 중력값은 계속 적용
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
@@ -122,10 +120,6 @@ func movement_state_check(a):
 				velocity.x = lerp(velocity.x, -speed, 0.15)
 		elif a == 0:
 			velocity.x = lerp(velocity.x, speed, 0.001)
-	
-	#if sprite_state_machine.get_current_node() == "idle" and attacking == true:
-	#	attacking = false
-	#	print("finish")
 
 func arrowkey_move_input():
 	
@@ -154,45 +148,12 @@ func jump_input():
 		elif attacking == false:
 			velocity.y += jump
 
-func jump_and_gravity(delta):
-	
-	if movement_state == "on_air":
-		#if velocity.y > 0 and $sprite.animation != "receive":
-		#	$sprite.animation = "receive"
-		#	$sprite.frame = 1
-		
-		if jump_attack == false:
-			if velocity.y > 0:
-				sprite_state_machine.travel("fall")
-			elif velocity.y < 0:
-				sprite_state_machine.travel("jump")
-	
-	if Input.is_action_just_pressed("move_jump"):
-		if movement_state == "on_air":
-			if can_dubble_jump == true:
-				can_dubble_jump = false
-				velocity.y = dubble_jump
-				$sprite.animation = "jump"
-				$sprite_anim.play("jump")
-		elif attacking == false:
-			velocity.y += jump
-			$sprite.animation = "jump"
-			$sprite_anim.play("jump")
-
-	velocity.y += gravity * delta # 중력값은 계속 적용
-	pass
-
 func _unhandled_input(event):
 	
 	arrowkey_move_input()
 	jump_input()
-	
-	if Input.is_action_just_pressed("move_attack"):
-		
-		attack_events()
-		
-	# 공 던지기 함수 추가
-	# 우클릭으로 공 불러오기 함수 추가
+	attack_events()
+
 	if Input.is_action_just_pressed("ball_grab"):
 		if ball_grab == false: # 끌어당기기
 			if ball_pull == false:
@@ -212,26 +173,25 @@ func _unhandled_input(event):
 		#get_tree().is_input_handled()
 
 func attack_events():
-	if ball_grab == false:
-		if is_on_floor(): # 지상공격
-			if attacking == true and chain_attack == true:
-				match sprite_state_machine.get_current_node():
-					"attack1":
-						sprite_state_machine.travel("attack2")
-					"attack2":
-						sprite_state_machine.travel("attack3")
-			else:
-				sprite_state_machine.travel("attack1")
-				attacking = true
-		else: # 공중공격
-			if jump_attack == false:
-				jump_attack = true
-				sprite_state_machine.travel("jump_attack")
-				print("jump attack")
-	elif ball_grab == true: # 공던지기
-		ball.ball_throw()
-		
-	pass
+	if Input.is_action_just_pressed("move_attack"):
+		if ball_grab == false:
+			if is_on_floor(): # 지상공격
+				if attacking == true and chain_attack == true:
+					match sprite_state_machine.get_current_node():
+						"attack1":
+							sprite_state_machine.travel("attack2")
+						"attack2":
+							sprite_state_machine.travel("attack3")
+				else:
+					sprite_state_machine.travel("attack1")
+					attacking = true
+			else: # 공중공격
+				if jump_attack == false:
+					jump_attack = true
+					sprite_state_machine.travel("jump_attack")
+					print("jump attack")
+		elif ball_grab == true: # 공던지기
+			ball.ball_throw()
 
 func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 실행
 	a = a.get_parent()
@@ -290,20 +250,29 @@ func anim_finish():
 	print("finish")
 
 func display_chat(chat):
-	$chat/VBoxContainer/Label.text = chat
+	$chat/HBoxContainer/VBoxContainer/Label.text = chat
 	$chat/Timer.start()
 	$chat.show()
-	print(str($chat/VBoxContainer/Label.rect_size))
+	print(str(chat.length()))
 
 func chat_timeout():
 	$chat/Timer.stop()
-	$chat/VBoxContainer/Label.text = "타이머 종료"
+	$chat/HBoxContainer/VBoxContainer/Label.text = ""
 	$chat.hide()
-	print(str($chat/VBoxContainer/Label.rect_size))
-	pass # Replace with function body.
 
 func chat_Label_resized():
-	print("chat resize")
-	var a = $chat/VBoxContainer/Label.rect_size.y - 34
-	$chat/VBoxContainer/.rect_position.y = -183 - a
-	pass # Replace with function body.
+	
+	var chat_box_min = Vector2(20, 24)
+	#var chat_box_pos = Vector2(-9, -188)
+	var chat_box_pos = Vector2(-9, -43)
+	
+	if $chat/HBoxContainer/VBoxContainer/Label.text.length() > 19:
+		$chat/HBoxContainer/VBoxContainer/Label.rect_min_size.x = 380
+		$chat/HBoxContainer/VBoxContainer/Label.autowrap = true
+	else:
+		$chat/HBoxContainer/VBoxContainer/Label.autowrap = false
+		$chat/HBoxContainer/VBoxContainer/Label.rect_min_size.x = chat_box_min.x
+	
+	var a = $chat/HBoxContainer/VBoxContainer/Label.rect_size - chat_box_min
+	a.x /= 2
+	$chat/HBoxContainer.rect_position = chat_box_pos - a
