@@ -1,0 +1,188 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://script/character_selection.gd" type="Script" id=2]
+[ext_resource path="res://custom_style/button_normal.tres" type="StyleBox" id=3]
+[ext_resource path="res://custom_style/button_hover.tres" type="StyleBox" id=4]
+[ext_resource path="res://custom_style/button_pressed.tres" type="StyleBox" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+extra_spacing_bottom = -10
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+extra_spacing_bottom = -10
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
+extra_spacing_bottom = -10
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 30
+extra_spacing_bottom = -10
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="character_selection" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0.839216, 0.105882, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="grid" type="GridContainer" parent="Control/HSeparator"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -237.5
+margin_top = -332.0
+margin_right = 237.5
+margin_bottom = -162.0
+custom_constants/vseparation = 20
+custom_constants/hseparation = 20
+columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Control/HSeparator/grid"]
+margin_right = 79.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 1 )
+text = "캐릭터1"
+
+[node name="Button2" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 99.0
+margin_right = 178.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 2 )
+text = "캐릭터2"
+
+[node name="Button3" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 198.0
+margin_right = 277.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 3 )
+text = "캐릭터3"
+
+[node name="Button4" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 297.0
+margin_right = 376.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 4 )
+text = "캐릭터4"
+
+[node name="Button5" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 396.0
+margin_right = 475.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 4 )
+text = "캐릭터4"
+
+[node name="Button6" type="Button" parent="Control/HSeparator/grid"]
+margin_top = 95.0
+margin_right = 79.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 4 )
+text = "캐릭터4"
+
+[node name="Button7" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 99.0
+margin_top = 95.0
+margin_right = 178.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 4 )
+text = "캐릭터4"
+
+[node name="Button8" type="Button" parent="Control/HSeparator/grid"]
+margin_left = 198.0
+margin_top = 95.0
+margin_right = 277.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 75, 75 )
+custom_fonts/font = SubResource( 4 )
+text = "캐릭터4"
+
+[node name="ColorRect2" type="ColorRect" parent="Control/HSeparator"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -365.0
+margin_top = 21.0
+margin_right = 365.0
+margin_bottom = 335.0
+rect_min_size = Vector2( 730, 314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="Control/HSeparator"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -358.0
+margin_top = -99.0001
+margin_right = -38.0
+margin_bottom = -29.0001
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="confirm" type="Button" parent="Control/HSeparator/hbox"]
+margin_right = 150.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 150, 70 )
+custom_styles/hover = ExtResource( 4 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "확인"
+
+[node name="cancel" type="Button" parent="Control/HSeparator/hbox"]
+margin_left = 170.0
+margin_right = 320.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 150, 70 )
+custom_styles/hover = ExtResource( 4 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "돌아가기"
+[connection signal="button_up" from="Control/HSeparator/hbox/confirm" to="." method="button_event" binds= [ "confirm" ]]
+[connection signal="button_up" from="Control/HSeparator/hbox/cancel" to="." method="button_event" binds= [ "cancel" ]]

@@ -3,7 +3,7 @@ extends KinematicBody2D
 onready var manager = get_node("/root/ingame")
 onready var camera = get_node("/root/ingame/camera")
 onready var ball = get_node("/root/ingame/ball/ball_body")
-onready var chat_sys = get_node("/root/ingame/buttons/chat_system")
+onready var chat_sys = get_node("/root/ingame/uis/chat_system")
 
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
 
@@ -14,6 +14,7 @@ var gravity = 2000
 var jump = -900
 var dubble_jump = -800
 var can_dubble_jump = true
+var can_move = true
 
 var speed = 400
 
@@ -45,11 +46,15 @@ var attack_angle = Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	manager.get_node("uis/chat_system").connect("chat_mode", self, "chat_mode")
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	
+	arrowkey_move_input()
+	jump_input()
 	
 	flip_check()
 	ball_grab_check()
@@ -123,35 +128,40 @@ func movement_state_check(a):
 
 func arrowkey_move_input():
 	
-	if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
-		movement_state_check(-1)
-
-	elif Input.is_action_pressed("move_right"):
-		movement_state_check(1)
-
+	if can_move == true:
+	
+		if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
+			movement_state_check(-1)
+	
+		elif Input.is_action_pressed("move_right"):
+			movement_state_check(1)
+	
+		else:
+			movement_state_check(0)
+	
 	else:
 		movement_state_check(0)
 
 func jump_input():
-	if movement_state == "on_air":
-		if jump_attack == false:
-			if velocity.y > 0:
-				sprite_state_machine.travel("fall")
-			elif velocity.y < 0:
-				sprite_state_machine.travel("jump")
+	if can_move == true:
 	
-	if Input.is_action_just_pressed("move_jump"):
 		if movement_state == "on_air":
-			if can_dubble_jump == true:
-				can_dubble_jump = false
-				velocity.y = dubble_jump
-		elif attacking == false:
-			velocity.y += jump
+			if jump_attack == false:
+				if velocity.y > 0:
+					sprite_state_machine.travel("fall")
+				elif velocity.y < 0:
+					sprite_state_machine.travel("jump")
+		
+		if Input.is_action_just_pressed("move_jump"):
+			if movement_state == "on_air":
+				if can_dubble_jump == true:
+					can_dubble_jump = false
+					velocity.y = dubble_jump
+			elif attacking == false:
+				velocity.y += jump
 
 func _unhandled_input(event):
-	
-	arrowkey_move_input()
-	jump_input()
+
 	attack_events()
 
 	if Input.is_action_just_pressed("ball_grab"):
@@ -249,16 +259,26 @@ func anim_finish():
 	attacking = false
 	print("finish")
 
+func chat_mode(toggle):
+	if toggle == "on":
+		$chat/anim_icon.play()
+		$chat/anim_icon.show()
+		can_move = false
+	else:
+		can_move = true
+		$chat/anim_icon.frame = 0
+		$chat/anim_icon.stop()
+		$chat/anim_icon.hide()
+
 func display_chat(chat):
-	$chat/HBoxContainer/VBoxContainer/Label.text = chat
+	$chat/chat_box/Label.text = chat
 	$chat/Timer.start()
-	$chat.show()
-	print(str(chat.length()))
+	$chat/chat_box.show()
 
 func chat_timeout():
 	$chat/Timer.stop()
-	$chat/HBoxContainer/VBoxContainer/Label.text = ""
-	$chat.hide()
+	$chat/chat_box/Label.text = ""
+	$chat/chat_box.hide()
 
 func chat_Label_resized():
 	
@@ -266,13 +286,13 @@ func chat_Label_resized():
 	#var chat_box_pos = Vector2(-9, -188)
 	var chat_box_pos = Vector2(-9, -43)
 	
-	if $chat/HBoxContainer/VBoxContainer/Label.text.length() > 19:
-		$chat/HBoxContainer/VBoxContainer/Label.rect_min_size.x = 380
-		$chat/HBoxContainer/VBoxContainer/Label.autowrap = true
+	if $chat/chat_box/Label.text.length() > 19:
+		$chat/chat_box/Label.rect_min_size.x = 380
+		$chat/chat_box/Label.autowrap = true
 	else:
-		$chat/HBoxContainer/VBoxContainer/Label.autowrap = false
-		$chat/HBoxContainer/VBoxContainer/Label.rect_min_size.x = chat_box_min.x
+		$chat/chat_box/Label.autowrap = false
+		$chat/chat_box/Label.rect_min_size.x = chat_box_min.x
 	
-	var a = $chat/HBoxContainer/VBoxContainer/Label.rect_size - chat_box_min
+	var a = $chat/chat_box/Label.rect_size - chat_box_min
 	a.x /= 2
-	$chat/HBoxContainer.rect_position = chat_box_pos - a
+	$chat/chat_box.rect_position = chat_box_pos - a

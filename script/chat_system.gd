@@ -4,6 +4,10 @@ extends Control
 export var chat_on : bool = false
 onready var player = get_node("/root/ingame/player/player_body")
 
+signal chat_mode
+
+var char_id : String = "캐릭터"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +23,7 @@ func _unhandled_key_input(event):
 		if chat_on == false:
 			start_chat()
 		else:
-			if $LineEdit.text.length() > 0:
+			if $chat_input_edit.text.length() > 0:
 				chat_output()
 			end_chat()
 	
@@ -38,23 +42,28 @@ func _unhandled_key_input(event):
 
 func start_chat():
 	chat_on = true
-	show()
-	$LineEdit.grab_focus()
+	player.can_move = false
+	#$chat_input_rect.show()
+	$chat_input_edit.grab_focus()
+	emit_signal("chat_mode", "on")
 
 func end_chat():
 	chat_on = false
+	player.can_move = true
 	#chat_init = false
-	hide()
-	$LineEdit.clear()
-	$LineEdit.release_focus()
+	#$chat_input_rect.hide()
+	$chat_input_edit.clear()
+	$chat_input_edit.release_focus()
+	emit_signal("chat_mode", "off")
 
 #func chat_init():
 #	$LineEdit.clear()
 #	chat_init = true
 
 func chat_output():
-	print($LineEdit.text)
-	player.display_chat($LineEdit.text)
+	player.display_chat($chat_input_edit.text)
+	var a = char_id + " : " + $chat_input_edit.text + "\n"
+	$chat_output_display.bbcode_text += a
 
 
 #func text_changed(new_text):
