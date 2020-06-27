@@ -1,13 +1,14 @@
 extends Node2D
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var selected_character : Object = null
+
+onready var character_detail = $Control/HSeparator/character_detail
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#$Control/HSeparator/Panel2/grid/Button.connect("button_up", self,)
 	pass # Replace with function body.
 
 
@@ -29,3 +30,11 @@ func button_event(b_name):
 		elif b_name == "cancel":
 			get_tree().change_scene("res://scene/main_screen.tscn")
 		pass
+
+func character_detail_init():
+	character_detail.get_node("sprite").texture = null
+	character_detail.get_node("caption/Label").text = ""
+
+func character_detail_update(char_object):
+	character_detail.get_node("sprite").texture = char_object.char_sprite
+	character_detail.get_node("caption/Label").text = char_object.char_caption
