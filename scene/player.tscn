@@ -41,15 +41,15 @@ animations = [ {
 "name": "ready",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
 "loop": false,
 "name": "receive",
 "speed": 20.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -740,12 +740,12 @@ graph_offset = Vector2( -176, 139.632 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=43]
 
-[sub_resource type="DynamicFont" id=45]
+[sub_resource type="DynamicFont" id=44]
 size = 26
 extra_spacing_bottom = -10
 font_data = ExtResource( 22 )
 
-[sub_resource type="SpriteFrames" id=44]
+[sub_resource type="SpriteFrames" id=45]
 animations = [ {
 "frames": [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
 "loop": true,
@@ -768,7 +768,6 @@ animation = "idle"
 playing = true
 
 [node name="Sprite" type="Sprite" parent="."]
-visible = false
 position = Vector2( 0, -37 )
 texture = ExtResource( 7 )
 
@@ -858,7 +857,7 @@ __meta__ = {
 margin_right = 20.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 20, 24 )
-custom_fonts/font = SubResource( 45 )
+custom_fonts/font = SubResource( 44 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
@@ -901,12 +900,13 @@ __meta__ = {
 [node name="anim_icon" type="AnimatedSprite" parent="chat"]
 visible = false
 position = Vector2( 58, 21 )
-frames = SubResource( 44 )
+frames = SubResource( 45 )
 
 [node name="Timer" type="Timer" parent="chat"]
 wait_time = 2.0
 
 [node name="mini" type="Sprite" parent="."]
+visible = false
 position = Vector2( -1, 71 )
 texture = ExtResource( 23 )
 [connection signal="area_entered" from="hit_zone" to="." method="hit_zone_in"]

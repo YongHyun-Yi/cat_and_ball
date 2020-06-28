@@ -4,8 +4,12 @@ onready var manager = get_node("/root/character_selection")
 
 export (Resource) var char_sprite
 export var char_name = "이름"
-var char_caption = "설명이에오"
-var char_stats = []
+export var char_caption = "설명이에오"
+
+export var char_power = 3
+export var char_speed = 5
+export var char_health = 7
+onready var char_stats = [char_power, char_speed, char_health]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

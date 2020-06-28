@@ -1,25 +1,513 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://script/main_screen.gd" type="Script" id=1]
+[ext_resource path="res://custom_style/button_disabled.tres" type="StyleBox" id=2]
 [ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://custom_style/button_normal.tres" type="StyleBox" id=5]
 [ext_resource path="res://custom_style/button_hover.tres" type="StyleBox" id=6]
 [ext_resource path="res://custom_style/button_pressed.tres" type="StyleBox" id=7]
+[ext_resource path="res://script/main_menu_button.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="StyleBoxFlat" id=3]
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0.576471, 1, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+anti_aliasing = false
+
+[sub_resource type="Animation" id=4]
+resource_name = "loop 2"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/panel:border_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0.576471, 1, 1 ), Color( 0.937255, 0.972549, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:custom_styles/panel:expand_margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:custom_styles/panel:expand_margin_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:custom_styles/panel:expand_margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:custom_styles/panel:expand_margin_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:custom_styles/panel:border_width_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:custom_styles/panel:border_width_top")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:custom_styles/panel:border_width_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:custom_styles/panel:border_width_bottom")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "reset"
+length = 0.001
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/panel:border_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0.576471, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:custom_styles/panel:expand_margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:custom_styles/panel:expand_margin_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:custom_styles/panel:expand_margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:custom_styles/panel:expand_margin_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:custom_styles/panel:border_width_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:custom_styles/panel:border_width_top")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:custom_styles/panel:border_width_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:custom_styles/panel:border_width_bottom")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+
+[sub_resource type="StyleBoxFlat" id=9]
+draw_center = false
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.468628, 0.77451, 1, 0.5 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 17.0
+expand_margin_right = 17.0
+expand_margin_top = 17.0
+expand_margin_bottom = 17.0
+anti_aliasing = false
+
+[sub_resource type="Animation" id=10]
+resource_name = "loop 2"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/panel:border_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0.576471, 1, 1 ), Color( 0.937255, 0.972549, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:custom_styles/panel:expand_margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:custom_styles/panel:expand_margin_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:custom_styles/panel:expand_margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:custom_styles/panel:expand_margin_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 30.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:custom_styles/panel:border_width_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:custom_styles/panel:border_width_top")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:custom_styles/panel:border_width_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:custom_styles/panel:border_width_bottom")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "reset"
+length = 0.001
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/panel:border_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0.576471, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:custom_styles/panel:expand_margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:custom_styles/panel:expand_margin_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:custom_styles/panel:expand_margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:custom_styles/panel:expand_margin_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:custom_styles/panel:border_width_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:custom_styles/panel:border_width_top")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:custom_styles/panel:border_width_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 10 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:custom_styles/panel:border_width_bottom")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10, 0 ]
+}
+
+[sub_resource type="DynamicFont" id=6]
 size = 100
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=7]
 size = 70
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=8]
 size = 34
 extra_spacing_bottom = -15
 font_data = ExtResource( 4 )
@@ -70,14 +558,10 @@ __meta__ = {
 }
 
 [node name="main_menus" type="HBoxContainer" parent="Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -320.0
-margin_top = -140.0
-margin_right = 310.0
-margin_bottom = 160.0
+margin_left = 480.0
+margin_top = 220.0
+margin_right = 1770.0
+margin_bottom = 520.0
 rect_min_size = Vector2( 630, 300 )
 custom_constants/separation = 30
 __meta__ = {
@@ -91,15 +575,18 @@ rect_min_size = Vector2( 300, 300 )
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
 custom_styles/focus = SubResource( 1 )
+custom_styles/disabled = ExtResource( 2 )
 custom_styles/normal = ExtResource( 5 )
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "게임시작"
+text = "게임하기"
+script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+caption = "게임을 고릅니다."
 
-[node name="game_end" type="Button" parent="Control/main_menus"]
+[node name="collect" type="Button" parent="Control/main_menus"]
 margin_left = 330.0
 margin_right = 630.0
 margin_bottom = 300.0
@@ -107,10 +594,90 @@ rect_min_size = Vector2( 300, 300 )
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
 custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = ExtResource( 2 )
 custom_styles/normal = ExtResource( 5 )
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "게임종료"
+disabled = true
+text = "준비중입니다."
+script = ExtResource( 8 )
+caption = "현재 준비중인 기능입니다."
+
+[node name="option" type="Button" parent="Control/main_menus"]
+margin_left = 660.0
+margin_right = 960.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 300, 300 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = ExtResource( 2 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+disabled = true
+text = "환경설정"
+script = ExtResource( 8 )
+caption = "환경설정을 합니다."
+
+[node name="game_end" type="Button" parent="Control/main_menus"]
+margin_left = 990.0
+margin_right = 1290.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 300, 300 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = ExtResource( 2 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+disabled = true
+text = "끝내기"
+script = ExtResource( 8 )
+caption = "게임을 종료합니다."
+
+[node name="menus_tween" type="Tween" parent="Control/main_menus"]
+
+[node name="menu_cursor" type="Panel" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -140.0
+margin_right = 140.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/menu_cursor"]
+autoplay = "loop"
+anims/loop = SubResource( 4 )
+anims/reset = SubResource( 5 )
+
+[node name="menu_cursor2" type="Panel" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -140.0
+margin_right = 140.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/menu_cursor2"]
+autoplay = "loop"
+anims/loop = SubResource( 10 )
+anims/reset = SubResource( 11 )
 
 [node name="Label" type="Label" parent="Control"]
 visible = false
@@ -120,7 +687,7 @@ margin_left = -202.0
 margin_top = 20.0
 margin_right = 202.0
 margin_bottom = 132.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 text = "공튀기기 게임"
 align = 1
 valign = 1
@@ -141,10 +708,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="Control/menu_name"]
+[node name="Label" type="Label" parent="Control/menu_name"]
 margin_right = 176.0
 margin_bottom = 79.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "메뉴이름"
 valign = 1
@@ -164,14 +731,20 @@ margin_top = 530.0
 margin_right = 900.0
 margin_bottom = 608.0
 rect_min_size = Vector2( 530, 78 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "메뉴에 대한 간략한 설명이 표시되는곳입니다."
+text = "메뉴에 대한 간략한 설명이 표시되는곳입니다..........."
 align = 1
 valign = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="button_up" from="Control/main_menus/game_start" to="." method="button_event" binds= [ "game_start" ]]
-[connection signal="button_up" from="Control/main_menus/game_end" to="." method="button_event" binds= [ "game_end" ]]
+[connection signal="button_event" from="Control/main_menus/game_start" to="." method="button_event"]
+[connection signal="button_up" from="Control/main_menus/game_start" to="Control/main_menus/game_start" method="button_up"]
+[connection signal="button_event" from="Control/main_menus/collect" to="." method="button_event"]
+[connection signal="button_up" from="Control/main_menus/collect" to="Control/main_menus/collect" method="button_up"]
+[connection signal="button_event" from="Control/main_menus/option" to="." method="button_event"]
+[connection signal="button_up" from="Control/main_menus/option" to="Control/main_menus/option" method="button_up"]
+[connection signal="button_event" from="Control/main_menus/game_end" to="." method="button_event"]
+[connection signal="button_up" from="Control/main_menus/game_end" to="Control/main_menus/game_end" method="button_up"]

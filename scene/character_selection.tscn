@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://script/character_selection.gd" type="Script" id=2]
@@ -11,38 +11,97 @@
 [ext_resource path="res://script/character_select_button.gd" type="Script" id=9]
 [ext_resource path="res://icon.png" type="Texture" id=10]
 [ext_resource path="res://sprite/ball2.png" type="Texture" id=11]
+[ext_resource path="res://custom_style/negative_button_normal.tres" type="StyleBox" id=12]
+[ext_resource path="res://custom_style/negative_button_hover.tres" type="StyleBox" id=13]
 
-[sub_resource type="DynamicFont" id=9]
-size = 30
+[sub_resource type="DynamicFont" id=1]
+size = 24
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
-draw_center = false
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+extra_spacing_bottom = 2
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.933333, 0.0862745, 0.0862745, 1 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.129412, 0.631373, 1, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0.839216, 0.466667, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=9]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color( 0.164706, 0.121569, 0, 1 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+anti_aliasing = false
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=11]
 size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="DynamicFont" id=16]
+size = 50
+font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="DynamicFont" id=13]
 size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=15]
 size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
@@ -113,21 +172,49 @@ __meta__ = {
 }
 
 [node name="character_detail" type="Control" parent="Control/HSeparator"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -200.0
+margin_right = 557.0
+margin_bottom = 187.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="sprite" type="TextureRect" parent="Control/HSeparator/character_detail"]
+[node name="image" type="GridContainer" parent="Control/HSeparator/character_detail"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = 65.0
-margin_top = -168.0
-margin_right = 265.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 200, 200 )
+margin_left = 139.0
+margin_top = -86.5
+margin_right = 179.0
+margin_bottom = -46.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sprite" type="TextureRect" parent="Control/HSeparator/character_detail/image"]
 stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name" type="HBoxContainer" parent="Control/HSeparator/character_detail"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 158.0
+margin_top = -8.5
+margin_right = 158.0
+margin_bottom = 19.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/HSeparator/character_detail/name"]
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -136,9 +223,9 @@ __meta__ = {
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 66.0
-margin_top = 57.0
+margin_top = 63.5
 margin_right = 504.0
-margin_bottom = 183.0
+margin_bottom = 189.5
 custom_styles/panel = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -147,23 +234,110 @@ __meta__ = {
 [node name="Label" type="Label" parent="Control/HSeparator/character_detail/caption"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -8.0
-custom_fonts/font = SubResource( 9 )
+margin_left = 15.0
+margin_top = 15.0
+margin_right = -15.0
+margin_bottom = -15.0
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="stats" type="Control" parent="Control/HSeparator/character_detail"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 22.5
+margin_top = -95.5
+margin_right = 175.5
+margin_bottom = -21.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_label" type="Label" parent="Control/HSeparator/character_detail/stats"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -74.0
+margin_top = -35.0
+margin_right = -61.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "힘
+속
+체"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_power" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -54.5
+margin_top = -34.0
+margin_right = 75.5
+margin_bottom = -20.0
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 5 )
+max_value = 10.0
+step = 0.1
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_speed" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -54.5
+margin_top = -6.0
+margin_right = 75.5
+margin_bottom = 8.0
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+max_value = 10.0
+step = 0.1
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_health" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -54.5
+margin_top = 21.0
+margin_right = 75.5
+margin_bottom = 35.0
+custom_styles/fg = SubResource( 8 )
+custom_styles/bg = SubResource( 7 )
+max_value = 10.0
+step = 0.1
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_tween" type="Tween" parent="Control/HSeparator/character_detail/stats"]
+
 [node name="Panel2" type="Panel" parent="Control/HSeparator"]
 margin_left = 557.0
 margin_top = 161.0
 margin_right = 1253.0
 margin_bottom = 526.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -192,13 +366,16 @@ custom_styles/hover = ExtResource( 8 )
 custom_styles/pressed = ExtResource( 6 )
 custom_styles/focus = SubResource( 10 )
 custom_styles/normal = ExtResource( 7 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 toggle_mode = true
 text = "캐릭터"
 script = ExtResource( 9 )
 char_sprite = ExtResource( 10 )
-char_name = "이름1"
+char_name = "고도 엔진 아이콘"
+char_caption = "기본 스프라이트에요"
+char_power = 1
+char_health = 4
 
 [node name="character_select_button2" type="Button" parent="Control/HSeparator/Panel2/grid"]
 margin_left = 85.0
@@ -209,13 +386,30 @@ custom_styles/hover = ExtResource( 8 )
 custom_styles/pressed = ExtResource( 6 )
 custom_styles/focus = SubResource( 10 )
 custom_styles/normal = ExtResource( 7 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 toggle_mode = true
 text = "캐릭터"
 script = ExtResource( 9 )
 char_sprite = ExtResource( 11 )
-char_name = "이름2"
+char_name = "배구공"
+char_caption = "공 초기버전 스프라이트에요"
+char_power = 5
+char_speed = 7
+char_health = 2
+
+[node name="Label" type="Label" parent="Control/HSeparator/Panel2"]
+anchor_right = 1.0
+margin_top = -49.0
+margin_bottom = 7.0
+custom_fonts/font = SubResource( 16 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "< 캐릭터 선택 >"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="hbox" type="HBoxContainer" parent="Control/HSeparator"]
 margin_left = 930.0
@@ -233,9 +427,9 @@ margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
 custom_styles/hover = ExtResource( 4 )
 custom_styles/pressed = ExtResource( 5 )
-custom_styles/focus = SubResource( 6 )
+custom_styles/focus = SubResource( 12 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "확인"
 
@@ -244,13 +438,15 @@ margin_left = 170.0
 margin_right = 320.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
-custom_styles/hover = ExtResource( 4 )
+custom_styles/hover = ExtResource( 13 )
 custom_styles/pressed = ExtResource( 5 )
-custom_styles/focus = SubResource( 6 )
-custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/focus = SubResource( 12 )
+custom_styles/normal = ExtResource( 12 )
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "돌아가기"
+[connection signal="resized" from="Control/HSeparator/character_detail/image/sprite" to="." method="character_sprite_resized"]
+[connection signal="resized" from="Control/HSeparator/character_detail/name/Label" to="." method="name_Label_resized"]
 [connection signal="button_down" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="button_down"]
 [connection signal="mouse_entered" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="mouse_entered"]
 [connection signal="mouse_exited" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="mouse_exited"]
