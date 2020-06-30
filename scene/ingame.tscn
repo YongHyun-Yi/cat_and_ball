@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
@@ -6,72 +6,54 @@
 [ext_resource path="res://sprite/remake/mini1.png" type="Texture" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
 [ext_resource path="res://sprite/remake/mini2.png" type="Texture" id=6]
-[ext_resource path="res://sprite/icon.png" type="Texture" id=7]
+[ext_resource path="res://script/main_menu_button.gd" type="Script" id=7]
 [ext_resource path="res://sprite/remake/mini3.png" type="Texture" id=8]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://script/chat_system.gd" type="Script" id=11]
 [ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=12]
-[ext_resource path="res://custom_style/button_normal.tres" type="StyleBox" id=13]
-[ext_resource path="res://custom_style/button_hover.tres" type="StyleBox" id=14]
-[ext_resource path="res://custom_style/button_pressed.tres" type="StyleBox" id=15]
+[ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=13]
+[ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=14]
 [ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scene/ball.tscn" type="PackedScene" id=17]
-[ext_resource path="res://custom_style/negative_button_normal.tres" type="StyleBox" id=18]
-[ext_resource path="res://custom_style/negative_button_hover.tres" type="StyleBox" id=19]
-[ext_resource path="res://sprite/control_pannel_ver2-2.png" type="Texture" id=20]
-[ext_resource path="res://sprite/button_ver2-2_left.png" type="Texture" id=21]
-[ext_resource path="res://sprite/button_ver2-2_pressed_left.png" type="Texture" id=22]
-[ext_resource path="res://sprite/button_ver2-2_right.png" type="Texture" id=23]
-[ext_resource path="res://sprite/button_ver2-2_pressed_right.png" type="Texture" id=24]
-[ext_resource path="res://sprite/target_button_left.png" type="Texture" id=25]
-[ext_resource path="res://sprite/target_button_pressed_left.png" type="Texture" id=26]
-[ext_resource path="res://sprite/target_button_right.png" type="Texture" id=27]
-[ext_resource path="res://sprite/target_button_pressed_right.png" type="Texture" id=28]
 
-[sub_resource type="StreamTexture" id=1]
-flags = 4
-load_path = "res://.import/icon.png-53f5834a78d673287887f8850b597632.stex"
-
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 100
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.443137, 0.321569, 0, 1 )
 border_width_left = 10
 border_width_top = 10
 border_color = Color( 0.443137, 0.321569, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.298039, 0.215686, 0, 1 )
 border_width_left = 10
 border_width_top = 10
 border_color = Color( 0.298039, 0.215686, 0, 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=4]
 size = 26
 font_data = ExtResource( 9 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0, 0, 0, 0.784314 )
 border_width_left = 10
 border_width_top = 13
 border_color = Color( 0, 0, 0, 0.784314 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 size = 26
 extra_spacing_bottom = -5
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=8]
 size = 30
 font_data = ExtResource( 3 )
-
-[sub_resource type="StyleBoxEmpty" id=10]
 
 [node name="ingame" type="Node2D"]
 pause_mode = 2
@@ -133,79 +115,6 @@ attack_power = 0
 [node name="ball_body" parent="ball" instance=ExtResource( 17 )]
 position = Vector2( 243, 471 )
 
-[node name="controls" type="Control" parent="."]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="control_pannel" type="Sprite" parent="controls"]
-position = Vector2( 0, 1070 )
-texture = ExtResource( 20 )
-centered = false
-
-[node name="left" type="TouchScreenButton" parent="controls"]
-position = Vector2( 16, 1087 )
-normal = ExtResource( 21 )
-pressed = ExtResource( 22 )
-
-[node name="right" type="TouchScreenButton" parent="controls"]
-position = Vector2( 373, 1087 )
-normal = ExtResource( 23 )
-pressed = ExtResource( 24 )
-
-[node name="w_left" type="TouchScreenButton" parent="controls"]
-visible = false
-self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 16, 1087 )
-normal = ExtResource( 21 )
-pressed = ExtResource( 22 )
-
-[node name="w_right" type="TouchScreenButton" parent="controls"]
-visible = false
-self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 373, 1087 )
-normal = ExtResource( 23 )
-pressed = ExtResource( 24 )
-
-[node name="target_prev" type="TextureButton" parent="controls"]
-margin_left = 16.0
-margin_top = 1087.0
-margin_right = 107.0
-margin_bottom = 1154.0
-texture_normal = ExtResource( 25 )
-texture_pressed = ExtResource( 26 )
-
-[node name="target_next" type="TextureButton" parent="controls"]
-margin_left = 613.0
-margin_top = 1087.0
-margin_right = 704.0
-margin_bottom = 1154.0
-texture_normal = ExtResource( 27 )
-texture_pressed = ExtResource( 28 )
-
-[node name="ingame_menu" type="Control" parent="."]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="restart" type="TextureButton" parent="ingame_menu"]
-self_modulate = Color( 1, 1, 1, 0.490196 )
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 120.0
-margin_bottom = 120.0
-texture_normal = ExtResource( 7 )
-expand = true
-
-[node name="go_to_main_screen" type="TextureButton" parent="ingame_menu"]
-self_modulate = Color( 1, 1, 1, 0.490196 )
-margin_left = 140.0
-margin_top = 20.0
-margin_right = 240.0
-margin_bottom = 120.0
-texture_normal = SubResource( 1 )
-expand = true
-
 [node name="obstacles" type="Node2D" parent="."]
 
 [node name="sponge" type="Node2D" parent="obstacles"]
@@ -249,7 +158,7 @@ margin_left = -270.0
 margin_top = -101.0
 margin_right = 270.0
 margin_bottom = 102.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.439216, 0.368627, 0.054902, 1 )
 text = "PLAYABLE
 DEMO"
@@ -276,9 +185,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -34.0
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
-custom_fonts/font = SubResource( 5 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 max_length = 100
 placeholder_text = "채팅 입력창 입니다."
 caret_blink = true
@@ -294,9 +203,9 @@ margin_top = 6.0
 margin_right = 1.0
 margin_bottom = -42.0
 focus_mode = 2
-custom_styles/focus = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 7 )
 bbcode_enabled = true
 scroll_following = true
 selection_enabled = true
@@ -309,7 +218,7 @@ margin_left = 672.0
 margin_top = 12.0
 margin_right = 916.0
 margin_bottom = 105.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 8 )
 text = "asdasfadasd"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -317,6 +226,7 @@ __meta__ = {
 
 [node name="ingame_menus" type="Popup" parent="uis"]
 pause_mode = 2
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -349,55 +259,52 @@ __meta__ = {
 margin_right = 403.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 403, 70 )
-custom_styles/hover = ExtResource( 14 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/normal = ExtResource( 13 )
+theme = ExtResource( 14 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "다시하기"
+text = " 다시하기"
+script = ExtResource( 7 )
 
 [node name="option" type="Button" parent="uis/ingame_menus/hbox"]
 margin_top = 90.0
 margin_right = 403.0
 margin_bottom = 160.0
 rect_min_size = Vector2( 403, 70 )
-custom_styles/hover = ExtResource( 14 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/normal = ExtResource( 13 )
+theme = ExtResource( 14 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "환경설정"
+text = " 환경설정"
+script = ExtResource( 7 )
 
 [node name="go_to_main" type="Button" parent="uis/ingame_menus/hbox"]
 margin_top = 180.0
 margin_right = 403.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 403, 70 )
-custom_styles/hover = ExtResource( 14 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/normal = ExtResource( 13 )
+theme = ExtResource( 14 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "메인화면"
+text = " 메인화면"
+script = ExtResource( 7 )
 
 [node name="close" type="Button" parent="uis/ingame_menus/hbox"]
 margin_top = 270.0
 margin_right = 403.0
 margin_bottom = 340.0
 rect_min_size = Vector2( 403, 70 )
-custom_styles/hover = ExtResource( 19 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/normal = ExtResource( 18 )
+theme = ExtResource( 13 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "돌아가기"
+text = " 돌아가기"
+script = ExtResource( 7 )
+
+[node name="Tween" type="Tween" parent="uis/ingame_menus"]
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
-[connection signal="button_up" from="ingame_menu/restart" to="." method="restart"]
-[connection signal="button_up" from="ingame_menu/go_to_main_screen" to="." method="go_to_main_screen"]
-[connection signal="button_up" from="uis/ingame_menus/hbox/restart" to="." method="button_event" binds= [ "restart" ]]
-[connection signal="button_up" from="uis/ingame_menus/hbox/go_to_main" to="." method="button_event" binds= [ "go_to_main" ]]
-[connection signal="button_up" from="uis/ingame_menus/hbox/close" to="." method="button_event" binds= [ "close" ]]
+[connection signal="button_event" from="uis/ingame_menus/hbox/restart" to="." method="button_event"]
+[connection signal="button_up" from="uis/ingame_menus/hbox/restart" to="uis/ingame_menus/hbox/restart" method="button_up"]
+[connection signal="button_event" from="uis/ingame_menus/hbox/option" to="." method="button_event"]
+[connection signal="button_up" from="uis/ingame_menus/hbox/option" to="uis/ingame_menus/hbox/option" method="button_up"]
+[connection signal="button_event" from="uis/ingame_menus/hbox/go_to_main" to="." method="button_event"]
+[connection signal="button_up" from="uis/ingame_menus/hbox/go_to_main" to="uis/ingame_menus/hbox/go_to_main" method="button_up"]
+[connection signal="button_event" from="uis/ingame_menus/hbox/close" to="." method="button_event"]
+[connection signal="button_up" from="uis/ingame_menus/hbox/close" to="uis/ingame_menus/hbox/close" method="button_up"]

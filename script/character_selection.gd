@@ -1,14 +1,15 @@
 extends Node2D
 
-
-var selected_character : Object = null
-
-onready var character_detail = $Control/HSeparator/character_detail
+onready var selected_character : Object
+onready var character_detail = $Control/Control/character_detail
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#$Control/HSeparator/Panel2/grid/Button.connect("button_up", self,)
+	menu_tween()
+	selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
+	character_detail_update(selected_character)
+	$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
 	pass # Replace with function body.
 
 
@@ -16,20 +17,43 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func menu_tween():
+	$Control/Control/screen_tween.interpolate_property($Control/Control, "rect_position:x", 90, 0, .4, Tween.TRANS_EXPO, Tween.EASE_OUT)
+	$Control/Control/screen_tween.start()
 
-func cancel_button():
-	get_tree().change_scene("res://scene/main_screen.tscn")
-	pass # Replace with function body.
-
-func button_event(b_name):
-	var button = get_node("Control/HSeparator/hbox/"+b_name)
+func _input(event):
 	
-	if Rect2(Vector2.ZERO, button.rect_size).has_point(button.get_local_mouse_position()):
-		if b_name == "confirm":
-			get_tree().change_scene("res://scene/ingame.tscn")
-		elif b_name == "cancel":
-			get_tree().change_scene("res://scene/main_screen.tscn")
+	if Input.is_action_just_pressed("ui_left"):
+		if GlobalData.last_selected_character_index > 0:
+			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
+			GlobalData.last_selected_character_index -= 1
+			selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
+			character_detail_update(selected_character)
+			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
 		pass
+	elif Input.is_action_just_pressed("ui_right"):
+		if GlobalData.last_selected_character_index < $Control/Control/Panel2/grid.get_child_count()-1:
+			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
+			GlobalData.last_selected_character_index += 1
+			selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
+			character_detail_update(selected_character)
+			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
+		pass
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		get_tree().change_scene("res://scene/ingame.tscn")
+	elif Input.is_action_just_pressed("ui_cancel"):
+		get_tree().change_scene("res://scene/main_screen.tscn")
+
+func button_event(button_object, keyboard_input):
+	if Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true:
+		
+		match button_object.name:
+			"confirm":
+				get_tree().change_scene("res://scene/ingame.tscn")
+			"cancel":
+				get_tree().change_scene("res://scene/main_screen.tscn")
+
 
 func character_detail_init():
 	character_detail.get_node("image/sprite").texture = null
@@ -60,9 +84,9 @@ func character_sprite_resized():
 	var init_pos = Vector2(139, 107)
 	var init_size = Vector2(40, 40)
 	
-	var a = $Control/HSeparator/character_detail/image/sprite.rect_size - init_size
+	var a = $Control/Control/character_detail/image/sprite.rect_size - init_size
 	a.x /= 2
-	$Control/HSeparator/character_detail/image.rect_position = init_pos - a
+	$Control/Control/character_detail/image.rect_position = init_pos - a
 	
 	pass # Replace with function body.
 
@@ -70,8 +94,8 @@ func name_Label_resized():
 	var init_pos_x = 158
 	var init_size_x = 0
 	
-	var a = $Control/HSeparator/character_detail/name/Label.rect_size.x - init_size_x
+	var a = $Control/Control/character_detail/name/Label.rect_size.x - init_size_x
 	a /= 2
-	$Control/HSeparator/character_detail/name.rect_position.x = init_pos_x - a
+	$Control/Control/character_detail/name.rect_position.x = init_pos_x - a
 	
 	pass # Replace with function body.

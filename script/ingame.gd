@@ -22,7 +22,7 @@ func _process(delta):
 	$uis/Label.text = "vector2 : "+str(player.velocity)
 	pass
 
-func _unhandled_key_input(event):
+func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_menu"):
 		if $uis/ingame_menus.visible == false:
 			open_menu()
@@ -32,24 +32,31 @@ func _unhandled_key_input(event):
 func open_menu():
 	get_tree().paused = true
 	$uis/ingame_menus.show()
+	$uis/ingame_menus/Tween.interpolate_property($uis/ingame_menus/hbox, "rect_position:y", 230, 190, 0.4, Tween.TRANS_EXPO, Tween.EASE_OUT)
+	$uis/ingame_menus/Tween.start()
 
 func close_menu():
 	$uis/ingame_menus.hide()
 	get_tree().paused = false
 
-func button_event(b_name):
-	var button = get_node("uis/ingame_menus/hbox/"+b_name)
-	
-	if Rect2(Vector2.ZERO, button.rect_size).has_point(button.get_local_mouse_position()):
-		print("in there")
-		if b_name == "restart":
-			get_tree().reload_current_scene()
-			get_tree().paused = false
-		elif b_name == "go_to_main":
-			get_tree().change_scene("res://scene/main_screen.tscn")
-			get_tree().paused = false
-		elif b_name == "close":
-			close_menu()
+
+func button_event(button_object, keyboard_input):
+	if Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true:
+		
+		match button_object.name:
+			"restart":
+				get_tree().reload_current_scene()
+				get_tree().paused = false
+			"option":
+				var a = load("res://scene/main_option.tscn")
+				a = a.instance()
+				get_node("uis").add_child(a)
+				$uis/ingame_menus.hide()
+			"go_to_main":
+				get_tree().change_scene("res://scene/main_screen.tscn")
+				get_tree().paused = false
+			"close":
+				close_menu()
 
 func hit_pause(time):
 	get_tree().paused = true

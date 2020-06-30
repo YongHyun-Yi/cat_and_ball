@@ -1,19 +1,12 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://script/main_screen.gd" type="Script" id=1]
-[ext_resource path="res://custom_style/button_disabled.tres" type="StyleBox" id=2]
-[ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=2]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://custom_style/button_normal.tres" type="StyleBox" id=5]
-[ext_resource path="res://custom_style/button_hover.tres" type="StyleBox" id=6]
-[ext_resource path="res://custom_style/button_pressed.tres" type="StyleBox" id=7]
 [ext_resource path="res://script/main_menu_button.gd" type="Script" id=8]
+[ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=10]
 
-[sub_resource type="StyleBoxEmpty" id=1]
-
-[sub_resource type="StyleBoxEmpty" id=2]
-
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 draw_center = false
 border_width_left = 10
 border_width_top = 10
@@ -30,7 +23,7 @@ expand_margin_top = 5.0
 expand_margin_bottom = 5.0
 anti_aliasing = false
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 resource_name = "loop 2"
 length = 0.4
 loop = true
@@ -143,7 +136,7 @@ tracks/8/keys = {
 "values": [ 10, 0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "reset"
 length = 0.001
 loop = true
@@ -256,7 +249,7 @@ tracks/8/keys = {
 "values": [ 10, 0 ]
 }
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=4]
 draw_center = false
 border_width_left = 5
 border_width_top = 5
@@ -273,7 +266,7 @@ expand_margin_top = 17.0
 expand_margin_bottom = 17.0
 anti_aliasing = false
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=5]
 resource_name = "loop 2"
 length = 0.4
 loop = true
@@ -386,7 +379,7 @@ tracks/8/keys = {
 "values": [ 10, 0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=6]
 resource_name = "reset"
 length = 0.001
 loop = true
@@ -499,15 +492,15 @@ tracks/8/keys = {
 "values": [ 10, 0 ]
 }
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=7]
 size = 100
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=7]
-size = 70
-font_data = ExtResource( 4 )
-
 [sub_resource type="DynamicFont" id=8]
+size = 60
+font_data = ExtResource( 10 )
+
+[sub_resource type="DynamicFont" id=9]
 size = 34
 extra_spacing_bottom = -15
 font_data = ExtResource( 4 )
@@ -557,7 +550,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="main_menus" type="HBoxContainer" parent="Control"]
+[node name="Control" type="Control" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="main_menus" type="HBoxContainer" parent="Control/Control"]
 margin_left = 480.0
 margin_top = 220.0
 margin_right = 1770.0
@@ -568,16 +568,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="game_start" type="Button" parent="Control/main_menus"]
+[node name="game_start" type="Button" parent="Control/Control/main_menus"]
 margin_right = 300.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 300, 300 )
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/focus = SubResource( 1 )
-custom_styles/disabled = ExtResource( 2 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 3 )
+theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "게임하기"
 script = ExtResource( 8 )
@@ -586,60 +581,45 @@ __meta__ = {
 }
 caption = "게임을 고릅니다."
 
-[node name="collect" type="Button" parent="Control/main_menus"]
+[node name="collect" type="Button" parent="Control/Control/main_menus"]
 margin_left = 330.0
 margin_right = 630.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 300, 300 )
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/focus = SubResource( 2 )
-custom_styles/disabled = ExtResource( 2 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 3 )
+theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 disabled = true
 text = "준비중입니다."
 script = ExtResource( 8 )
 caption = "현재 준비중인 기능입니다."
 
-[node name="option" type="Button" parent="Control/main_menus"]
+[node name="option" type="Button" parent="Control/Control/main_menus"]
 margin_left = 660.0
 margin_right = 960.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 300, 300 )
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/focus = SubResource( 2 )
-custom_styles/disabled = ExtResource( 2 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 3 )
+theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 disabled = true
 text = "환경설정"
 script = ExtResource( 8 )
 caption = "환경설정을 합니다."
 
-[node name="game_end" type="Button" parent="Control/main_menus"]
+[node name="game_end" type="Button" parent="Control/Control/main_menus"]
 margin_left = 990.0
 margin_right = 1290.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 300, 300 )
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/focus = SubResource( 2 )
-custom_styles/disabled = ExtResource( 2 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 3 )
+theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 disabled = true
 text = "끝내기"
 script = ExtResource( 8 )
 caption = "게임을 종료합니다."
 
-[node name="menus_tween" type="Tween" parent="Control/main_menus"]
+[node name="menus_tween" type="Tween" parent="Control/Control/main_menus"]
 
-[node name="menu_cursor" type="Panel" parent="Control"]
+[node name="menu_cursor" type="Panel" parent="Control/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -649,17 +629,17 @@ margin_top = -140.0
 margin_right = 140.0
 margin_bottom = 160.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/menu_cursor"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Control/menu_cursor"]
 autoplay = "loop"
-anims/loop = SubResource( 4 )
-anims/reset = SubResource( 5 )
+anims/loop = SubResource( 2 )
+anims/reset = SubResource( 3 )
 
-[node name="menu_cursor2" type="Panel" parent="Control"]
+[node name="menu_cursor2" type="Panel" parent="Control/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -669,17 +649,17 @@ margin_top = -140.0
 margin_right = 140.0
 margin_bottom = 160.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/menu_cursor2"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Control/menu_cursor2"]
 autoplay = "loop"
-anims/loop = SubResource( 10 )
-anims/reset = SubResource( 11 )
+anims/loop = SubResource( 5 )
+anims/reset = SubResource( 6 )
 
-[node name="Label" type="Label" parent="Control"]
+[node name="Label" type="Label" parent="Control/Control"]
 visible = false
 anchor_left = 0.5
 anchor_right = 0.5
@@ -687,7 +667,7 @@ margin_left = -202.0
 margin_top = 20.0
 margin_right = 202.0
 margin_bottom = 132.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 text = "공튀기기 게임"
 align = 1
 valign = 1
@@ -695,7 +675,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="menu_name" type="Control" parent="Control"]
+[node name="menu_name" type="Control" parent="Control/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -708,10 +688,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control/menu_name"]
-margin_right = 176.0
-margin_bottom = 79.0
-custom_fonts/font = SubResource( 7 )
+[node name="Label" type="Label" parent="Control/Control/menu_name"]
+margin_top = -12.1456
+margin_right = 242.0
+margin_bottom = 47.8544
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "메뉴이름"
 valign = 1
@@ -719,19 +700,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Line2D" type="Line2D" parent="Control/menu_name"]
+[node name="Line2D" type="Line2D" parent="Control/Control/menu_name"]
 scale = Vector2( 1.5625, 1.5 )
 points = PoolVector2Array( 0, 33.3333, 179.2, 33.3333 )
 width = 2.0
 default_color = Color( 0, 0, 0, 1 )
 
-[node name="menu_caption" type="Label" parent="Control"]
+[node name="menu_caption" type="Label" parent="Control/Control"]
 margin_left = 370.0
 margin_top = 530.0
 margin_right = 900.0
 margin_bottom = 608.0
 rect_min_size = Vector2( 530, 78 )
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "메뉴에 대한 간략한 설명이 표시되는곳입니다..........."
 align = 1
@@ -740,11 +721,13 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="button_event" from="Control/main_menus/game_start" to="." method="button_event"]
-[connection signal="button_up" from="Control/main_menus/game_start" to="Control/main_menus/game_start" method="button_up"]
-[connection signal="button_event" from="Control/main_menus/collect" to="." method="button_event"]
-[connection signal="button_up" from="Control/main_menus/collect" to="Control/main_menus/collect" method="button_up"]
-[connection signal="button_event" from="Control/main_menus/option" to="." method="button_event"]
-[connection signal="button_up" from="Control/main_menus/option" to="Control/main_menus/option" method="button_up"]
-[connection signal="button_event" from="Control/main_menus/game_end" to="." method="button_event"]
-[connection signal="button_up" from="Control/main_menus/game_end" to="Control/main_menus/game_end" method="button_up"]
+
+[node name="screen_tween" type="Tween" parent="Control/Control"]
+[connection signal="button_event" from="Control/Control/main_menus/game_start" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/main_menus/game_start" to="Control/Control/main_menus/game_start" method="button_up"]
+[connection signal="button_event" from="Control/Control/main_menus/collect" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/main_menus/collect" to="Control/Control/main_menus/collect" method="button_up"]
+[connection signal="button_event" from="Control/Control/main_menus/option" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/main_menus/option" to="Control/Control/main_menus/option" method="button_up"]
+[connection signal="button_event" from="Control/Control/main_menus/game_end" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/main_menus/game_end" to="Control/Control/main_menus/game_end" method="button_up"]

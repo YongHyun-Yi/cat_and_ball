@@ -18,8 +18,8 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _unhandled_key_input(event):
-	if Input.is_action_just_pressed("ui_accept"):
+func _input(event):
+	if Input.is_action_just_pressed("ui_chat"):
 		if chat_on == false:
 			start_chat()
 		else:
@@ -30,6 +30,7 @@ func _unhandled_key_input(event):
 	elif Input.is_action_just_pressed("ui_cancel"):
 		if chat_on == true:
 			end_chat()
+			get_tree().set_input_as_handled()
 	
 	#else:
 	#	if chat_on == true:

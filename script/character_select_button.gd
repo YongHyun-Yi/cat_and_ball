@@ -39,6 +39,7 @@ func button_down():
 			manager.selected_character.mouse_filter = 0
 			manager.selected_character.pressed = false
 		manager.selected_character = self
+		GlobalData.last_selected_character_index = self.get_index()
 	else:
 		mouse_filter = 2
 		pass

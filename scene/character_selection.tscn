@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://script/character_selection.gd" type="Script" id=2]
@@ -11,8 +11,10 @@
 [ext_resource path="res://script/character_select_button.gd" type="Script" id=9]
 [ext_resource path="res://icon.png" type="Texture" id=10]
 [ext_resource path="res://sprite/ball2.png" type="Texture" id=11]
-[ext_resource path="res://custom_style/negative_button_normal.tres" type="StyleBox" id=12]
-[ext_resource path="res://custom_style/negative_button_hover.tres" type="StyleBox" id=13]
+[ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=12]
+[ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=13]
+[ext_resource path="res://script/main_menu_button.gd" type="Script" id=14]
+[ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=15]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -90,16 +92,13 @@ size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=16]
+[sub_resource type="DynamicFont" id=12]
 size = 50
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=12]
+[sub_resource type="StyleBoxEmpty" id=13]
 
-[sub_resource type="DynamicFont" id=13]
-size = 30
-extra_spacing_bottom = -10
-font_data = ExtResource( 1 )
+[sub_resource type="StyleBoxEmpty" id=18]
 
 [sub_resource type="DynamicFont" id=15]
 size = 30
@@ -151,27 +150,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="Control"]
+[node name="Control" type="Control" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect2" type="ColorRect" parent="Control/HSeparator"]
-visible = false
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -365.0
-margin_top = 21.0
-margin_right = 365.0
-margin_bottom = 335.0
-rect_min_size = Vector2( 730, 314 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="character_detail" type="Control" parent="Control/HSeparator"]
+[node name="character_detail" type="Control" parent="Control/Control"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -200.0
@@ -181,7 +167,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="image" type="GridContainer" parent="Control/HSeparator/character_detail"]
+[node name="image" type="GridContainer" parent="Control/Control/character_detail"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 139.0
@@ -192,13 +178,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="sprite" type="TextureRect" parent="Control/HSeparator/character_detail/image"]
+[node name="sprite" type="TextureRect" parent="Control/Control/character_detail/image"]
 stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="name" type="HBoxContainer" parent="Control/HSeparator/character_detail"]
+[node name="name" type="HBoxContainer" parent="Control/Control/character_detail"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 158.0
@@ -209,7 +195,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control/HSeparator/character_detail/name"]
+[node name="Label" type="Label" parent="Control/Control/character_detail/name"]
 margin_bottom = 28.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -219,7 +205,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="caption" type="Panel" parent="Control/HSeparator/character_detail"]
+[node name="caption" type="Panel" parent="Control/Control/character_detail"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 66.0
@@ -231,7 +217,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control/HSeparator/character_detail/caption"]
+[node name="Label" type="Label" parent="Control/Control/character_detail/caption"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 15.0
@@ -245,7 +231,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats" type="Control" parent="Control/HSeparator/character_detail"]
+[node name="stats" type="Control" parent="Control/Control/character_detail"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -258,7 +244,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_label" type="Label" parent="Control/HSeparator/character_detail/stats"]
+[node name="stats_label" type="Label" parent="Control/Control/character_detail/stats"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -276,7 +262,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_power" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+[node name="stats_power" type="ProgressBar" parent="Control/Control/character_detail/stats"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -294,7 +280,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_speed" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+[node name="stats_speed" type="ProgressBar" parent="Control/Control/character_detail/stats"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -312,7 +298,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_health" type="ProgressBar" parent="Control/HSeparator/character_detail/stats"]
+[node name="stats_health" type="ProgressBar" parent="Control/Control/character_detail/stats"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -330,9 +316,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_tween" type="Tween" parent="Control/HSeparator/character_detail/stats"]
+[node name="stats_tween" type="Tween" parent="Control/Control/character_detail/stats"]
 
-[node name="Panel2" type="Panel" parent="Control/HSeparator"]
+[node name="Panel2" type="Panel" parent="Control/Control"]
 margin_left = 557.0
 margin_top = 161.0
 margin_right = 1253.0
@@ -342,7 +328,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="grid" type="GridContainer" parent="Control/HSeparator/Panel2"]
+[node name="grid" type="GridContainer" parent="Control/Control/Panel2"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -358,7 +344,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="character_select_button" type="Button" parent="Control/HSeparator/Panel2/grid"]
+[node name="character_select_button" type="Button" parent="Control/Control/Panel2/grid"]
 margin_right = 75.0
 margin_bottom = 75.0
 rect_min_size = Vector2( 75, 75 )
@@ -377,7 +363,7 @@ char_caption = "기본 스프라이트에요"
 char_power = 1
 char_health = 4
 
-[node name="character_select_button2" type="Button" parent="Control/HSeparator/Panel2/grid"]
+[node name="character_select_button2" type="Button" parent="Control/Control/Panel2/grid"]
 margin_left = 85.0
 margin_right = 160.0
 margin_bottom = 75.0
@@ -398,20 +384,20 @@ char_power = 5
 char_speed = 7
 char_health = 2
 
-[node name="Label" type="Label" parent="Control/HSeparator/Panel2"]
+[node name="Label" type="Label" parent="Control/Control/Panel2"]
 anchor_right = 1.0
 margin_top = -49.0
 margin_bottom = 7.0
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "< 캐릭터 선택 >"
+text = "【 캐릭터 선택 】"
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="hbox" type="HBoxContainer" parent="Control/HSeparator"]
+[node name="hbox" type="HBoxContainer" parent="Control/Control"]
 margin_left = 930.0
 margin_top = 538.0
 margin_right = 1250.0
@@ -421,37 +407,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="confirm" type="Button" parent="Control/HSeparator/hbox"]
+[node name="confirm" type="Button" parent="Control/Control/hbox"]
 margin_right = 150.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
+theme = ExtResource( 13 )
 custom_styles/hover = ExtResource( 4 )
 custom_styles/pressed = ExtResource( 5 )
-custom_styles/focus = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 13 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "확인"
+script = ExtResource( 14 )
 
-[node name="cancel" type="Button" parent="Control/HSeparator/hbox"]
+[node name="cancel" type="Button" parent="Control/Control/hbox"]
 margin_left = 170.0
 margin_right = 320.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
-custom_styles/hover = ExtResource( 13 )
-custom_styles/pressed = ExtResource( 5 )
-custom_styles/focus = SubResource( 12 )
-custom_styles/normal = ExtResource( 12 )
+theme = ExtResource( 12 )
+custom_styles/focus = SubResource( 18 )
 custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "돌아가기"
-[connection signal="resized" from="Control/HSeparator/character_detail/image/sprite" to="." method="character_sprite_resized"]
-[connection signal="resized" from="Control/HSeparator/character_detail/name/Label" to="." method="name_Label_resized"]
-[connection signal="button_down" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="button_down"]
-[connection signal="mouse_entered" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="mouse_entered"]
-[connection signal="mouse_exited" from="Control/HSeparator/Panel2/grid/character_select_button" to="Control/HSeparator/Panel2/grid/character_select_button" method="mouse_exited"]
-[connection signal="button_down" from="Control/HSeparator/Panel2/grid/character_select_button2" to="Control/HSeparator/Panel2/grid/character_select_button2" method="button_down"]
-[connection signal="mouse_entered" from="Control/HSeparator/Panel2/grid/character_select_button2" to="Control/HSeparator/Panel2/grid/character_select_button2" method="mouse_entered"]
-[connection signal="mouse_exited" from="Control/HSeparator/Panel2/grid/character_select_button2" to="Control/HSeparator/Panel2/grid/character_select_button2" method="mouse_exited"]
-[connection signal="button_up" from="Control/HSeparator/hbox/confirm" to="." method="button_event" binds= [ "confirm" ]]
-[connection signal="button_up" from="Control/HSeparator/hbox/cancel" to="." method="button_event" binds= [ "cancel" ]]
+script = ExtResource( 14 )
+
+[node name="screen_tween" type="Tween" parent="Control/Control"]
+[connection signal="resized" from="Control/Control/character_detail/image/sprite" to="." method="character_sprite_resized"]
+[connection signal="resized" from="Control/Control/character_detail/name/Label" to="." method="name_Label_resized"]
+[connection signal="button_down" from="Control/Control/Panel2/grid/character_select_button" to="Control/Control/Panel2/grid/character_select_button" method="button_down"]
+[connection signal="mouse_entered" from="Control/Control/Panel2/grid/character_select_button" to="Control/Control/Panel2/grid/character_select_button" method="mouse_entered"]
+[connection signal="mouse_exited" from="Control/Control/Panel2/grid/character_select_button" to="Control/Control/Panel2/grid/character_select_button" method="mouse_exited"]
+[connection signal="button_down" from="Control/Control/Panel2/grid/character_select_button2" to="Control/Control/Panel2/grid/character_select_button2" method="button_down"]
+[connection signal="mouse_entered" from="Control/Control/Panel2/grid/character_select_button2" to="Control/Control/Panel2/grid/character_select_button2" method="mouse_entered"]
+[connection signal="mouse_exited" from="Control/Control/Panel2/grid/character_select_button2" to="Control/Control/Panel2/grid/character_select_button2" method="mouse_exited"]
+[connection signal="button_event" from="Control/Control/hbox/confirm" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/hbox/confirm" to="Control/Control/hbox/confirm" method="button_up"]
+[connection signal="button_event" from="Control/Control/hbox/cancel" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/hbox/cancel" to="Control/Control/hbox/cancel" method="button_up"]
