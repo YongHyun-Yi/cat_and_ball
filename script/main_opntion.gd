@@ -11,6 +11,22 @@ onready var key_input_menu = $Control/Control/option_menus/key_input
 onready var credit_menu = $Control/Control/option_menus/credit
 onready var data_reset_menu = $Control/Control/option_menus/data_reset
 
+onready var set_property_funcs = [
+	funcref($Control/Control/option_menus/screen_size, "select"),
+	funcref($Control/Control/option_menus/sfx_bar/HSlider, "set_value"),
+	funcref($Control/Control/option_menus/bgm_bar/HSlider, "set_value"),
+	funcref($Control/Control/option_menus/screen_shake/screen_shake, "set_current_tab"),
+	funcref($Control/Control/option_menus/language_select/language_select, "set_current_tab")
+	]
+
+onready var get_property_funcs = [
+	funcref($Control/Control/option_menus/screen_size, "get_selected"),
+	funcref($Control/Control/option_menus/sfx_bar/HSlider, "get_value"),
+	funcref($Control/Control/option_menus/bgm_bar/HSlider, "get_value"),
+	funcref($Control/Control/option_menus/screen_shake/screen_shake, "get_current_tab"),
+	funcref($Control/Control/option_menus/language_select/language_select, "get_current_tab")
+	]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#print(str(OS.get_screen_size()))
@@ -29,6 +45,7 @@ func _ready():
 	menu_info_load()
 	first_load = true
 	menu_tween()
+	
 
 	pass # Replace with function body.
 
@@ -41,22 +58,20 @@ func menu_tween():
 	$Control/Control/screen_tween.interpolate_property($Control/Control, "rect_position:x", 90, 0, .4, Tween.TRANS_EXPO, Tween.EASE_OUT)
 	$Control/Control/screen_tween.start()
 
+
+
 func menu_info_load():
-	screen_size_menu.select(GlobalData.data_dictionary["option_setting"]["screen_size"])
-	sfx_bar_menu.get_node("HSlider").value = GlobalData.data_dictionary["option_setting"]["sfx_volume"]
-	bgm_bar_menu.get_node("HSlider").value = GlobalData.data_dictionary["option_setting"]["bgm_volume"]
-	screen_shake_menu.current_tab = GlobalData.data_dictionary["option_setting"]["screen_shake_volume"]
-	language_select_menu.current_tab = GlobalData.data_dictionary["option_setting"]["selected_language"]
+	
+	for i in GlobalData.data_dictionary["option_setting_keys"].size():
+		set_property_funcs[i].call_func(GlobalData.data_dictionary["option_setting"][GlobalData.data_dictionary["option_setting_keys"][i]])
 
 func menu_info_save():
 	if first_load == true:
-		GlobalData.data_dictionary["option_setting"]["screen_size"] = screen_size_menu.selected
-		GlobalData.data_dictionary["option_setting"]["sfx_volume"] = sfx_bar_menu.get_node("HSlider").value
-		GlobalData.data_dictionary["option_setting"]["bgm_volume"] = bgm_bar_menu.get_node("HSlider").value
-		GlobalData.data_dictionary["option_setting"]["screen_shake_volume"] = screen_shake_menu.current_tab
-		GlobalData.data_dictionary["option_setting"]["selected_language"] = language_select_menu.current_tab
 		
-		GlobalData.data_save()
+		for i in GlobalData.data_dictionary["option_setting_keys"].size():
+			GlobalData.data_dictionary["option_setting"][GlobalData.data_dictionary["option_setting_keys"][i]] = get_property_funcs[i].call_func()
+		
+		#GlobalData.data_save()
 
 func _input(event):
 	

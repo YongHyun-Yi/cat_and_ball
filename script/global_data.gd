@@ -11,6 +11,7 @@ var last_selected_character_index : int = 0
 var save_path = "user://saved_data.json"
 
 var default_data_dictionary = {
+	"option_setting_keys" : ["screen_size", "sfx_volume", "bgm_volume", "screen_shake_volume", "selected_language"],
 	"option_setting" :
 		{
 			"screen_size" : 2,
@@ -27,6 +28,7 @@ var data_dictionary = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	data_load()
+	print(InputMap.get_action_list("ui_accept"))
 	#screen_size_setting()
 	pass # Replace with function body.
 
