@@ -28,7 +28,10 @@ var data_dictionary = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	data_load()
-	print(InputMap.get_action_list("ui_accept"))
+	#var a = InputMap.get_action_list("ui_accept")
+	#print(a[InputMap.get_action_list("ui_accept").size()-1].as_text())
+	#InputMap.action_erase_event("ui_accept", a[InputMap.get_action_list("ui_accept").size()-1])
+	#print(a[InputMap.get_action_list("ui_accept").size()-1].as_text())
 	#screen_size_setting()
 	pass # Replace with function body.
 

@@ -1,8 +1,8 @@
 extends RigidBody2D
 
 onready var manager = get_node("/root/ingame")
-onready var camera = get_node("/root/ingame/camera")
-onready var player = get_node("/root/ingame/player/player_body")
+#onready var camera = get_node("/root/ingame/camera")
+#onready var player = get_node("/root/ingame/player/player_body")
 var ball_spawner = null
 
 var move_direction = Vector2()
@@ -39,10 +39,6 @@ func _physics_process(delta):
 	attackable_check()
 	floor_check()
 	
-	if grabed == true:
-		global_position = player.get_node("grabed_ball_point").global_position
-	if pulled == true:
-		pulled_speed = Vector2(2000, 0).rotated(player.global_position.angle_to_point(global_position))
 	applied_force = Vector2((pulled_speed.x + scroll_acl), pulled_speed.y)
 	
 	if out_of_caemra == true:
@@ -77,6 +73,14 @@ func floor_check():
 
 func _integrate_forces(state):
 	rotation_degrees = 0
+	
+	if grabed == true:
+		global_position = manager.player.get_node("grabed_ball_point").global_position
+		linear_velocity = Vector2.ZERO
+	
+	if pulled == true:
+		pulled_speed = Vector2(2000, 0).rotated(manager.player.global_position.angle_to_point(global_position))
+	
 	#if dead == true:
 	#	set_linear_velocity(Vector2(0, 0))
 	#set_angular_velocity(0)
@@ -102,10 +106,10 @@ func move_dir_arrow_toggle(a):
 		$Line2D.hide()
 
 func indicator_range_check():
-	var a = Vector2(100, 0).rotated(player.global_position.angle_to_point(global_position))
+	var a = Vector2(100, 0).rotated(manager.player.global_position.angle_to_point(global_position))
 	$indicator_range.cast_to = a
 	if $indicator_range.collide_with_bodies:
-		if $indicator_range.get_collider() == player:
+		if $indicator_range.get_collider() == manager.player:
 			if $Line2D.visible == false:
 				$Line2D.visible = true
 		else:
@@ -113,20 +117,11 @@ func indicator_range_check():
 				$Line2D.visible = false
 
 func screen_indicator_check():
-	"""
-	if global_position.x < camera.global_position.x:
-		$screen_indicator.global_position.x = camera.global_position.x - (640 )#* 1.5)
-	elif global_position.x > camera.global_position.x:
-		$screen_indicator.global_position.x = camera.global_position.x + (640 )#* 1.5)
+	var border_size = Vector2(ProjectSettings.get("display/window/size/width"), ProjectSettings.get("display/window/size/height"))
+	var indicator_size = 40
 	
-	if global_position.y < camera.global_position.y:
-		$screen_indicator.global_position.y = camera.global_position.y - (360 )#* 1.5)
-	elif global_position.y > camera.global_position.y:
-		$screen_indicator.global_position.y = camera.global_position.y + (360 )#* 1.5)
-	"""
-	
-	$screen_indicator.global_position.x = camera.global_position.x + clamp((global_position.x - camera.global_position.x) , -get_viewport().size.x/2 + 40, get_viewport().size.x/2 - 40)
-	$screen_indicator.global_position.y = camera.global_position.y + clamp((global_position.y - camera.global_position.y) , -get_viewport().size.y/2 + 40, get_viewport().size.y/2 - 40)
+	$screen_indicator.global_position.x = manager.camera.global_position.x + clamp((global_position.x - manager.camera.global_position.x) , -border_size.x/2 + indicator_size, border_size.x/2 - indicator_size)
+	$screen_indicator.global_position.y = manager.camera.global_position.y + clamp((global_position.y - manager.camera.global_position.y) , -border_size.y/2 + indicator_size, border_size.y/2 - indicator_size)
 	pass
 
 func move_dir_update():
@@ -140,8 +135,6 @@ func ball_attacked(kick_power):
 	#attackable = true
 	#$sprite.self_modulate = "ffffff"
 	
-	
-	
 	set_linear_velocity(Vector2(0, 0))
 	print(str(get_linear_velocity()))
 	apply_impulse(Vector2(0, 0), move_direction * kick_power)
@@ -153,28 +146,48 @@ func ball_attacked(kick_power):
 		applied_force.x = 0
 	pass
 
-func ball_grabed():
-	player.ball_grab = true
-	player.ball_pull = false
-	grabed = true
+func ball_pulled_event():
+	pulled = true
+	linear_velocity = Vector2.ZERO
+	gravity_scale = 1
+	pass
+
+func ball_pulled_finish():
 	pulled = false
+	pulled_speed = Vector2.ZERO
+	gravity_scale = 8
+	pass
+
+func ball_grabed():
+	manager.player.ball_grab = true
+	manager.player.ball_pull = false
+	grabed = true
+	
 	$CollisionShape2D.disabled = true
 	$hit_zone/CollisionShape2D2.disabled = true
 	$hurt_zone/CollisionShape2D2.disabled = true
+	
 	mode = RigidBody2D.MODE_CHARACTER
-	gravity_scale = 8
-	pulled_speed = Vector2.ZERO
+	
+	ball_pulled_finish()
 	pass
 
 func ball_throw():
-	player.ball_grab = false
+	manager.player.ball_grab = false
 	grabed = false
+	
 	$CollisionShape2D.disabled = false
 	$hit_zone/CollisionShape2D2.disabled = false
 	$hurt_zone/CollisionShape2D2.disabled = false
+	
 	mode = RigidBody2D.MODE_RIGID
+	
+	global_position = manager.player.global_position
+	print(str(manager.player.global_position))
+	print(str(global_position))
+	
 	set_linear_velocity(Vector2(0, 0))
-	apply_impulse(Vector2(0, 0), move_direction * 4000) # 임시로 move_direction 삽임
+	apply_impulse(Vector2(0, 0), move_direction * 3000) # 임시로 move_direction 삽임
 	pass
 
 func hit_zone_in(area):
@@ -182,6 +195,7 @@ func hit_zone_in(area):
 	print(a.name)
 	
 	if attackable == true:
+		"""
 		if a.has_method("ball_hit"): # 적에게 맞을경우
 			$effect2.show()
 			$effect2.rotation_degrees = rad2deg(global_position.angle_to_point(a.global_position)-180) # 스프라이트 방향이 반대라서 -180도 해줬음
@@ -189,8 +203,34 @@ func hit_zone_in(area):
 			#linear_velocity.x *= -1
 			a.ball_hit()
 			camera.camera_shake(.2, 20, .2)
+		"""
+		#$effect2.show()
+		$effect2.rotation_degrees = rad2deg(global_position.angle_to_point(a.global_position)-180) # 스프라이트 방향이 반대라서 -180도 해줬음
+		a.hurt_check(1, self)
 	pass # Replace with function body.
 
+func hit_valid():
+	print("ball hit valid")
+	manager.camera.camera_shake(0.2, 20, 0.2)
+	manager.hit_pause(0.2)
+	#$effect2.hide()
+	pass
+
+func hurt_check(kick_power, attacker):
+	#print("ball hurt check start")
+	hurt_valid(kick_power)
+	pass
+
+func hurt_valid(kick_power):
+	#print("ball hurt valid")
+	set_linear_velocity(Vector2(0, 0))
+	apply_impulse(Vector2(0, 0), move_direction * kick_power)
+	
+	if friction != 1:
+		friction = 1
+	if applied_force.x != 0:
+		applied_force.x = 0
+	pass
 
 func hit_zone_body_entered(body):
 	linear_velocity *= -1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://script/main_menu_button.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=6]
 [ext_resource path="res://custom_style/tab_panel.tres" type="StyleBox" id=7]
 [ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=8]
+[ext_resource path="res://script/key_binding.gd" type="Script" id=9]
 [ext_resource path="res://custom_style/tab_fg.tres" type="StyleBox" id=10]
 [ext_resource path="res://custom_style/tag_bg.tres" type="StyleBox" id=11]
 
@@ -149,6 +150,19 @@ size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
 
+[sub_resource type="StyleBoxFlat" id=23]
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [node name="main_option" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 3 )
@@ -218,7 +232,7 @@ text = "화면 크기
 배경음
 화면 흔들기
 언어
-키 입력
+키 설정
 크레딧
 데이터 초기화"
 align = 1
@@ -359,14 +373,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="key_input" type="Button" parent="Control/Control/option_menus"]
+[node name="key_setting" type="Button" parent="Control/Control/option_menus"]
 margin_top = 238.0
 margin_right = 247.0
 margin_bottom = 273.0
 theme = ExtResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-disabled = true
-text = "Key_input"
+text = "Key_setting"
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -414,10 +428,89 @@ __meta__ = {
 }
 
 [node name="screen_tween" type="Tween" parent="Control/Control"]
+
+[node name="key_binding" type="Popup" parent="Control"]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control/key_binding"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="Control/key_binding"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Control/key_binding"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -491.0
+margin_top = -276.0
+margin_right = 491.0
+margin_bottom = 276.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="move" type="VBoxContainer" parent="Control/key_binding/Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_right = 103.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/key_binding/Control/move"]
+margin_right = 207.0
+margin_bottom = 73.0
+text = "【이동】
+----------------------"
+align = 1
+valign = 1
+
+[node name="action_info" type="HBoxContainer" parent="Control/key_binding/Control/move"]
+margin_top = 77.0
+margin_right = 207.0
+margin_bottom = 112.0
+custom_constants/separation = 10
+
+[node name="action_name" type="Label" parent="Control/key_binding/Control/move/action_info"]
+margin_right = 57.0
+margin_bottom = 35.0
+text = "액션 이름"
+align = 1
+valign = 1
+
+[node name="binding_button" type="Button" parent="Control/key_binding/Control/move/action_info"]
+margin_left = 67.0
+margin_right = 207.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 140, 0 )
+theme = ExtResource( 8 )
+text = "키 이름"
 [connection signal="item_selected" from="Control/Control/option_menus/screen_size" to="." method="screen_size_item_selected"]
 [connection signal="value_changed" from="Control/Control/option_menus/sfx_bar/HSlider" to="." method="sfx_bar_value_changed"]
 [connection signal="value_changed" from="Control/Control/option_menus/bgm_bar/HSlider" to="." method="bgm_bar_value_changed"]
 [connection signal="tab_changed" from="Control/Control/option_menus/screen_shake/screen_shake" to="." method="shake_tab_changed"]
 [connection signal="tab_changed" from="Control/Control/option_menus/language_select/language_select" to="." method="select_tab_changed"]
+[connection signal="button_event" from="Control/Control/option_menus/key_setting" to="." method="button_event"]
+[connection signal="button_up" from="Control/Control/option_menus/key_setting" to="Control/Control/option_menus/key_setting" method="button_up"]
 [connection signal="button_event" from="Control/Control/cancel" to="." method="button_event"]
 [connection signal="button_up" from="Control/Control/cancel" to="Control/Control/cancel" method="button_up"]

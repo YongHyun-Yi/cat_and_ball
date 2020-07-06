@@ -5,7 +5,7 @@ var targets = []
 var hit_pause = false
 
 onready var player = get_node("player/player_body")
-onready var ball = get_node("ball/ball_body")
+onready var ball = null
 onready var camera = get_node("camera")
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +19,7 @@ func _process(delta):
 	#$uis/Label.text = "velocity : "+str(ball.get_linear_velocity())
 	#$uis/Label.text = "state : "+str(player.can_dubble_jump)
 	#$uis/Label.text = "state : "+player.movement_state
-	$uis/Label.text = "vector2 : "+str(player.velocity)
+	#$uis/Label.text = "vector2 : "+str(player.velocity)
 	pass
 
 func _unhandled_input(event):
@@ -70,6 +70,6 @@ func hit_pause_timer_timeout():
 	$hit_pause_timer.stop()
 	hit_pause = false
 	#ball.get_node("sprite").texture = load("res://sprite/ball.png")
-	ball.get_node("effect2").hide()
+	#ball.get_node("effect2").hide()
 	#print("finish")
 	pass # Replace with function body.

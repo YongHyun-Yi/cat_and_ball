@@ -22,9 +22,9 @@ func _process(delta):
 	pass
 
 func camera_zoom_setting():
-	distance = player.global_position.distance_to(ball.global_position) # 거리 구하기
-	distance *= 0.005 # 단위 낮추기
-	distance += 1 # 가장 가까이 있을때 1배수가 나오도록
+	#distance = player.global_position.distance_to(ball.global_position) # 거리 구하기
+	#distance *= 0.005 # 단위 낮추기
+	#distance += 1 # 가장 가까이 있을때 1배수가 나오도록
 	#print(str(distance))
 	
 	#if distance < 1.6 and distance > 1.4:
@@ -59,6 +59,8 @@ func camera_shake(t,p,pause_t):
 			#print("time_limit is : "+str(time_limit))
 			time += get_process_delta_time()
 			time = min(time, time_limit)
+			
+			randomize()
 			
 			var offset = Vector2()
 			offset.x = rand_range(-power, power)

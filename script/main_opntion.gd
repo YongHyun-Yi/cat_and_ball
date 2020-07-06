@@ -96,6 +96,9 @@ func screen_size_item_selected(id):
 		3: # 640 x 360
 			OS.set_window_size(Vector2(640, 360))
 	OS.set_window_position((OS.get_screen_size()/2) - (OS.get_window_size()/2))
+	#print(str(OS.get_screen_size()))
+	#print(str(OS.get_window_size()))
+	#print(str(get_viewport().size))
 	menu_info_save()
 	pass # Replace with function body.
 
@@ -121,6 +124,8 @@ func button_event(button_object, keyboard_input):
 	if Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true:
 		
 		match button_object.name:
+			"key_setting":
+				$Control/key_binding.popup()
 			"cancel":
 				match get_tree().get_current_scene().name:
 					"main_option":

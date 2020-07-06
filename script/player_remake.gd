@@ -2,7 +2,8 @@ extends KinematicBody2D
 
 onready var manager = get_node("/root/ingame")
 onready var camera = get_node("/root/ingame/camera")
-onready var ball = get_node("/root/ingame/ball/ball_body")
+var ball = null
+var ball_scene = load("res://scene/ball.tscn")
 onready var chat_sys = get_node("/root/ingame/uis/chat_system")
 
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
@@ -33,6 +34,11 @@ export var attack_camera = Vector2()
 export var attack_pause = 0.0
 signal attacked
 
+var ball_spawn_point = 0
+var ball_spawn_point_max = 100
+var ball_spawnable = false
+var ball_spawned = false
+
 # 공 잡음 상태 추가
 var ball_grab = false
 var ball_pull = false
@@ -53,11 +59,17 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	
+	flip_check()
+	
 	arrowkey_move_input()
 	jump_input()
 	
-	flip_check()
+	attack_events()
+	
+	ball_grab_event()
 	ball_grab_check()
+	used_ball_spwan_point()
+	
 	velocity.y += gravity * delta # 중력값은 계속 적용
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
 	
@@ -128,7 +140,7 @@ func movement_state_check(a):
 
 func arrowkey_move_input():
 	
-	if can_move == true:
+	if can_move == true and sprite_state_machine.get_current_node() != "pre_jump":
 	
 		if Input.is_action_pressed("move_left"): # / idle - 땅 / slide - 얼음판 / scroll - 스크롤벨트 / on_air - 공중움직임 /
 			movement_state_check(-1)
@@ -158,32 +170,22 @@ func jump_input():
 					can_dubble_jump = false
 					velocity.y = dubble_jump
 			elif attacking == false:
-				velocity.y += jump
+				sprite_state_machine.travel("pre_jump")
+				#velocity.y += jump
+
+func jump_func():
+	print("jump!")
+	velocity.y += jump
 
 func _unhandled_input(event):
 
-	attack_events()
-
-	if Input.is_action_just_pressed("ball_grab"):
-		if ball_grab == false: # 끌어당기기
-			if ball_pull == false:
-				ball_pull = true
-				ball.pulled = true
-				ball.linear_velocity = Vector2.ZERO
-				ball.gravity_scale = 1
-			#else:
-				#ball.pulled_speed = Vector2(2000, 0).rotated(global_position.angle_to_point(ball.global_position))
-		pass
-	if Input.is_action_just_released("ball_grab"): # 끌어당기기 취소
-		if ball_grab == false:
-			ball_pull = false
-			ball.pulled = false
-			ball.pulled_speed = Vector2.ZERO
-			ball.gravity_scale = 8
-		#get_tree().is_input_handled()
+	#attack_events()
+	#ball_grab_event()
+	
+	pass
 
 func attack_events():
-	if Input.is_action_just_pressed("move_attack"):
+	if Input.is_action_just_pressed("normal_attack"):
 		if ball_grab == false:
 			if is_on_floor(): # 지상공격
 				if attacking == true and chain_attack == true:
@@ -201,20 +203,101 @@ func attack_events():
 					sprite_state_machine.travel("jump_attack")
 					print("jump attack")
 		elif ball_grab == true: # 공던지기
-			ball.ball_throw()
+			manager.ball.ball_throw()
+
+func ball_grab_event():
+	if ball_spawned == true: # 공이 이미 존재할때
+		if Input.is_action_just_pressed("ball_event"):
+			if ball_grab == false: # 공을 잡고있지 않은경우 끌어당기기
+				if ball_pull == false:
+					ball_pull = true
+					manager.ball.ball_pulled_event()
+					print("pulling start")
+			pass
+		elif Input.is_action_just_released("ball_event"): # 끌어당기기 취소
+			if ball_grab == false:
+				ball_pull = false
+				manager.ball.ball_pulled_finish()
+				print("pulling finish")
+	
+	else: # 공이없다면 조건확인후 생성
+		if Input.is_action_just_pressed("ball_event"):
+			ball_spawn_event()
+	pass
+
+func ball_spawn_event(): # 공 생성
+	if ball_spawnable == true:
+		ball_spawned = true
+		manager.ball = ball_scene.instance()
+		manager.get_node("ball").add_child(manager.ball)
+		manager.ball.global_position = global_position
+		get_tree().set_input_as_handled()
+	pass
 
 func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 실행
+	print("start check")
 	a = a.get_parent()
-	#print(a.name)
+	var b
+	if a.name == "ball_body":
+		b = kick_power
+	else:
+		b = attack_power
+	
+	a.hurt_check(b, self)
+	"""
 	if a.has_method("enemy_attacked"):
 		a.enemy_attacked(attack_power, attack_camera.x, attack_camera.y, attack_pause)
 	elif a.has_method("ball_attacked"):
 		a.ball_attacked(kick_power)
+	"""
 
+func hit_valid():
+	print("player hit valid")
+	camera.camera_shake(attack_camera.x, attack_camera.y, attack_pause)
+	manager.hit_pause(attack_pause)
+	get_ball_spawn_point(10)
 
+func get_ball_spawn_point(a):
+	if ball_spawn_point + a > ball_spawn_point_max:
+		ball_spawn_point = ball_spawn_point_max
+	else:
+		ball_spawn_point += a
+	
+	manager.get_node("uis/Panel/ProgressBar").value = ball_spawn_point
+	
+	if ball_spawnable == false and ball_spawn_point == ball_spawn_point_max:
+		ball_spawnable = true
+		manager.get_node("uis/Panel/ProgressBar").self_modulate = "00a321"
+		pass
+
+func used_ball_spwan_point():
+	if ball_spawned == true:
+		ball_spawn_point -= .1
+		manager.get_node("uis/Panel/ProgressBar").value = ball_spawn_point
+		
+		if ball_spawn_point <= 0:
+			ball_delete()
+			manager.get_node("uis/Panel/ProgressBar").self_modulate = "ffffff"
+	pass
+
+func ball_delete():
+	ball_grab = false
+	ball_pull = false
+	ball_spawned = false
+	ball_spawnable = false
+	ball_spawn_point = 0
+	manager.ball.queue_free()
+	manager.ball = null
+
+func hurt_check(attack_power):
+	pass
+
+func hurt_valid(attack_power):
+	pass
 
 func ball_grab_check():
 	if ball_pull == true:
+		"""
 		var a = $hurt_zone.get_overlapping_bodies()
 		if a.size() > 0:
 			print(str(a))
@@ -223,6 +306,10 @@ func ball_grab_check():
 					continue
 				
 				i.ball_grabed()
+		"""
+		if $hurt_zone.overlaps_body(manager.ball):
+			manager.ball.ball_grabed()
+			print("get ball!")
 
 
 func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기서 설정?
@@ -230,8 +317,8 @@ func floor_check_in(body): # 바닥에 착지 / 착지후 애니메이션 여기
 	
 	if not a.get("state") == null:
 		a.state_update(self)
-		$sprite.animation = "idle"
-		$sprite.frame = 1
+		#$sprite.animation = "idle"
+		#$sprite.frame = 1
 		sprite_state_machine.travel("idle")
 		can_dubble_jump = true
 		jump_attack = false
