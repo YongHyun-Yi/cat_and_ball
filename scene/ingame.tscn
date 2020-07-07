@@ -1,20 +1,16 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://sprite/remake/mini1.png" type="Texture" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
-[ext_resource path="res://sprite/remake/mini2.png" type="Texture" id=6]
 [ext_resource path="res://script/main_menu_button.gd" type="Script" id=7]
-[ext_resource path="res://sprite/remake/mini3.png" type="Texture" id=8]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://script/chat_system.gd" type="Script" id=11]
 [ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=12]
 [ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=13]
 [ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=14]
-[ext_resource path="res://sprite/remake/minis/pixel_version.png" type="Texture" id=15]
 [ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=16]
 
 [sub_resource type="DynamicFont" id=1]
@@ -70,6 +66,48 @@ border_color = Color( 0, 0, 0, 0 )
 
 [sub_resource type="StyleBoxEmpty" id=11]
 
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 1, 0, 0, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=13]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0, 0.745098, 0.658824, 1 )
+
+[sub_resource type="StyleBoxFlat" id=15]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="DynamicFont" id=16]
+size = 100
+outline_size = 5
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=17]
+size = 30
+outline_size = 2
+font_data = ExtResource( 9 )
+
 [node name="ingame" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
@@ -88,6 +126,7 @@ script = ExtResource( 2 )
 [node name="Tween" type="Tween" parent="camera"]
 
 [node name="walls" type="Node2D" parent="."]
+z_index = -1
 
 [node name="wall" parent="walls" instance=ExtResource( 5 )]
 margin_left = -113.0
@@ -113,10 +152,22 @@ margin_top = -52.0
 margin_right = 2819.0
 margin_bottom = 1485.0
 
+[node name="wall4" parent="walls" instance=ExtResource( 5 )]
+margin_top = 753.0
+margin_right = 50.0
+margin_bottom = 990.0
+
+[node name="wall5" parent="walls" instance=ExtResource( 5 )]
+margin_left = 380.0
+margin_top = 753.0
+margin_right = 797.0
+margin_bottom = 990.0
+
 [node name="enemys" type="Node2D" parent="."]
 
 [node name="enemy_body" parent="enemys" instance=ExtResource( 16 )]
-position = Vector2( 1499, 930 )
+position = Vector2( 1499, 806 )
+chasing_mode = true
 
 [node name="player" type="Node" parent="."]
 
@@ -136,22 +187,6 @@ attack_power = 0
 [node name="boom_barrel" type="Node2D" parent="obstacles"]
 
 [node name="moving_block" type="Node2D" parent="obstacles"]
-
-[node name="mini1" type="Sprite" parent="."]
-position = Vector2( 941, 919 )
-texture = ExtResource( 4 )
-
-[node name="mini2" type="Sprite" parent="."]
-position = Vector2( 850, 896 )
-texture = ExtResource( 6 )
-
-[node name="mini3" type="Sprite" parent="."]
-position = Vector2( 739, 914 )
-texture = ExtResource( 8 )
-
-[node name="pixel_version" type="Sprite" parent="."]
-position = Vector2( 644, 890 )
-texture = ExtResource( 15 )
 
 [node name="background" type="CanvasLayer" parent="."]
 layer = -1
@@ -231,12 +266,107 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="uis"]
-margin_left = 672.0
-margin_top = 12.0
-margin_right = 916.0
-margin_bottom = 105.0
+margin_left = 813.0
+margin_top = 85.0
+margin_right = 1057.0
+margin_bottom = 178.0
 custom_fonts/font = SubResource( 8 )
 text = "asdasfadasd"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="uis"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -622.0
+margin_top = -50.0
+margin_right = 622.0
+margin_bottom = -14.0
+custom_styles/panel = SubResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="uis/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -614.0
+margin_top = -25.0
+margin_right = 614.0
+margin_bottom = 10.0
+custom_styles/fg = SubResource( 10 )
+custom_styles/bg = SubResource( 11 )
+step = 0.1
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health_infos" type="Control" parent="uis"]
+margin_left = 9.0
+margin_top = 10.0
+margin_right = 262.0
+margin_bottom = 69.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hp" type="ProgressBar" parent="uis/health_infos"]
+margin_right = 250.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 250, 30 )
+custom_styles/fg = SubResource( 12 )
+custom_styles/bg = SubResource( 13 )
+value = 50.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sk" type="ProgressBar" parent="uis/health_infos"]
+margin_top = 37.0
+margin_right = 200.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/fg = SubResource( 14 )
+custom_styles/bg = SubResource( 15 )
+value = 50.0
+percent_visible = false
+
+[node name="last_time" type="Label" parent="uis"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -59.0
+margin_top = 21.0
+margin_right = 59.0
+margin_bottom = 121.0
+custom_fonts/font = SubResource( 16 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "∞"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="objective" type="Label" parent="uis"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -427.0
+margin_top = 16.0
+margin_right = -27.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 400, 70 )
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "대충 모든 적을 섬멸하라는 내용"
+align = 2
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -315,37 +445,6 @@ text = " 돌아가기"
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="uis/ingame_menus"]
-
-[node name="Panel" type="Panel" parent="uis"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -622.0
-margin_top = -50.0
-margin_right = 622.0
-margin_bottom = -14.0
-custom_styles/panel = SubResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ProgressBar" type="ProgressBar" parent="uis/Panel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -614.0
-margin_top = -25.0
-margin_right = 614.0
-margin_bottom = 10.0
-custom_styles/fg = SubResource( 10 )
-custom_styles/bg = SubResource( 11 )
-step = 0.1
-percent_visible = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
 [connection signal="button_event" from="uis/ingame_menus/hbox/restart" to="." method="button_event"]
 [connection signal="button_up" from="uis/ingame_menus/hbox/restart" to="uis/ingame_menus/hbox/restart" method="button_up"]

@@ -253,8 +253,8 @@ func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 
 
 func hit_valid():
 	print("player hit valid")
-	camera.camera_shake(attack_camera.x, attack_camera.y, attack_pause)
-	manager.hit_pause(attack_pause)
+	manager.camera.camera_shake(attack_camera.x, attack_camera.y, attack_pause)
+	#manager.hit_pause(attack_pause)
 	get_ball_spawn_point(10)
 
 func get_ball_spawn_point(a):
@@ -344,7 +344,7 @@ func interact_spike():
 
 func anim_finish():
 	attacking = false
-	print("finish")
+	#print("finish")
 
 func chat_mode(toggle):
 	if toggle == "on":
@@ -370,8 +370,7 @@ func chat_timeout():
 func chat_Label_resized():
 	
 	var chat_box_min = Vector2(20, 24)
-	#var chat_box_pos = Vector2(-9, -188)
-	var chat_box_pos = Vector2(-9, -43)
+	var chat_box_pos = Vector2(-1, -112)
 	
 	if $chat/chat_box/Label.text.length() > 19:
 		$chat/chat_box/Label.rect_min_size.x = 380

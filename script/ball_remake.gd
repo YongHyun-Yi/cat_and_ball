@@ -44,6 +44,10 @@ func _physics_process(delta):
 	if out_of_caemra == true:
 		screen_indicator_check()
 	
+	if grabed == true:
+		global_position = manager.player.get_node("grabed_ball_point").global_position
+		linear_velocity = Vector2.ZERO
+	
 	pass
 
 
@@ -74,9 +78,9 @@ func floor_check():
 func _integrate_forces(state):
 	rotation_degrees = 0
 	
-	if grabed == true:
-		global_position = manager.player.get_node("grabed_ball_point").global_position
-		linear_velocity = Vector2.ZERO
+	#if grabed == true:
+	#	global_position = manager.player.get_node("grabed_ball_point").global_position
+	#	linear_velocity = Vector2.ZERO
 	
 	if pulled == true:
 		pulled_speed = Vector2(2000, 0).rotated(manager.player.global_position.angle_to_point(global_position))
@@ -182,7 +186,7 @@ func ball_throw():
 	
 	mode = RigidBody2D.MODE_RIGID
 	
-	global_position = manager.player.global_position
+	#global_position = manager.player.global_position
 	print(str(manager.player.global_position))
 	print(str(global_position))
 	
@@ -212,7 +216,7 @@ func hit_zone_in(area):
 func hit_valid():
 	print("ball hit valid")
 	manager.camera.camera_shake(0.2, 20, 0.2)
-	manager.hit_pause(0.2)
+	#manager.hit_pause(0.2)
 	#$effect2.hide()
 	pass
 
