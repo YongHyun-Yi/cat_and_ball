@@ -7,6 +7,8 @@ var gravity = 2000
 var jump = -900
 var speed = 200
 
+var h_flip = false
+
 export var chasing_mode = false
 var attacking = false
 var attack_ray = 0
@@ -31,6 +33,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	
+	h_flip_check()
 	chasing_ai()
 	
 	attack_ray = manager.player.global_position - global_position
@@ -53,6 +56,19 @@ func ball_hit():
 	print("ball hit!")
 """
 
+func h_flip_check():
+	if manager.player.global_position.x > global_position.x:
+		if h_flip == true:
+			h_flip = false
+			scale.x *= -1
+			$chat.rect_scale.x *= -1
+	
+	elif manager.player.global_position.x < global_position.x:
+		if h_flip == false:
+			h_flip = true
+			scale.x *= -1
+			$chat.rect_scale.x *= -1
+
 func chasing_ai(): # 타입이 두개 - 일정범위를 랜덤하게 돌아다니다가 사거리 안에 들어오면 추격 / 그냥 무작정 추격
 	if chasing_mode == true:
 		if attacking == false:
@@ -61,10 +77,17 @@ func chasing_ai(): # 타입이 두개 - 일정범위를 랜덤하게 돌아다�
 			else:
 				velocity.x = -speed
 			
-			if manager.player.global_position.y < global_position.y - 150 and is_on_floor():
-				velocity.y = jump
-		else:
-			velocity.x = 0
+			if manager.player.global_position.y < global_position.y and is_on_floor(): # 가로점프 350 세로점프 190
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if collision.get_normal() == Vector2.LEFT or collision.get_normal() == Vector2.RIGHT: # 벽에 좌우로 충돌시
+						if collision.collider.get_parent().rect_size.y <= 190: # 바닥을 원점으로 190
+							velocity.y = (jump/2) + (jump/2 * (collision.collider.get_parent().rect_size.y)/190) # 점프력 900값을 모두 비례로 잡으면 작은벽도 못 넘길래 기본점프값 + 비례값으로 설정 500정도 해야 다른 크기의 벽도 넘는것으로 보임
+							print(str(velocity.y))
+				
+				if $up_wall_check.is_colliding() and $up_wall_check.get_collider().get_parent().one_way == true: # 통과가능한 벽 + 지상에 있을 떄
+					if global_position.y - $up_wall_check.get_collider().global_position.y <= 129: # 맨바닥에서 세운 벽은 사이즈가 190이라면 공중에 뜬 벽은 사이즈보단 시작점으로 좌표계산 대충 129가 위와 동일한 높이
+						velocity.y = (- 600) + (- 300 * (global_position.y - $up_wall_check.get_collider().global_position.y)/129) # 얘는 기본점프가 600이여야함 ㄱ-;
 
 func attack_event(): # 공격범위 안에 들어왔을경우 이동을 멈추고 공격 + 레이캐스트
 	pass

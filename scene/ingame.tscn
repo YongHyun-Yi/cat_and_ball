@@ -153,20 +153,27 @@ margin_right = 2819.0
 margin_bottom = 1485.0
 
 [node name="wall4" parent="walls" instance=ExtResource( 5 )]
-margin_top = 753.0
+margin_top = 767.0
 margin_right = 50.0
-margin_bottom = 990.0
+margin_bottom = 957.0
 
 [node name="wall5" parent="walls" instance=ExtResource( 5 )]
 margin_left = 380.0
-margin_top = 753.0
+margin_top = 767.0
 margin_right = 797.0
-margin_bottom = 990.0
+margin_bottom = 957.0
+
+[node name="wall6" parent="walls" instance=ExtResource( 5 )]
+margin_left = 992.0
+margin_top = 774.0
+margin_right = 1409.0
+margin_bottom = 836.0
+one_way = true
 
 [node name="enemys" type="Node2D" parent="."]
 
 [node name="enemy_body" parent="enemys" instance=ExtResource( 16 )]
-position = Vector2( 1499, 806 )
+position = Vector2( 1365, 896 )
 chasing_mode = true
 
 [node name="player" type="Node" parent="."]

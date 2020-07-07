@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
 onready var manager = get_node("/root/ingame")
-onready var camera = get_node("/root/ingame/camera")
+onready var hp_bar = get_node("/root/ingame/uis/health_infos/hp")
+
 var ball = null
 var ball_scene = load("res://scene/ball.tscn")
 onready var chat_sys = get_node("/root/ingame/uis/chat_system")
@@ -9,6 +10,9 @@ onready var chat_sys = get_node("/root/ingame/uis/chat_system")
 export (String, "idle", "slide", "scroll", "on_air", "wall") var movement_state = "idle"
 
 onready var sprite_state_machine = $sprite_anim_tree.get("parameters/playback")
+
+export var hp : int
+export var hp_max : int = 10
 
 var velocity = Vector2()
 var gravity = 2000
@@ -52,6 +56,11 @@ var attack_angle = Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	hp = hp_max
+	hp_bar.max_value = hp_max
+	hp_bar.value = hp
+	
 	manager.get_node("uis/chat_system").connect("chat_mode", self, "chat_mode")
 	pass # Replace with function body.
 
@@ -181,8 +190,10 @@ func _unhandled_input(event):
 
 	#attack_events()
 	#ball_grab_event()
-	
-	pass
+	if Input.is_action_just_pressed("target_next"):
+		hp_update(1)
+	elif Input.is_action_just_pressed("target_prev"):
+		hp_update(-1)
 
 func attack_events():
 	if Input.is_action_just_pressed("normal_attack"):
@@ -294,6 +305,34 @@ func hurt_check(attack_power):
 
 func hurt_valid(attack_power):
 	pass
+
+func hit_shake(): # 스프라이트 흔들기
+	
+	var power = 5
+	var time = 0
+	var time_limit = .2
+	
+	var initial_offset = $Sprite.get_offset()
+	
+	while time < time_limit:
+		time += get_process_delta_time()
+		time = min(time, time_limit)
+		
+		randomize()
+		
+		var offset = Vector2()
+		offset.x = rand_range(-power, power)
+		offset.y = rand_range(-power, power)
+		$Sprite.set_offset(offset)
+		
+		yield(get_tree(), "idle_frame")
+
+	$Sprite.set_offset(initial_offset)
+
+func hp_update(a):
+	hp += a
+	hp_bar.value = hp
+	hp = hp_bar.value
 
 func ball_grab_check():
 	if ball_pull == true:
