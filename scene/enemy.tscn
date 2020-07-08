@@ -73,13 +73,16 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 18.6487, 30.4854 )
+extents = Vector2( 17, 30 )
 
 [sub_resource type="CapsuleShape2D" id=3]
 radius = 37.5257
 height = 45.5956
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 0, 0 )
+
+[sub_resource type="Animation" id=5]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -95,7 +98,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.498039 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:self_modulate")
@@ -110,11 +113,11 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.866667, 0.231373, 0.231373, 1 )
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -127,12 +130,12 @@ expand_margin_top = 6.0
 expand_margin_bottom = 6.0
 anti_aliasing = false
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=9]
 size = 26
 extra_spacing_bottom = -10
 font_data = ExtResource( 8 )
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 length = 0.4
 step = 0.01
 tracks/0/type = "value"
@@ -234,7 +237,7 @@ tracks/7/keys = {
 "values": [ 0.0, 0.2, 0.0 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 0.4
 step = 0.01
 tracks/0/type = "value"
@@ -336,7 +339,7 @@ tracks/7/keys = {
 "values": [ 0.0, 0.2, 0.0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.9
 loop = true
 step = 0.01
@@ -439,7 +442,7 @@ tracks/7/keys = {
 "values": [ 0.5, 0.0 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
@@ -453,9 +456,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ ExtResource( 21 ) ]
 }
-
-[sub_resource type="RectangleShape2D" id=13]
-extents = Vector2( 0, 0 )
 
 [sub_resource type="Animation" id=14]
 length = 0.4
@@ -542,7 +542,7 @@ tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ SubResource( 13 ) ]
+"values": [ SubResource( 4 ) ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath(".:attack_camera")
@@ -699,7 +699,7 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "jump_func"
+"method": "pre_jump_func"
 } ]
 }
 
@@ -824,7 +824,7 @@ states/walk/node = SubResource( 27 )
 states/walk/position = Vector2( 420, 111 )
 transitions = [ "idle", "attack1", SubResource( 28 ), "attack3", "idle", SubResource( 29 ), "attack1", "idle", SubResource( 30 ), "attack2", "idle", SubResource( 31 ), "idle", "walk", SubResource( 32 ), "walk", "idle", SubResource( 33 ), "idle", "jump", SubResource( 34 ), "jump", "fall", SubResource( 35 ), "fall", "idle", SubResource( 36 ), "walk", "attack1", SubResource( 37 ), "attack1", "attack2", SubResource( 38 ), "attack2", "attack3", SubResource( 39 ), "jump", "jump_attack", SubResource( 40 ), "fall", "jump_attack", SubResource( 41 ), "jump_attack", "jump", SubResource( 42 ), "jump_attack", "fall", SubResource( 43 ), "fall", "jump", SubResource( 44 ), "jump_attack", "idle", SubResource( 45 ), "idle", "pre_jump", SubResource( 46 ), "pre_jump", "jump", SubResource( 47 ), "walk", "pre_jump", SubResource( 48 ), "walk", "jump", SubResource( 49 ), "walk", "fall", SubResource( 50 ) ]
 start_node = "idle"
-graph_offset = Vector2( -186, 132.632 )
+graph_offset = Vector2( -146, 38.632 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=52]
 
@@ -859,10 +859,16 @@ collision_mask = 104
 self_modulate = Color( 1, 0, 0, 1 )
 shape = SubResource( 3 )
 
+[node name="hit_zone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hit_zone"]
+shape = SubResource( 4 )
+disabled = true
+
 [node name="hitted_anim" type="AnimationPlayer" parent="."]
 autoplay = "reset"
-anims/hitted = SubResource( 4 )
-anims/reset = SubResource( 5 )
+anims/hitted = SubResource( 5 )
+anims/reset = SubResource( 6 )
 
 [node name="Timer" type="Timer" parent="hitted_anim"]
 wait_time = 2.0
@@ -873,8 +879,8 @@ margin_top = 77.7615
 margin_right = 52.5431
 margin_bottom = 91.7615
 mouse_filter = 2
-custom_styles/fg = SubResource( 6 )
-custom_styles/bg = SubResource( 7 )
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
 max_value = 10.0
 step = 1.0
 value = 10.0
@@ -905,7 +911,7 @@ __meta__ = {
 margin_right = 20.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 20, 24 )
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
@@ -955,10 +961,10 @@ cast_to = Vector2( 0, -130 )
 [node name="sprite_anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 playback_process_mode = 2
-anims/attack1 = SubResource( 9 )
-anims/attack2 = SubResource( 10 )
-anims/attack3 = SubResource( 11 )
-anims/fall = SubResource( 12 )
+anims/attack1 = SubResource( 10 )
+anims/attack2 = SubResource( 11 )
+anims/attack3 = SubResource( 12 )
+anims/fall = SubResource( 13 )
 anims/idle = SubResource( 14 )
 anims/jump = SubResource( 15 )
 anims/jump_attack = SubResource( 16 )
@@ -968,7 +974,11 @@ anims/walk = SubResource( 18 )
 [node name="sprite_anim_tree" type="AnimationTree" parent="."]
 tree_root = SubResource( 51 )
 anim_player = NodePath("../sprite_anim")
+active = true
 parameters/playback = SubResource( 52 )
+
+[node name="idle_mode_timer" type="Timer" parent="."]
 [connection signal="timeout" from="hitted_anim/Timer" to="." method="hitted_timeout"]
 [connection signal="resized" from="chat/chat_box/Label" to="." method="chat_Label_resized"]
 [connection signal="timeout" from="chat/Timer" to="." method="chat_timeout"]
+[connection signal="timeout" from="idle_mode_timer" to="." method="idle_mode_timeout"]

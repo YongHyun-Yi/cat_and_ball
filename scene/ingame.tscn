@@ -68,15 +68,24 @@ border_color = Color( 0, 0, 0, 0 )
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 1, 0, 0, 1 )
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0, 0, 0, 1 )
 draw_center = false
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 expand_margin_left = 2.0
 expand_margin_right = 2.0
 expand_margin_top = 2.0
@@ -85,6 +94,11 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 0, 0.745098, 0.658824, 1 )
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=15]
 draw_center = false
@@ -93,10 +107,15 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 expand_margin_left = 2.0
 expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
+anti_aliasing = false
 
 [sub_resource type="DynamicFont" id=16]
 size = 100
@@ -152,34 +171,50 @@ margin_top = -52.0
 margin_right = 2819.0
 margin_bottom = 1485.0
 
-[node name="wall4" parent="walls" instance=ExtResource( 5 )]
-margin_top = 767.0
-margin_right = 50.0
-margin_bottom = 957.0
-
 [node name="wall5" parent="walls" instance=ExtResource( 5 )]
-margin_left = 380.0
+margin_left = 167.0
 margin_top = 767.0
-margin_right = 797.0
+margin_right = 584.0
 margin_bottom = 957.0
 
 [node name="wall6" parent="walls" instance=ExtResource( 5 )]
-margin_left = 992.0
-margin_top = 774.0
-margin_right = 1409.0
-margin_bottom = 836.0
+margin_left = 999.0
+margin_top = 816.0
+margin_right = 1545.0
+margin_bottom = 878.0
+one_way = true
+
+[node name="wall8" parent="walls" instance=ExtResource( 5 )]
+margin_left = 1000.0
+margin_top = 711.0
+margin_right = 1546.0
+margin_bottom = 773.0
+one_way = true
+
+[node name="wall9" parent="walls" instance=ExtResource( 5 )]
+margin_left = 1003.0
+margin_top = 601.0
+margin_right = 1549.0
+margin_bottom = 663.0
+one_way = true
+
+[node name="wall10" parent="walls" instance=ExtResource( 5 )]
+margin_left = 1001.0
+margin_top = 498.0
+margin_right = 1547.0
+margin_bottom = 560.0
 one_way = true
 
 [node name="enemys" type="Node2D" parent="."]
 
 [node name="enemy_body" parent="enemys" instance=ExtResource( 16 )]
-position = Vector2( 1365, 896 )
+position = Vector2( 1367, 881 )
 chasing_mode = true
 
 [node name="player" type="Node" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
-position = Vector2( 1824, 798 )
+position = Vector2( 1825, 899 )
 z_index = -1
 attack_power = 0
 

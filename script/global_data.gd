@@ -55,6 +55,9 @@ func data_load():
 	data_dictionary = parse_json(text)
 	
 	file.close()
+	
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sfx"), linear2db(data_dictionary["option_setting"]["sfx_volume"] * 0.01))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("bgm"), linear2db(data_dictionary["option_setting"]["bgm_volume"] * 0.01))
 
 func data_save():
 	var file = File.new()

@@ -21,7 +21,7 @@ func _process(delta):
 	#$uis/Label.text = "state : "+str(player.can_dubble_jump)
 	#$uis/Label.text = "state : "+player.movement_state
 	#$uis/Label.text = "vector2 : "+str(player.velocity)
-	#$uis/Label.text = "vector2 : "+str(enemy.attack_ray)
+	$uis/Label.text = "vector2 : "+str(enemy.velocity)
 	pass
 
 func _unhandled_input(event):

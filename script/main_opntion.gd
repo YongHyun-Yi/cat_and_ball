@@ -104,11 +104,13 @@ func screen_size_item_selected(id):
 
 func sfx_bar_value_changed(value):
 	sfx_bar_menu.value = sfx_bar_menu.get_node("HSlider").value
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sfx"), linear2db(sfx_bar_menu.value * 0.01))
 	menu_info_save()
 	pass # Replace with function body.
 
 func bgm_bar_value_changed(value):
 	bgm_bar_menu.value = bgm_bar_menu.get_node("HSlider").value
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("bgm"), linear2db(bgm_bar_menu.value * 0.01))
 	menu_info_save()
 	pass # Replace with function body.
 
