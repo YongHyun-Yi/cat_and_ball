@@ -24,6 +24,7 @@ var default_data_dictionary = {
 }
 var data_dictionary = {}
 
+var scene_transition : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

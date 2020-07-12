@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
 onready var manager = get_node("/root/ingame")
-onready var hp_bar = get_node("/root/ingame/uis/health_infos/hp")
+onready var hp_bar = get_node("/root/ingame/uis/ingame_infos/hp_bar")
+onready var ball_bar = get_node("/root/ingame/uis/ingame_infos/ball_bar")
 
 var ball = null
 var ball_scene = load("res://scene/ball.tscn")
@@ -13,6 +14,8 @@ onready var sprite_state_machine = $sprite_anim_tree.get("parameters/playback")
 
 export var hp : int
 export var hp_max : int = 10
+
+signal bar_update
 
 var velocity = Vector2()
 var gravity = 2000
@@ -61,7 +64,12 @@ func _ready():
 	hp_bar.max_value = hp_max
 	hp_bar.value = hp
 	
+	ball_bar.value = ball_spawn_point
+	ball_bar.max_value = ball_spawn_point_max
+	
 	manager.get_node("uis/chat_system").connect("chat_mode", self, "chat_mode")
+	
+	get_ball_spawn_point(100)
 	pass # Replace with function body.
 
 
@@ -77,7 +85,7 @@ func _physics_process(delta):
 	
 	ball_grab_event()
 	ball_grab_check()
-	used_ball_spwan_point()
+	#used_ball_spwan_point()
 	
 	velocity.y += gravity * delta # 중력값은 계속 적용
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
@@ -242,6 +250,8 @@ func ball_spawn_event(): # 공 생성
 		manager.ball = ball_scene.instance()
 		manager.get_node("ball").add_child(manager.ball)
 		manager.ball.global_position = global_position
+		ball_bar.get_node("../ball_info_effect").show()
+		ball_bar.get_node("../ball_info_effect").playing = true
 		get_tree().set_input_as_handled()
 	pass
 
@@ -266,7 +276,7 @@ func hit_valid():
 	print("player hit valid")
 	manager.camera.camera_shake(attack_camera.x, attack_camera.y, attack_pause)
 	#manager.hit_pause(attack_pause)
-	get_ball_spawn_point(10)
+	get_ball_spawn_point(40)
 
 func get_ball_spawn_point(a):
 	if ball_spawn_point + a > ball_spawn_point_max:
@@ -274,21 +284,28 @@ func get_ball_spawn_point(a):
 	else:
 		ball_spawn_point += a
 	
-	manager.get_node("uis/Panel/ProgressBar").value = ball_spawn_point
+	#ball_bar.value = ball_spawn_point
+	emit_signal("bar_update", "ball_bar", a)
 	
 	if ball_spawnable == false and ball_spawn_point == ball_spawn_point_max:
 		ball_spawnable = true
-		manager.get_node("uis/Panel/ProgressBar").self_modulate = "00a321"
+		ball_bar.get_node("anim").play("spwanable")
 		pass
 
 func used_ball_spwan_point():
 	if ball_spawned == true:
-		ball_spawn_point -= .1
-		manager.get_node("uis/Panel/ProgressBar").value = ball_spawn_point
+		var a = -1
+		ball_spawn_point += a
+		#emit_signal("bar_update", "ball_bar", a)
+		ball_bar.value = ball_spawn_point
 		
 		if ball_spawn_point <= 0:
 			ball_delete()
-			manager.get_node("uis/Panel/ProgressBar").self_modulate = "ffffff"
+			ball_bar.get_node("anim").play("reset")
+			ball_bar.get_node("../ball_info_effect").hide()
+			ball_bar.get_node("../ball_info_effect").playing = false
+			ball_bar.get_node("../ball_info_effect").frame = 0
+			#manager.get_node("uis/Panel/ProgressBar").self_modulate = "ffffff"
 	pass
 
 func ball_delete():
@@ -330,9 +347,13 @@ func hit_shake(): # 스프라이트 흔들기
 	$Sprite.set_offset(initial_offset)
 
 func hp_update(a):
-	hp += a
-	hp_bar.value = hp
-	hp = hp_bar.value
+	if hp + a > hp_max:
+		hp = hp_max
+	else:
+		hp += a
+	#hp_bar.value = hp
+	#hp = hp_bar.value
+	emit_signal("bar_update", "hp_bar", a)
 
 func ball_grab_check():
 	if ball_pull == true:

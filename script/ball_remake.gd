@@ -5,10 +5,15 @@ onready var manager = get_node("/root/ingame")
 #onready var player = get_node("/root/ingame/player/player_body")
 var ball_spawner = null
 
+export var ball_spawn_complete = false
+
 var move_direction = Vector2()
 var power = 2000
 
 var attackable = false
+var transformed = false
+var t_length = 10
+var save_speed : Vector2
 var dead = false
 
 signal hit_pause
@@ -28,6 +33,7 @@ var out_of_caemra = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$anim.play("spawn")
 	pass # Replace with function body.
 
 
@@ -39,6 +45,8 @@ func _physics_process(delta):
 	attackable_check()
 	floor_check()
 	
+	
+	
 	applied_force = Vector2((pulled_speed.x + scroll_acl), pulled_speed.y)
 	
 	if out_of_caemra == true:
@@ -47,6 +55,26 @@ func _physics_process(delta):
 	if grabed == true:
 		global_position = manager.player.get_node("grabed_ball_point").global_position
 		linear_velocity = Vector2.ZERO
+	
+	if transformed == true:
+		linear_velocity = Vector2.ZERO
+	
+	if attackable == true:
+		
+		$trail.global_position = Vector2.ZERO
+		$trail.rotation_degrees = 0
+		var point = global_position
+		$trail.add_point(point)
+		if $trail.get_point_count() > t_length:
+			$trail.remove_point(0)
+		
+		var a = linear_velocity.normalized()
+		if a.x < 0:
+			$sprite.scale.x = -1
+		else:
+			$sprite.scale.x = 1
+		
+		$sprite.look_at(global_position + a)
 	
 	pass
 
@@ -92,16 +120,27 @@ func _integrate_forces(state):
 func attackable_check():
 	#print(str(rotation_degrees))
 	#set_angular_velocity(0)
+
 	if abs(linear_velocity.x)/1000 > 1 or abs(linear_velocity.y)/1000 > 1:
 		if attackable != true:
 			attackable = true
+			$sprite.animation = "speed1"
+			#if abs(linear_velocity.x) > abs(linear_velocity.y):
+			#	$sprite.animation = "speed1"
+			#elif abs(linear_velocity.x) < abs(linear_velocity.y):
+			#	$sprite.animation = "speed2"
+			
 			set_collision_mask_bit(5, true)
-			$sprite.self_modulate = "ffffff"
+			#$sprite.self_modulate = "ffffff"
+
 	else:
 		if attackable != false:
 			attackable = false
-			$sprite.self_modulate = "ff0000"
+			#$sprite.self_modulate = "ff0000"
 			set_collision_mask_bit(5, false)
+			$sprite.animation = "idle"
+			$sprite.rotation_degrees = 0
+			$trail.clear_points()
 
 func move_dir_arrow_toggle(a):
 	if a == "show":
@@ -151,30 +190,30 @@ func ball_attacked(kick_power):
 	pass
 
 func ball_pulled_event():
-	pulled = true
-	linear_velocity = Vector2.ZERO
-	gravity_scale = 1
-	pass
+	if ball_spawn_complete == true:
+		pulled = true
+		linear_velocity = Vector2.ZERO
+		gravity_scale = 1
 
 func ball_pulled_finish():
-	pulled = false
-	pulled_speed = Vector2.ZERO
-	gravity_scale = 8
-	pass
+	if ball_spawn_complete == true:
+		pulled = false
+		pulled_speed = Vector2.ZERO
+		gravity_scale = 8
 
 func ball_grabed():
-	manager.player.ball_grab = true
-	manager.player.ball_pull = false
-	grabed = true
-	
-	$CollisionShape2D.disabled = true
-	$hit_zone/CollisionShape2D2.disabled = true
-	$hurt_zone/CollisionShape2D2.disabled = true
-	
-	mode = RigidBody2D.MODE_CHARACTER
-	
-	ball_pulled_finish()
-	pass
+	if ball_spawn_complete == true:
+		manager.player.ball_grab = true
+		manager.player.ball_pull = false
+		grabed = true
+		
+		$CollisionShape2D.disabled = true
+		$hit_zone/CollisionShape2D2.disabled = true
+		$hurt_zone/CollisionShape2D2.disabled = true
+		
+		mode = RigidBody2D.MODE_CHARACTER
+		
+		ball_pulled_finish()
 
 func ball_throw():
 	manager.player.ball_grab = false
@@ -187,8 +226,8 @@ func ball_throw():
 	mode = RigidBody2D.MODE_RIGID
 	
 	#global_position = manager.player.global_position
-	print(str(manager.player.global_position))
-	print(str(global_position))
+	#print(str(manager.player.global_position))
+	#print(str(global_position))
 	
 	set_linear_velocity(Vector2(0, 0))
 	apply_impulse(Vector2(0, 0), move_direction * 3000) # 임시로 move_direction 삽임
@@ -275,4 +314,47 @@ func screen_exited():
 		print("out")
 		out_of_caemra = true
 		$screen_indicator.show()
+	pass # Replace with function body.
+
+
+func sprite_animation_finished():
+	if $sprite.animation == "spawn":
+		$sprite.animation = "idle"
+		$sprite.playing = false
+		$CollisionShape2D.disabled = false
+		$hit_zone/CollisionShape2D2.disabled = false
+		$hurt_zone/CollisionShape2D2.disabled = false
+		mode = RigidBody2D.MODE_RIGID
+		apply_impulse(Vector2.ZERO, Vector2.UP*100)
+	pass # Replace with function body.
+
+
+func body_entered(body):
+	print("충돌")
+	print(str((body.global_position - global_position).normalized()))
+	
+	if attackable == true:
+		save_speed = linear_velocity
+		transformed = true
+		if $sprite.animation == "speed1":
+			$anim.play("bounce1")
+		else:
+			$sprite.animation = "speed1"
+	
+	pass # Replace with function body.
+
+
+func body_exited(body):
+	pass # Replace with function body.
+
+
+func sprite_anim_finished(anim_name):
+	if transformed == true:
+		transformed = false
+		if anim_name == "bounce1":
+			$sprite.animation = "speed1"
+			linear_velocity = save_speed
+			save_speed = Vector2()
+		else:
+			$sprite.animation = "speed2"
 	pass # Replace with function body.

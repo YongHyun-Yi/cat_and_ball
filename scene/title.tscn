@@ -1,0 +1,220 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://sprite/intro1.png" type="Texture" id=1]
+[ext_resource path="res://sprite/intro2.png" type="Texture" id=2]
+[ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://script/title.gd" type="Script" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "intro"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Control2/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6, 1.4, 1.6, 2.1, 2.3, 3.1, 3.3, 3.8, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 1 ), ExtResource( 2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Control3:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 3.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+outline_size = 7
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+outline_size = 3
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 40
+outline_size = 3
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "blink"
+length = 1.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="title" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 247.187, 43.4248 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "intro"
+anims/intro = SubResource( 1 )
+
+[node name="Control3" type="Control" parent="."]
+visible = false
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="backgrounds" type="Control" parent="Control3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Control3/backgrounds"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0.839216, 0.105882, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="letter1" type="ColorRect" parent="Control3/backgrounds"]
+anchor_right = 1.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="letter2" type="ColorRect" parent="Control3/backgrounds"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -100.0
+rect_min_size = Vector2( 0, 100 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="RichTextLabel" parent="Control3"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -164.5
+margin_top = 73.4602
+margin_right = 164.5
+margin_bottom = 352.46
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[tornado radius=5 freq=10][center][color=red]캣![/color]치볼[/center][/tornado]"
+text = "캣!치볼"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="version" type="RichTextLabel" parent="Control3"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -188.0
+margin_top = 286.621
+margin_right = 204.0
+margin_bottom = 369.621
+custom_fonts/normal_font = SubResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "
+[center][wave amp=20 freq=5]Playerable Demo Version[/wave][/center]"
+text = "
+Playerable Demo Version"
+
+[node name="anykey" type="RichTextLabel" parent="Control3"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -295.5
+margin_top = -292.326
+margin_right = 295.5
+margin_bottom = -167.326
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[fill][center]~ 아무키나 눌러주세요 ~[/center][fill]"
+text = "~ 아무키나 눌러주세요 ~"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="anim" type="AnimationPlayer" parent="Control3/anykey"]
+autoplay = "blink"
+anims/blink = SubResource( 5 )
+
+[node name="Control2" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="animation_finished" from="anim" to="." method="title_anim_finished"]

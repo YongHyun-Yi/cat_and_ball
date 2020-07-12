@@ -16,12 +16,13 @@ _global_script_class_icons={
 [application]
 
 config/name="공튀기기"
-run/main_scene="res://scene/ingame.tscn"
+run/main_scene="res://scene/main_screen.tscn"
 config/icon="res://sprite/icon.png"
 
 [autoload]
 
 GlobalData="*res://script/global_data.gd"
+FadeEffect="*res://scene/fade_effect.tscn"
 
 [display]
 

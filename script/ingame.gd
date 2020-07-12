@@ -11,9 +11,15 @@ onready var enemy = get_node("enemys/enemy_body")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	FadeEffect.connect("fade_in", self, "pause_cancel")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
+func pause_cancel():
+	if get_tree().paused == true:
+		get_tree().paused = false
+
 func _process(delta):
 	#$background/combo.text = "COMBO\n"+str(combo)
 	#$uis/Label.text = "state : "+ball.movement_state+"\n applied force.x : "+str(ball.applied_force.x)
@@ -21,7 +27,7 @@ func _process(delta):
 	#$uis/Label.text = "state : "+str(player.can_dubble_jump)
 	#$uis/Label.text = "state : "+player.movement_state
 	#$uis/Label.text = "vector2 : "+str(player.velocity)
-	$uis/Label.text = "vector2 : "+str(enemy.velocity)
+	#$uis/Label.text = "vector2 : "+str(enemy.velocity)
 	pass
 
 func _unhandled_input(event):
@@ -43,20 +49,24 @@ func close_menu():
 
 
 func button_event(button_object, keyboard_input):
-	if Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true:
+	if (Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true) and FadeEffect.transitioning == false:
 		
 		match button_object.name:
 			"restart":
-				get_tree().reload_current_scene()
-				get_tree().paused = false
+				FadeEffect.change_scene(2.0, "res://scene/ingame.tscn")
+				#$uis/ingame_menus.pause_mode = Node.PAUSE_MODE_STOP
+				#get_tree().reload_current_scene()
+				#get_tree().paused = false
 			"option":
 				var a = load("res://scene/main_option.tscn")
 				a = a.instance()
 				get_node("uis").add_child(a)
 				$uis/ingame_menus.hide()
 			"go_to_main":
-				get_tree().change_scene("res://scene/main_screen.tscn")
-				get_tree().paused = false
+				FadeEffect.change_scene(2.0, "res://scene/main_screen.tscn")
+				#$uis/ingame_menus.pause_mode = Node.PAUSE_MODE_STOP
+				#get_tree().change_scene("res://scene/main_screen.tscn")
+				#get_tree().paused = false
 			"close":
 				close_menu()
 

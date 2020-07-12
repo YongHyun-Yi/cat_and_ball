@@ -845,7 +845,7 @@ playing = true
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -3, 0 )
-texture = ExtResource( 41 )
+texture = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 2, 2 )
@@ -874,10 +874,10 @@ anims/reset = SubResource( 6 )
 wait_time = 2.0
 
 [node name="hp_bar" type="ProgressBar" parent="."]
-margin_left = -60.4569
-margin_top = 77.7615
-margin_right = 52.5431
-margin_bottom = 91.7615
+margin_left = -60.0
+margin_top = 77.0
+margin_right = 53.0
+margin_bottom = 91.0
 mouse_filter = 2
 custom_styles/fg = SubResource( 7 )
 custom_styles/bg = SubResource( 8 )

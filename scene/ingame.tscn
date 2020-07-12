@@ -1,17 +1,34 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://script/ingame.gd" type="Script" id=1]
 [ext_resource path="res://script/camera.gd" type="Script" id=2]
 [ext_resource path="res://font/gyunggicheonnyunjemok_Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://sprite/remake/uis/hp_over.png" type="Texture" id=4]
 [ext_resource path="res://scene/wall.tscn" type="PackedScene" id=5]
+[ext_resource path="res://sprite/remake/uis/under_ground.png" type="Texture" id=6]
 [ext_resource path="res://script/main_menu_button.gd" type="Script" id=7]
+[ext_resource path="res://sprite/remake/uis/hp_progress.png" type="Texture" id=8]
 [ext_resource path="res://font/Silver.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://scene/player.tscn" type="PackedScene" id=10]
 [ext_resource path="res://script/chat_system.gd" type="Script" id=11]
 [ext_resource path="res://font/ingame_menu_button_font.tres" type="DynamicFont" id=12]
 [ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=13]
 [ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=14]
-[ext_resource path="res://scene/enemy.tscn" type="PackedScene" id=16]
+[ext_resource path="res://sprite/remake/uis/hp_under.png" type="Texture" id=15]
+[ext_resource path="res://sprite/remake/uis/info_ball.png" type="Texture" id=17]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect6.png" type="Texture" id=18]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect4.png" type="Texture" id=19]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect5.png" type="Texture" id=20]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect3.png" type="Texture" id=21]
+[ext_resource path="res://sprite/remake/uis/sk_progress.png" type="Texture" id=22]
+[ext_resource path="res://sprite/remake/uis/info_portrait.png" type="Texture" id=23]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect1.png" type="Texture" id=24]
+[ext_resource path="res://sprite/remake/uis/sk_under.png" type="Texture" id=25]
+[ext_resource path="res://sprite/remake/uis/info_ball_effect2.png" type="Texture" id=26]
+[ext_resource path="res://sprite/remake/uis/sk_over.png" type="Texture" id=27]
+[ext_resource path="res://script/ingame_infos.gd" type="Script" id=28]
+[ext_resource path="res://shader/ball_bar_full.shader" type="Shader" id=29]
+[ext_resource path="res://sprite/remake/uis/info_objective.png" type="Texture" id=30]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -117,12 +134,145 @@ expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 anti_aliasing = false
 
-[sub_resource type="DynamicFont" id=16]
+[sub_resource type="SpriteFrames" id=16]
+animations = [ {
+"frames": [ ExtResource( 24 ), ExtResource( 26 ), ExtResource( 21 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "default",
+"speed": 12.0
+} ]
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = ExtResource( 29 )
+shader_param/flashing_time = -0.35
+
+[sub_resource type="Animation" id=18]
+resource_name = "reset"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:tint_progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.74902, 0.74902, 0.74902, 0.784314 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader_param/flashing_time")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1137, 584 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:material:shader")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ null ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "spwanable"
+length = 0.73
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/flashing_time")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.22, 0.52 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ -0.35, 1.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.53, 0.57, 0.61, 0.65, 0.69, 0.73 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1137, 584 ), Vector2( 1137, 584 ), Vector2( 1137, 564 ), Vector2( 1137, 610 ), Vector2( 1137, 575 ), Vector2( 1137, 587 ), Vector2( 1137, 584 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.53 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 29 ), null ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:tint_progress")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.53 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Color( 0.74902, 0.74902, 0.74902, 0.784314 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="DynamicFont" id=20]
 size = 100
 outline_size = 5
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="StyleBoxTexture" id=21]
+texture = ExtResource( 30 )
+region_rect = Rect2( 0, 0, 291, 60 )
+
+[sub_resource type="DynamicFont" id=22]
 size = 30
 outline_size = 2
 font_data = ExtResource( 9 )
@@ -206,10 +356,6 @@ margin_bottom = 560.0
 one_way = true
 
 [node name="enemys" type="Node2D" parent="."]
-
-[node name="enemy_body" parent="enemys" instance=ExtResource( 16 )]
-position = Vector2( 1367, 881 )
-chasing_mode = true
 
 [node name="player" type="Node" parent="."]
 
@@ -308,6 +454,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="uis"]
+visible = false
 margin_left = 813.0
 margin_top = 85.0
 margin_right = 1057.0
@@ -319,6 +466,7 @@ __meta__ = {
 }
 
 [node name="Panel" type="Panel" parent="uis"]
+visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -350,6 +498,7 @@ __meta__ = {
 }
 
 [node name="health_infos" type="Control" parent="uis"]
+visible = false
 margin_left = 9.0
 margin_top = 10.0
 margin_right = 262.0
@@ -380,14 +529,99 @@ custom_styles/bg = SubResource( 15 )
 value = 50.0
 percent_visible = false
 
-[node name="last_time" type="Label" parent="uis"]
+[node name="ingame_infos" type="Control" parent="uis"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 28 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="under_ground" type="TextureRect" parent="uis/ingame_infos"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -640.0
+margin_top = -360.0
+margin_right = 640.0
+margin_bottom = 360.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hp_bar" type="TextureProgress" parent="uis/ingame_infos"]
+margin_left = 169.0
+margin_top = 44.0
+margin_right = 300.0
+margin_bottom = 57.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 15 )
+texture_over = ExtResource( 4 )
+texture_progress = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sk_bar" type="TextureProgress" parent="uis/ingame_infos"]
+margin_left = 173.0
+margin_top = 84.0
+margin_right = 286.0
+margin_bottom = 95.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 25 )
+texture_over = ExtResource( 27 )
+texture_progress = ExtResource( 22 )
+
+[node name="portrait" type="TextureRect" parent="uis/ingame_infos"]
+margin_left = 43.0
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 95.0
+texture = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ball_info_effect" type="AnimatedSprite" parent="uis/ingame_infos"]
+visible = false
+position = Vector2( 1174, 581 )
+frames = SubResource( 16 )
+
+[node name="ball_bar" type="TextureProgress" parent="uis/ingame_infos"]
+material = SubResource( 17 )
+margin_left = 1137.0
+margin_top = 584.0
+margin_right = 1218.0
+margin_bottom = 661.0
+step = 0.01
+texture_under = ExtResource( 17 )
+texture_progress = ExtResource( 17 )
+fill_mode = 3
+tint_under = Color( 0.113725, 0.113725, 0.113725, 0.784314 )
+tint_progress = Color( 0.74902, 0.74902, 0.74902, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="anim" type="AnimationPlayer" parent="uis/ingame_infos/ball_bar"]
+autoplay = "reset"
+anims/reset = SubResource( 18 )
+anims/spwanable = SubResource( 19 )
+
+[node name="bars_tween" type="Tween" parent="uis/ingame_infos"]
+
+[node name="last_time" type="Label" parent="uis/ingame_infos"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -59.0
+margin_left = -53.0
 margin_top = 21.0
-margin_right = 59.0
+margin_right = 65.0
 margin_bottom = 121.0
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 20 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "∞"
 align = 1
@@ -396,7 +630,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="objective" type="Label" parent="uis"]
+[node name="objective" type="Label" parent="uis/ingame_infos"]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -427.0
@@ -404,10 +638,11 @@ margin_top = 16.0
 margin_right = -27.0
 margin_bottom = 86.0
 rect_min_size = Vector2( 400, 70 )
-custom_fonts/font = SubResource( 17 )
+custom_styles/normal = SubResource( 21 )
+custom_fonts/font = SubResource( 22 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "대충 모든 적을 섬멸하라는 내용"
-align = 2
+align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -488,6 +723,7 @@ script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="uis/ingame_menus"]
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
+[connection signal="bar_update" from="player/player_body" to="uis/ingame_infos" method="bar_update"]
 [connection signal="button_event" from="uis/ingame_menus/hbox/restart" to="." method="button_event"]
 [connection signal="button_up" from="uis/ingame_menus/hbox/restart" to="uis/ingame_menus/hbox/restart" method="button_up"]
 [connection signal="button_event" from="uis/ingame_menus/hbox/option" to="." method="button_event"]

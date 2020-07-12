@@ -19,6 +19,7 @@ func _ready():
 #	pass
 
 func _input(event):
+	"""
 	if Input.is_action_just_pressed("ui_chat"):
 		if chat_on == false:
 			start_chat()
@@ -31,7 +32,7 @@ func _input(event):
 		if chat_on == true:
 			end_chat()
 			get_tree().set_input_as_handled()
-	
+	"""
 	#else:
 	#	if chat_on == true:
 	#		if event is InputEventKey and chat_init == false:
@@ -40,6 +41,7 @@ func _input(event):
 	#		get_tree().set_input_as_handled()
 	
 	#print(event.scancode)
+	pass
 
 func start_chat():
 	chat_on = true

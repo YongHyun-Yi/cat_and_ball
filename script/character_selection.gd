@@ -22,35 +22,37 @@ func menu_tween():
 	$Control/Control/screen_tween.start()
 
 func _input(event):
-	
-	if Input.is_action_just_pressed("ui_left"):
-		if GlobalData.last_selected_character_index > 0:
-			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
-			GlobalData.last_selected_character_index -= 1
-			selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
-			character_detail_update(selected_character)
-			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
-		pass
-	elif Input.is_action_just_pressed("ui_right"):
-		if GlobalData.last_selected_character_index < $Control/Control/Panel2/grid.get_child_count()-1:
-			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
-			GlobalData.last_selected_character_index += 1
-			selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
-			character_detail_update(selected_character)
-			$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
-		pass
-	
-	if Input.is_action_just_pressed("ui_accept"):
-		get_tree().change_scene("res://scene/ingame.tscn")
-	elif Input.is_action_just_pressed("ui_cancel"):
-		get_tree().change_scene("res://scene/main_screen.tscn")
+	if FadeEffect.transitioning == false:
+		if Input.is_action_just_pressed("ui_left"):
+			if GlobalData.last_selected_character_index > 0:
+				$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
+				GlobalData.last_selected_character_index -= 1
+				selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
+				character_detail_update(selected_character)
+				$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
+			pass
+		elif Input.is_action_just_pressed("ui_right"):
+			if GlobalData.last_selected_character_index < $Control/Control/Panel2/grid.get_child_count()-1:
+				$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = false
+				GlobalData.last_selected_character_index += 1
+				selected_character = $Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index)
+				character_detail_update(selected_character)
+				$Control/Control/Panel2/grid.get_child(GlobalData.last_selected_character_index).pressed = true
+			pass
+		
+		if Input.is_action_just_pressed("ui_accept"):
+			FadeEffect.change_scene(2.0, "res://scene/ingame.tscn")
+			#get_tree().change_scene("res://scene/ingame.tscn")
+		elif Input.is_action_just_pressed("ui_cancel"):
+			get_tree().change_scene("res://scene/main_screen.tscn")
 
 func button_event(button_object, keyboard_input):
 	if Rect2(Vector2.ZERO, button_object.rect_size).has_point(button_object.get_local_mouse_position()) or keyboard_input == true:
 		
 		match button_object.name:
 			"confirm":
-				get_tree().change_scene("res://scene/ingame.tscn")
+				FadeEffect.change_scene(2.0, "res://scene/ingame.tscn")
+				#get_tree().change_scene("res://scene/ingame.tscn")
 			"cancel":
 				get_tree().change_scene("res://scene/main_screen.tscn")
 
@@ -81,11 +83,11 @@ func character_detail_update(char_object):
 	character_detail.get_node("stats/stats_tween").start()
 
 func character_sprite_resized():
-	var init_pos = Vector2(139, 107)
+	var init_pos = Vector2(170, 131)
 	var init_size = Vector2(40, 40)
 	
-	var a = $Control/Control/character_detail/image/sprite.rect_size - init_size
-	a.x /= 2
+	var a = $Control/Control/character_detail/image/sprite.texture.get_size()
+	a /= 2
 	$Control/Control/character_detail/image.rect_position = init_pos - a
 	
 	pass # Replace with function body.

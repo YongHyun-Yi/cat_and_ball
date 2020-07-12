@@ -9,8 +9,8 @@
 [ext_resource path="res://custom_style/outline_dark.tres" type="StyleBox" id=7]
 [ext_resource path="res://custom_style/outline_bright.tres" type="StyleBox" id=8]
 [ext_resource path="res://script/character_select_button.gd" type="Script" id=9]
-[ext_resource path="res://icon.png" type="Texture" id=10]
-[ext_resource path="res://sprite/ball2.png" type="Texture" id=11]
+[ext_resource path="res://sprite/remake/minis/player_animation/idle1.png" type="Texture" id=10]
+[ext_resource path="res://sprite/remake/minis/ball_animation/ball_idle.png" type="Texture" id=11]
 [ext_resource path="res://custom_style/negative_button_theme.tres" type="Theme" id=12]
 [ext_resource path="res://custom_style/button_theme.tres" type="Theme" id=13]
 [ext_resource path="res://script/main_menu_button.gd" type="Script" id=14]
@@ -98,7 +98,7 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=13]
 
-[sub_resource type="StyleBoxEmpty" id=18]
+[sub_resource type="StyleBoxEmpty" id=14]
 
 [sub_resource type="DynamicFont" id=15]
 size = 30
@@ -170,10 +170,10 @@ __meta__ = {
 [node name="image" type="GridContainer" parent="Control/Control/character_detail"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = 139.0
-margin_top = -86.5
-margin_right = 179.0
-margin_bottom = -46.5
+margin_left = 142.0
+margin_top = -95.5
+margin_right = 200.0
+margin_bottom = -29.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -358,8 +358,8 @@ toggle_mode = true
 text = "캐릭터"
 script = ExtResource( 9 )
 char_sprite = ExtResource( 10 )
-char_name = "고도 엔진 아이콘"
-char_caption = "기본 스프라이트에요"
+char_name = "기본 캐릭터"
+char_caption = "기본 캐릭터에요."
 char_power = 1
 char_health = 4
 
@@ -378,8 +378,8 @@ toggle_mode = true
 text = "캐릭터"
 script = ExtResource( 9 )
 char_sprite = ExtResource( 11 )
-char_name = "배구공"
-char_caption = "공 초기버전 스프라이트에요"
+char_name = "공"
+char_caption = "공 스프라이트에요"
 char_power = 5
 char_speed = 7
 char_health = 2
@@ -427,7 +427,7 @@ margin_right = 320.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
 theme = ExtResource( 12 )
-custom_styles/focus = SubResource( 18 )
+custom_styles/focus = SubResource( 14 )
 custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "돌아가기"

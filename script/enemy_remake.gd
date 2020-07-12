@@ -82,24 +82,30 @@ func h_flip_check():
 			h_flip = false
 			scale.x *= -1
 			$chat.rect_scale.x *= -1
-			#velocity.x = speed
+			$hp_bar.rect_scale.x *= -1
+			$hp_bar.rect_position.x = -60
 	
 	elif manager.player.global_position.x < global_position.x:
 		if h_flip == false:
 			h_flip = true
 			scale.x *= -1
 			$chat.rect_scale.x *= -1
-			#velocity.x = -speed
+			$hp_bar.rect_scale.x *= -1
+			$hp_bar.rect_position.x = 50
 
 func h_flip_func():
 	if h_flip == true:
 			h_flip = false
 			scale.x *= -1
 			$chat.rect_scale.x *= -1
+			$hp_bar.rect_scale.x *= -1
+			$hp_bar.rect_position.x = -60
 	else:
 		h_flip = true
 		scale.x *= -1
 		$chat.rect_scale.x *= -1
+		$hp_bar.rect_scale.x *= -1
+		$hp_bar.rect_position.x = 50
 
 func velocity_x_update():
 	if manager.player.global_position.x > global_position.x:
