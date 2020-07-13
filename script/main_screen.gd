@@ -87,6 +87,7 @@ func button_event(button_object, keyboard_input):
 			"game_end_no":
 				$Control/game_end_confirm.hide()
 
+
 func menu_move_event(ward):
 	var step = 330
 	
@@ -122,11 +123,6 @@ func menu_info_update():
 func _on_custom_button_button_event():
 	print("야호")
 	pass # Replace with function body.
-
-
-func button_up():
-	pass # Replace with function body.
-
 
 func game_end_timeout():
 	$Control/game_end_confirm/game_end_timer.stop()

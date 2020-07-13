@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="공튀기기"
-run/main_scene="res://scene/main_screen.tscn"
+run/main_scene="res://scene/title.tscn"
 config/icon="res://sprite/icon.png"
 
 [autoload]

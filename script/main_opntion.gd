@@ -71,14 +71,17 @@ func menu_info_save():
 		for i in GlobalData.data_dictionary["option_setting_keys"].size():
 			GlobalData.data_dictionary["option_setting"][GlobalData.data_dictionary["option_setting_keys"][i]] = get_property_funcs[i].call_func()
 		
-		#GlobalData.data_save()
+		GlobalData.data_save()
 
 func _input(event):
 	
 	if Input.is_action_just_pressed("ui_cancel"):
 		match get_tree().get_current_scene().name:
 			"main_option":
-				get_tree().change_scene("res://scene/main_screen.tscn")
+				if $Control/credit_popup.visible == false:
+					get_tree().change_scene("res://scene/main_screen.tscn")
+				else:
+					$Control/credit_popup.hide()
 			"ingame":
 				queue_free()
 				get_node("/root/ingame").open_menu()
@@ -128,6 +131,8 @@ func button_event(button_object, keyboard_input):
 		match button_object.name:
 			"key_setting":
 				$Control/key_binding.popup()
+			"credit":
+				$Control/credit_popup.show()
 			"cancel":
 				match get_tree().get_current_scene().name:
 					"main_option":
@@ -137,5 +142,7 @@ func button_event(button_object, keyboard_input):
 						#get_node("../ingame_menus").show()
 						get_node("/root/ingame").open_menu()
 						get_tree().set_input_as_handled()
+			"credit_close":
+				$Control/credit_popup.hide()
 				#get_tree().get_node("main_screen").menu_count = 2
 				#get_tree().get_node("main_screen").menu_go_to()

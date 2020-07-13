@@ -357,12 +357,15 @@ one_way = true
 
 [node name="enemys" type="Node2D" parent="."]
 
+[node name="spawn_timer" type="Timer" parent="enemys"]
+wait_time = 5.0
+autostart = true
+
 [node name="player" type="Node" parent="."]
 
 [node name="player_body" parent="player" instance=ExtResource( 10 )]
 position = Vector2( 1825, 899 )
 z_index = -1
-attack_power = 0
 
 [node name="ball" type="Node" parent="."]
 
@@ -722,7 +725,23 @@ text = " 돌아가기"
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="uis/ingame_menus"]
+
+[node name="spawn_point1" type="Position2D" parent="."]
+position = Vector2( 1283, 349 )
+
+[node name="spawn_point2" type="Position2D" parent="."]
+position = Vector2( 366, 683 )
+
+[node name="spawn_point3" type="Position2D" parent="."]
+position = Vector2( 825, 829 )
+
+[node name="spawn_point4" type="Position2D" parent="."]
+position = Vector2( 1703, 833 )
+
+[node name="spawn_point5" type="Position2D" parent="."]
+position = Vector2( 2250, 858 )
 [connection signal="timeout" from="hit_pause_timer" to="." method="hit_pause_timer_timeout"]
+[connection signal="timeout" from="enemys/spawn_timer" to="." method="spawn_timer_timeout"]
 [connection signal="bar_update" from="player/player_body" to="uis/ingame_infos" method="bar_update"]
 [connection signal="button_event" from="uis/ingame_menus/hbox/restart" to="." method="button_event"]
 [connection signal="button_up" from="uis/ingame_menus/hbox/restart" to="uis/ingame_menus/hbox/restart" method="button_up"]

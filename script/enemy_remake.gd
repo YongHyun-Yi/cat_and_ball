@@ -9,6 +9,8 @@ var gravity = 2000
 var jump = -900
 var speed = 200
 
+var attack_power = 1
+
 var h_flip = false
 
 var pre_jump = false
@@ -20,7 +22,7 @@ export (String, "idle_stop", "idle_move") var idle_mode = "idle_stop"
 export var idle_stop_time : int = 5
 export var idle_move_time : int = 10
 
-export var chasing_mode = false
+export var chasing_mode = true
 var attacking = false
 var attack_ray = 0
 
@@ -49,21 +51,24 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	
-	#h_flip_check()
-	
-	if is_on_floor() and velocity.x == 0:
-		velocity_x_update()
-	anim_state_update()
-	chasing_ai()
-	
-	attack_ray = manager.player.global_position - global_position
-	attack_ray = attack_ray.clamped(100.0)
-	$RayCast2D.cast_to = attack_ray
-	
-	if $RayCast2D.is_colliding() and $RayCast2D.get_collider() == manager.player:
-		attacking = true
-	else:
-		attacking = false
+	if hp > 0:
+		h_flip_check()
+		
+		if is_on_floor() and velocity.x == 0:
+			velocity_x_update()
+		
+		anim_state_update()
+		chasing_ai()
+		
+		attack_ray = manager.player.global_position - global_position
+		attack_ray = attack_ray.clamped(100.0)
+		$RayCast2D.cast_to = attack_ray
+		
+		if $RayCast2D.is_colliding() and $RayCast2D.get_collider() == manager.player:
+			attacking = true
+			sprite_state_machine.travel("attack1")
+		else:
+			attacking = false
 	
 	velocity.y += gravity * delta
 	
@@ -146,7 +151,7 @@ func chasing_ai(): # 가로점프 350 세로점프 190
 	if chasing_mode == true:
 		if attacking == false:
 			
-			if pre_jump == false:
+			if pre_jump == false and sprite_state_machine.get_current_node() != "hit":
 				if h_flip == false:
 					velocity.x = speed
 				else:
@@ -195,6 +200,8 @@ func chasing_ai(): # 가로점프 350 세로점프 190
 							pre_jump_func_value = (- 600) + (- 300 * (global_position.y - $up_wall_check.get_collider().global_position.y)/129) # 얘는 기본점프가 600이여야함 ㄱ-;
 							pre_jump = true
 							sprite_state_machine.travel("pre_jump")
+		else:
+			velocity.x = 0
 
 func attack_event(): # 공격범위 안에 들어왔을경우 이동을 멈추고 공격 + 레이캐스트
 	pass
@@ -214,6 +221,7 @@ func hurt_check(attack_power, attacker):
 		disconnect("hurt_valid", attacker, "hit_valid")
 
 func hurt_valid(attack_power):
+	sprite_state_machine.travel("hit")
 	hp_update(-attack_power)
 	hit_shake()
 	print("enemy hurt valid")
@@ -229,7 +237,7 @@ func enemy_attacked(attack_power, attack_camera_time, attack_camera_power, attac
 
 func hit_shake(): # 스프라이트 흔들기
 	
-	var power = 5
+	var power = 10
 	var time = 0
 	var time_limit = .2
 	
@@ -253,8 +261,15 @@ func hit_shake(): # 스프라이트 흔들기
 func hp_update(a):
 	hp += a
 	$hp_bar.value = hp
+	
 	if hp <= 0:
-		queue_free()
+		print("dead!!!")
+		display_chat("크흑...분하다...")
+		sprite_state_machine.travel("down")
+		#$sprite_anim.play("down")
+		$hurt_zone/CollisionShape2D.disabled = true
+		$hit_zone/CollisionShape2D.disabled = true
+		velocity.x = 0
 
 func display_chat(chat):
 	$chat/chat_box/Label.text = chat
@@ -299,4 +314,10 @@ func idle_mode_timeout():
 		idle_mode = "idle_stop"
 		$idle_mode_timer.wait_time = idle_stop_time
 		$idle_mode_timer.start()
+	pass # Replace with function body.
+
+
+func hit_zone_in(a):
+	a = a.get_parent()
+	a.hurt_check(attack_power)
 	pass # Replace with function body.

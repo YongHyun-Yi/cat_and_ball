@@ -808,5 +808,5 @@ script = ExtResource( 8 )
 [connection signal="button_event" from="Control/game_end_confirm/HBoxContainer/game_end_yes" to="." method="button_event"]
 [connection signal="button_up" from="Control/game_end_confirm/HBoxContainer/game_end_yes" to="Control/game_end_confirm/HBoxContainer/game_end_yes" method="button_up"]
 [connection signal="button_event" from="Control/game_end_confirm/HBoxContainer/game_end_no" to="." method="button_event"]
-[connection signal="button_up" from="Control/game_end_confirm/HBoxContainer/game_end_no" to="." method="button_up"]
+[connection signal="button_up" from="Control/game_end_confirm/HBoxContainer/game_end_no" to="Control/game_end_confirm/HBoxContainer/game_end_no" method="button_up"]
 [connection signal="timeout" from="Control/game_end_confirm/game_end_timer" to="." method="game_end_timeout"]

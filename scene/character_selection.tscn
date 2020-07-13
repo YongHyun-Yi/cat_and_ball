@@ -98,9 +98,9 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=13]
 
-[sub_resource type="StyleBoxEmpty" id=14]
+[sub_resource type="StyleBoxEmpty" id=25]
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=26]
 size = 30
 extra_spacing_bottom = -10
 font_data = ExtResource( 1 )
@@ -374,6 +374,7 @@ custom_styles/focus = SubResource( 10 )
 custom_styles/normal = ExtResource( 7 )
 custom_fonts/font = SubResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+disabled = true
 toggle_mode = true
 text = "캐릭터"
 script = ExtResource( 9 )
@@ -427,8 +428,8 @@ margin_right = 320.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 150, 70 )
 theme = ExtResource( 12 )
-custom_styles/focus = SubResource( 14 )
-custom_fonts/font = SubResource( 15 )
+custom_styles/focus = SubResource( 25 )
+custom_fonts/font = SubResource( 26 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "돌아가기"
 script = ExtResource( 14 )

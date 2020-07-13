@@ -69,23 +69,23 @@ func _ready():
 	
 	manager.get_node("uis/chat_system").connect("chat_mode", self, "chat_mode")
 	
-	get_ball_spawn_point(100)
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	
-	flip_check()
-	
-	arrowkey_move_input()
-	jump_input()
-	
-	attack_events()
-	
-	ball_grab_event()
-	ball_grab_check()
-	#used_ball_spwan_point()
+	if hp > 0:
+		flip_check()
+		
+		arrowkey_move_input()
+		jump_input()
+		
+		attack_events()
+		
+		ball_grab_event()
+		ball_grab_check()
+		used_ball_spwan_point()
 	
 	velocity.y += gravity * delta # 중력값은 계속 적용
 	velocity = move_and_slide(velocity, Vector2.UP) # 계산해서 반환받은 값으로 velocity값을 갱신시켜준다 → 원하는 이동값 에서 시뮬레이트된 값으로
@@ -219,7 +219,7 @@ func attack_events():
 			else: # 공중공격
 				if jump_attack == false:
 					jump_attack = true
-					sprite_state_machine.travel("jump_attack")
+					sprite_state_machine.travel("attack1")
 					print("jump attack")
 		elif ball_grab == true: # 공던지기
 			manager.ball.ball_throw()
@@ -263,6 +263,7 @@ func hit_zone_in(a): # 공격범위 안에 적이 있으면 공격 메소드를 
 		b = kick_power
 	else:
 		b = attack_power
+		print("attack power : "+str(b))
 	
 	a.hurt_check(b, self)
 	"""
@@ -276,7 +277,7 @@ func hit_valid():
 	print("player hit valid")
 	manager.camera.camera_shake(attack_camera.x, attack_camera.y, attack_pause)
 	#manager.hit_pause(attack_pause)
-	get_ball_spawn_point(40)
+	get_ball_spawn_point(10)
 
 func get_ball_spawn_point(a):
 	if ball_spawn_point + a > ball_spawn_point_max:
@@ -285,7 +286,8 @@ func get_ball_spawn_point(a):
 		ball_spawn_point += a
 	
 	#ball_bar.value = ball_spawn_point
-	emit_signal("bar_update", "ball_bar", a)
+	#emit_signal("bar_update", "ball_bar", a)
+	ball_bar.value = ball_spawn_point
 	
 	if ball_spawnable == false and ball_spawn_point == ball_spawn_point_max:
 		ball_spawnable = true
@@ -294,7 +296,7 @@ func get_ball_spawn_point(a):
 
 func used_ball_spwan_point():
 	if ball_spawned == true:
-		var a = -1
+		var a = -0.05
 		ball_spawn_point += a
 		#emit_signal("bar_update", "ball_bar", a)
 		ball_bar.value = ball_spawn_point
@@ -318,14 +320,18 @@ func ball_delete():
 	manager.ball = null
 
 func hurt_check(attack_power):
+	if sprite_state_machine.get_current_node() != "down":
+		hurt_valid(attack_power)
 	pass
 
 func hurt_valid(attack_power):
+	hp_update(-attack_power)
+	hit_shake()
 	pass
 
 func hit_shake(): # 스프라이트 흔들기
 	
-	var power = 5
+	var power = 10
 	var time = 0
 	var time_limit = .2
 	
@@ -351,9 +357,16 @@ func hp_update(a):
 		hp = hp_max
 	else:
 		hp += a
-	#hp_bar.value = hp
+	hp_bar.value = hp
 	#hp = hp_bar.value
-	emit_signal("bar_update", "hp_bar", a)
+	#emit_signal("bar_update", "hp_bar", a)
+	
+	if hp <= 0:
+		hp_bar.value = 0
+		sprite_state_machine.travel("down")
+		$hurt_zone/CollisionShape2D.disabled = true
+		$hit_zone/CollisionShape2D.disabled = true
+		$dead_timer.start()
 
 func ball_grab_check():
 	if ball_pull == true:
@@ -442,3 +455,9 @@ func chat_Label_resized():
 	var a = $chat/chat_box/Label.rect_size - chat_box_min
 	a.x /= 2
 	$chat/chat_box.rect_position = chat_box_pos - a
+
+
+func dead_timer_timeout():
+	$dead_timer.stop()
+	FadeEffect.change_scene(2.0, "res://scene/main_screen.tscn")
+	pass # Replace with function body.

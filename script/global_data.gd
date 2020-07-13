@@ -48,6 +48,7 @@ func data_load():
 	var file = File.new()
 	
 	if not file.file_exists(save_path):
+		print("데이터가 없습니다.")
 		data_reset()
 		return
 	
@@ -57,8 +58,12 @@ func data_load():
 	
 	file.close()
 	
+	var screen_sizes = [Vector2(1920, 1080), Vector2(1600, 900), Vector2(1280, 720), Vector2(640, 360)]
+	OS.set_window_size(screen_sizes[data_dictionary["option_setting"]["screen_size"]])
+	OS.set_window_position((OS.get_screen_size()/2) - (OS.get_window_size()/2))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("sfx"), linear2db(data_dictionary["option_setting"]["sfx_volume"] * 0.01))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("bgm"), linear2db(data_dictionary["option_setting"]["bgm_volume"] * 0.01))
+	print("데이터 로드 완료.")
 
 func data_save():
 	var file = File.new()

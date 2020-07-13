@@ -7,7 +7,9 @@ var hit_pause = false
 onready var player = get_node("player/player_body")
 onready var ball = null
 onready var camera = get_node("camera")
+
 onready var enemy = get_node("enemys/enemy_body")
+onready var enemy_scene = load("res://scene/enemy.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -84,4 +86,24 @@ func hit_pause_timer_timeout():
 	#ball.get_node("sprite").texture = load("res://sprite/ball.png")
 	#ball.get_node("effect2").hide()
 	print("finish")
+	pass # Replace with function body.
+
+
+func spawn_timer_timeout():
+	
+	randomize()
+	var a = [$spawn_point1, $spawn_point2, $spawn_point3, $spawn_point4, $spawn_point5]
+	a = a[randi()%5]
+	
+	var b = randi()%2+1
+	
+	for i in b:
+		var enemy_spawn = enemy_scene.instance()
+		enemy_spawn.global_position = a.global_position
+		$enemys.add_child(enemy_spawn)
+	
+	$enemys/spawn_timer.stop()
+	$enemys/spawn_timer.wait_time = randi()%10
+	$enemys/spawn_timer.start()
+	
 	pass # Replace with function body.
